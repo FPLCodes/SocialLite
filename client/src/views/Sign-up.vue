@@ -5,10 +5,12 @@
         <!-- Sign-up & Sign-in tabs -->
         <div class="tabs is-medium">
           <ul>
-            <li class="is-active">
-              <router-link to="/">Sign Up</router-link>
+            <li>
+              <router-link to="/">Sign In</router-link>
             </li>
-            <li><router-link to="/sign-in">Sign in</router-link></li>
+            <li class="is-active">
+              <router-link to="/sign-up">Sign up</router-link>
+            </li>
           </ul>
           <router-view />
         </div>
@@ -110,6 +112,23 @@
               </p>
             </div>
 
+            <!-- Gender input radio -->
+            <h1 class="font-semibold">Gender:</h1>
+            <div class="control mb-3">
+              <label class="radio">
+                <input type="radio" value="male" v-model="gender" />
+                Male
+              </label>
+              <label class="radio">
+                <input type="radio" value="female" v-model="gender" />
+                Female
+              </label>
+              <label class="radio">
+                <input type="radio" value="others" v-model="gender" />
+                Others
+              </label>
+            </div>
+
             <!-- Submit button -->
             <div class="field">
               <p class="control">
@@ -144,6 +163,7 @@ export default {
     return {
       users: [],
       username: "",
+      userExists: "",
       usernameError: false,
       password: "",
       confirmPass: "",
@@ -151,7 +171,7 @@ export default {
       firstName: "",
       lastName: "",
       birthDate: "",
-      userExists: "",
+      gender: "",
     };
   },
   async mounted() {

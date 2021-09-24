@@ -5,14 +5,14 @@ import SignIn from "../views/Sign-in.vue";
 const routes = [
   {
     path: "/",
-    name: "Sign-Up",
-    component: SignUp,
+    name: "Sign-in",
+    component: SignIn,
     meta: { transition: "slide-left" },
   },
   {
-    path: "/sign-in",
-    name: "Sign-in",
-    component: SignIn,
+    path: "/sign-up",
+    name: "Sign-up",
+    component: SignUp,
     meta: { transition: "slide-right" },
   },
 ];

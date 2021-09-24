@@ -4,12 +4,11 @@
       <div class="w-1/2 mx-auto max-w-xl mb-20">
         <div class="tabs is-medium">
           <ul>
-            <li>
-              <router-link to="/">Sign Up</router-link>
-            </li>
-
             <li class="is-active">
-              <router-link to="/sign-in">Sign in</router-link>
+              <router-link to="/">Sign In</router-link>
+            </li>
+            <li>
+              <router-link to="/sign-up">Sign up</router-link>
             </li>
           </ul>
           <router-view />
