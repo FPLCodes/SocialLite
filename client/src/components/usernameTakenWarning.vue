@@ -1,11 +1,11 @@
 <template>
   <transition name="bounce">
     <div
-      class="notification is-danger is-light h-16 mb-3 flex md:h-8"
+      class="notification is-danger is-light h-16 mb-3 flex shadow md:h-8"
       v-if="userExists"
     >
       <i class="fas fa-exclamation-triangle -ml-3 mr-2 md:-mt-2"></i>
-      <p class="-mt-2 text-sm sm:-mt-3 sm:text-base">
+      <p class="-mt-2 ml-1 text-sm sm:-mt-3 sm:text-base">
         {{ userExists }}
       </p>
     </div>

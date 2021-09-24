@@ -164,7 +164,7 @@ export default {
       this.users.forEach((user) => {
         if (user.username === this.username) existingUser.push(user);
       });
-      if (existingUser[0]) this.userExists = "This username is already taken!";
+      if (existingUser[0]) this.userExists = "This username is already taken";
       if (!existingUser[0]) this.userExists = "";
       // Check if password and confirm password matches
       if (this.password !== this.confirmPass) this.correctPass = false;
@@ -190,22 +190,4 @@ export default {
 };
 </script>
 
-<style>
-.bounce-enter-active {
-  animation: bounce-in 0.2s;
-}
-.bounce-leave-active {
-  animation: bounce-in 0.2s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.03);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-</style>
+<style></style>
