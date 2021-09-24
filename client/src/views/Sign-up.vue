@@ -23,6 +23,7 @@
                   type="text"
                   placeholder="Username"
                   v-model="username"
+                  v-bind:class="{ 'border-red-300': usernameError }"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-user"></i>
@@ -143,6 +144,7 @@ export default {
     return {
       users: [],
       username: "",
+      usernameError: false,
       password: "",
       confirmPass: "",
       correctPass: true,
@@ -164,8 +166,14 @@ export default {
       this.users.forEach((user) => {
         if (user.username === this.username) existingUser.push(user);
       });
-      if (existingUser[0]) this.userExists = "This username is already taken";
-      if (!existingUser[0]) this.userExists = "";
+      if (existingUser[0]) {
+        this.userExists = "This username is already taken";
+        this.usernameError = true;
+      }
+      if (!existingUser[0]) {
+        this.userExists = "";
+        this.usernameError = false;
+      }
       // Check if password and confirm password matches
       if (this.password !== this.confirmPass) this.correctPass = false;
       // Create new user if username not found and passwords match
