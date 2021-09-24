@@ -58,32 +58,10 @@
           </div>
         </div>
 
-        <transition name="bounce">
-          <div class="card bg-green-300 mt-3 h-20" v-if="successMessage">
-            <div class="card-content grid grid-cols-2">
-              <div class="content font-semibold pt-1">
-                {{ successMessage }}
-              </div>
-              <button
-                class="delete ml-64 -mt-3"
-                @click="successMessage = ''"
-              ></button>
-            </div>
-          </div>
-        </transition>
-        <transition name="bounce">
-          <div class="card bg-red-400 mt-3 h-20" v-if="failedMessage">
-            <div class="card-content grid grid-cols-2">
-              <div class="content font-semibold pt-1">
-                {{ failedMessage }}
-              </div>
-              <button
-                class="delete ml-64 -mt-3"
-                @click="failedMessage = ''"
-              ></button>
-            </div>
-          </div>
-        </transition>
+        <LoginFailWarning
+          :success-message="successMessage"
+          :failed-message="failedMessage"
+        />
       </div>
     </div>
   </div>
@@ -91,8 +69,12 @@
 
 <script>
 import axios from "axios";
+import LoginFailWarning from "../components/loginFailWarning.vue";
 export default {
   name: "Sign-in",
+  components: {
+    LoginFailWarning,
+  },
   data() {
     return {
       currUser: [],
