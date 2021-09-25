@@ -57,9 +57,16 @@
               </div>
 
               <div class="field">
-                <p class="control">
+                <p class="control flex gap-2">
                   <button class="button is-success" @click="googleSignIn()">
                     Sign in with Google
+                  </button>
+                  <button
+                    class="button is-danger"
+                    v-if="signedIn === true"
+                    @click="signOut"
+                  >
+                    Sign out
                   </button>
                 </p>
               </div>
@@ -83,6 +90,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import LoginFailWarning from "../components/loginFailWarning.vue";
 export default {
@@ -98,6 +106,7 @@ export default {
       success: false,
       successMessage: "",
       failedMessage: "",
+      signedIn: false,
     };
   },
   async mounted() {
@@ -107,6 +116,7 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user.uid);
+        this.signedIn = true;
       } else {
         console.log("No user signed in");
       }
@@ -149,6 +159,16 @@ export default {
           console.log(errorMessage);
           console.log(email);
           console.log(credential);
+        });
+    },
+    signOut() {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          console.log("Signed out!");
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
