@@ -43,16 +43,26 @@
               </p>
             </div>
 
-            <div class="field">
-              <p class="control">
-                <button
-                  class="button is-success"
-                  @click="login()"
-                  :disabled="!currPassword || !currUsername"
-                >
-                  Login
-                </button>
-              </p>
+            <div class="flex gap-2">
+              <div class="field">
+                <p class="control">
+                  <button
+                    class="button is-success"
+                    @click="login()"
+                    :disabled="!currPassword || !currUsername"
+                  >
+                    Login
+                  </button>
+                </p>
+              </div>
+
+              <div class="field">
+                <p class="control">
+                  <button class="button is-success" @click="googleSignIn()">
+                    Sign in with Google
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -68,6 +78,12 @@
 
 <script>
 import axios from "axios";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from "firebase/auth";
 import LoginFailWarning from "../components/loginFailWarning.vue";
 export default {
   name: "Sign-in",
@@ -87,6 +103,14 @@ export default {
   async mounted() {
     const response = await axios.get("api/userProfiles/");
     this.users = response.data;
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user.uid);
+      } else {
+        console.log("No user signed in");
+      }
+    });
   },
   methods: {
     login() {
@@ -104,6 +128,28 @@ export default {
       } else {
         this.failedMessage = `Incorrect username or password!`;
       }
+    },
+    googleSignIn() {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          const user = result.user;
+          console.log(token);
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          const email = error.email;
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          console.log(errorCode);
+          console.log(errorMessage);
+          console.log(email);
+          console.log(credential);
+        });
     },
   },
 };
