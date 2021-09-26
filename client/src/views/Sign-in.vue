@@ -21,8 +21,8 @@
                 <input
                   class="input"
                   type="email"
-                  placeholder="Username"
-                  v-model="currUsername"
+                  placeholder="Email"
+                  v-model="email"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-user"></i>
@@ -35,7 +35,7 @@
                   class="input"
                   type="password"
                   placeholder="Password"
-                  v-model="currPassword"
+                  v-model="password"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
@@ -49,7 +49,7 @@
                   <button
                     class="button is-success"
                     @click="login()"
-                    :disabled="!currPassword || !currUsername"
+                    :disabled="!password || !email"
                   >
                     Login
                   </button>
@@ -74,7 +74,7 @@
           </div>
         </div>
 
-        <LoginFailWarning
+        <LoginNotification
           :success-message="successMessage"
           :failed-message="failedMessage"
         />
@@ -91,22 +91,22 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signOut,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
-import LoginFailWarning from "../components/loginFailWarning.vue";
+import LoginNotification from "../components/loginFailWarning.vue";
 export default {
   name: "Sign-in",
   components: {
-    LoginFailWarning,
+    LoginNotification,
   },
   data() {
     return {
-      currUser: [],
-      currUsername: "",
-      currPassword: "",
       success: false,
       successMessage: "",
       failedMessage: "",
       signedIn: false,
+      email: "",
+      password: "",
     };
   },
   async mounted() {
@@ -115,7 +115,7 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user.uid);
+        console.log(user.providerData);
         this.signedIn = true;
       } else {
         console.log("No user signed in");
@@ -124,31 +124,32 @@ export default {
   },
   methods: {
     login() {
-      this.successMessage = "";
-      this.failedMessage = "";
-      this.currUser = {};
-      this.currUser = this.users.filter(
-        (user) =>
-          user.username === this.currUsername &&
-          user.password === this.currPassword
-      );
-      if (this.currUser[0]) {
-        this.success = true;
-        this.successMessage = `Signed in as ${this.currUsername}!`;
-      } else {
-        this.failedMessage = `Incorrect username or password!`;
-      }
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          this.successMessage = "Logged in!";
+          console.log(user);
+        })
+        .catch((error) => {
+          this.failedMessage = "Failed to log in";
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+        });
     },
     googleSignIn() {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider)
         .then((result) => {
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
           const user = result.user;
-          console.log(token);
-          console.log(user);
+          if (user.providerData.length === 2)
+            /* const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          console.log(token); */
+            console.log(user.providerData);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -165,6 +166,7 @@ export default {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
+          this.signedIn = false;
           console.log("Signed out!");
         })
         .catch((error) => {

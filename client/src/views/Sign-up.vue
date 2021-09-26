@@ -151,6 +151,12 @@
 
 <script>
 import axios from "axios";
+import {
+  getAuth,
+  updatePassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
 import UsernameTakenWarning from "../components/usernameTakenWarning.vue";
 import IncorrectPasswordWarning from "../components/incorrectPasswordWarning.vue";
 export default {
@@ -175,9 +181,23 @@ export default {
     };
   },
   async mounted() {
-    // Load all users
     const response = await axios.get("api/userProfiles/");
     this.users = response.data;
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user.providerData);
+        signOut(auth)
+          .then(() => {
+            console.log("Signed out!");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        console.log("No user signed in");
+      }
+    });
   },
   methods: {
     async addUser() {
@@ -199,9 +219,19 @@ export default {
       // Create new user if username not found and passwords match
       else {
         this.correctPass = true;
+
+        const auth = getAuth();
+        const user = auth.currentUser;
+        updatePassword(user, this.password)
+          .then(() => {
+            console.log("Updated password");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
         const response = await axios.post("api/userProfiles/", {
           username: this.username,
-          password: this.password,
           firstName: this.firstName,
           lastName: this.lastName,
           birthDate: this.birthDate,
