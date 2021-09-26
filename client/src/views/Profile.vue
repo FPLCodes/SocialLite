@@ -19,6 +19,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Sign-out button -->
     <button class="button is-danger mt-3" @click="signOut">
       Sign out
     </button>
@@ -41,14 +43,17 @@ export default {
     };
   },
   async created() {
+    // Get users from MongoDB
     const response = await axios.get("api/userProfiles/");
     this.users = response.data;
 
+    // Check for logged in user & get user info
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user.providerData);
         this.users.forEach((userInDB) => {
+          // update info if userID from both database match
           if (userInDB.uid === user.providerData[0].uid) {
             this.username = userInDB.username;
             this.firstName = userInDB.firstName;
@@ -74,7 +79,7 @@ export default {
           this.gender = "";
           this.photoURL = "";
           console.log("Signed out!");
-          this.$router.push({ path: "/" });
+          this.$router.push({ path: "/" }); // Redirect to sign-in page
         })
         .catch((error) => {
           console.log(error);

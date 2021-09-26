@@ -11,6 +11,7 @@
           <router-view />
         </div>
 
+        <!-- Email input card -->
         <div class="card">
           <div class=" card-content">
             <div class="field">
@@ -26,6 +27,8 @@
                 </span>
               </p>
             </div>
+
+            <!-- Password input card -->
             <div class="field">
               <p class="control has-icons-left">
                 <input
@@ -40,6 +43,7 @@
               </p>
             </div>
 
+            <!-- Login button -->
             <div class="flex gap-2">
               <div class="field">
                 <p class="control">
@@ -53,6 +57,7 @@
                 </p>
               </div>
 
+              <!-- Google Sign-in button -->
               <div class="field">
                 <p class="control flex gap-2">
                   <button class="button is-success" @click="googleSignIn()">
@@ -71,6 +76,7 @@
           </div>
         </div>
 
+        <!-- Login fail/success notification -->
         <LoginNotification
           :success-message="successMessage"
           :failed-message="failedMessage"
@@ -82,6 +88,7 @@
 
 <script>
 import axios from "axios";
+
 import {
   getAuth,
   signInWithPopup,
@@ -90,7 +97,9 @@ import {
   signOut,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+
 import LoginNotification from "../components/loginFailWarning.vue";
+
 export default {
   name: "Sign-in",
   components: {
@@ -107,8 +116,11 @@ export default {
     };
   },
   async mounted() {
+    // Get users from MongoDB
     const response = await axios.get("api/userProfiles/");
     this.users = response.data;
+
+    // Check for logged in user & get user info
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -119,6 +131,7 @@ export default {
     });
   },
   methods: {
+    // Login with email & password function
     login() {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, this.email, this.password)
@@ -136,6 +149,8 @@ export default {
           console.log(errorMessage);
         });
     },
+
+    // Login with Google function
     googleSignIn() {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
@@ -157,6 +172,8 @@ export default {
           console.log(credential);
         });
     },
+
+    // Sign out function
     signOut() {
       const auth = getAuth();
       signOut(auth)

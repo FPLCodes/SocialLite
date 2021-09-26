@@ -151,6 +151,7 @@ import axios from "axios";
 import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
 import UsernameTakenWarning from "../components/usernameTakenWarning.vue";
 import IncorrectPasswordWarning from "../components/incorrectPasswordWarning.vue";
+
 export default {
   name: "Sign-up",
   components: {
@@ -173,8 +174,11 @@ export default {
     };
   },
   async mounted() {
+    // Get users from MongoDB
     const response = await axios.get("api/userProfiles/");
     this.users = response.data;
+
+    // Check for logged in user & get user info
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -186,11 +190,12 @@ export default {
   },
   methods: {
     async addUser() {
-      // Check for existing username and warn user if found
+      // Check for existing username
       let existingUser = [];
       this.users.forEach((user) => {
         if (user.username === this.username) existingUser.push(user);
       });
+      // Warn user if found existing username
       if (existingUser[0]) {
         this.userExists = "This username is already taken";
         this.usernameError = true;
@@ -199,12 +204,12 @@ export default {
         this.userExists = "";
         this.usernameError = false;
       }
-      // Check if password and confirm password matches
+      // Check if password and confirm password inputs match
       if (this.password !== this.confirmPass) this.correctPass = false;
-      // Create new user if username not found and passwords match
+      // Create new user
       else {
         this.correctPass = true;
-
+        // Update password in firebase
         const auth = getAuth();
         const user = auth.currentUser;
         updatePassword(user, this.password)
@@ -216,6 +221,7 @@ export default {
             console.log(error);
           });
 
+        // Create user in MongoDB database
         const response = await axios.post("api/userProfiles/", {
           username: this.username,
           firstName: this.firstName,
@@ -225,6 +231,8 @@ export default {
           photoURL: user.providerData[0].photoURL,
           uid: user.providerData[0].uid,
         });
+
+        // Reset inputs
         this.users.push(response.data);
         this.username = "";
         this.password = "";
@@ -233,7 +241,7 @@ export default {
         this.lastName = "";
         this.birthDate = "";
         this.gender = "";
-        this.$router.push("profile");
+        this.$router.push("profile"); // Redirect to profile
       }
     },
   },
