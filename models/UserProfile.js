@@ -20,6 +20,14 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  photoURL: {
+    type: String,
+    required: true,
+  },
+  uid: {
+    type: String,
+    required: true,
+  },
 });
 
 const UserProfile = model("userProfile", UserSchema);

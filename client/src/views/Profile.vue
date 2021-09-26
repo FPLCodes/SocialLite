@@ -1,18 +1,85 @@
 <template>
-  <h1>Profile</h1>
+  <div class="container mx-auto w-2/5">
+    <div class="card mt-10">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-64x64">
+              <img :src="photoURL" alt="Placeholder image" class="is-rounded" />
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-4">{{ firstName }} {{ lastName }}</p>
+            <p class="subtitle is-6">{{ username }}</p>
+          </div>
+        </div>
+
+        <div class="content">
+          Sample bio
+        </div>
+      </div>
+    </div>
+    <button class="button is-danger mt-3" @click="signOut">
+      Sign out
+    </button>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 export default {
   name: "Profile",
   data() {
-    return {};
+    return {
+      username: "",
+      firstName: "",
+      lastName: "",
+      birthDate: "",
+      gender: "",
+      photoURL: "",
+    };
   },
-  async mounted() {
-    // Load all users
+  async created() {
     const response = await axios.get("api/userProfiles/");
     this.users = response.data;
+
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user.providerData);
+        this.users.forEach((userInDB) => {
+          if (userInDB.uid === user.providerData[0].uid) {
+            this.username = userInDB.username;
+            this.firstName = userInDB.firstName;
+            if (userInDB.lastName) this.lastName = userInDB.lastName;
+            this.birthDate = userInDB.birthDate;
+            this.gender = userInDB.gender;
+            this.photoURL = userInDB.photoURL;
+          }
+        });
+      } else {
+        console.log("No user signed in");
+      }
+    });
+  },
+  methods: {
+    signOut() {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          this.username = "";
+          this.firstName = "";
+          this.lastName = "";
+          this.gender = "";
+          this.photoURL = "";
+          console.log("Signed out!");
+          this.$router.push({ path: "/" });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>

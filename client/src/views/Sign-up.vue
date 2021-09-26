@@ -5,9 +5,6 @@
         <!-- Sign-up & Sign-in tabs -->
         <div class="tabs is-medium">
           <ul>
-            <li>
-              <router-link to="/">Sign In</router-link>
-            </li>
             <li class="is-active">
               <router-link to="/sign-up">Sign up</router-link>
             </li>
@@ -116,15 +113,15 @@
             <h1 class="font-semibold">Gender:</h1>
             <div class="control mb-3">
               <label class="radio">
-                <input type="radio" value="male" v-model="gender" />
+                <input type="radio" value="Male" v-model="gender" />
                 Male
               </label>
               <label class="radio">
-                <input type="radio" value="female" v-model="gender" />
+                <input type="radio" value="Female" v-model="gender" />
                 Female
               </label>
               <label class="radio">
-                <input type="radio" value="others" v-model="gender" />
+                <input type="radio" value="Others" v-model="gender" />
                 Others
               </label>
             </div>
@@ -151,12 +148,7 @@
 
 <script>
 import axios from "axios";
-import {
-  getAuth,
-  updatePassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
 import UsernameTakenWarning from "../components/usernameTakenWarning.vue";
 import IncorrectPasswordWarning from "../components/incorrectPasswordWarning.vue";
 export default {
@@ -187,13 +179,6 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user.providerData);
-        signOut(auth)
-          .then(() => {
-            console.log("Signed out!");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       } else {
         console.log("No user signed in");
       }
@@ -224,6 +209,7 @@ export default {
         const user = auth.currentUser;
         updatePassword(user, this.password)
           .then(() => {
+            console.log(user.providerData[0].uid);
             console.log("Updated password");
           })
           .catch((error) => {
@@ -235,13 +221,19 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           birthDate: this.birthDate,
+          gender: this.gender,
+          photoURL: user.providerData[0].photoURL,
+          uid: user.providerData[0].uid,
         });
         this.users.push(response.data);
         this.username = "";
         this.password = "";
+        this.confirmPass = "";
         this.firstName = "";
         this.lastName = "";
         this.birthDate = "";
+        this.gender = "";
+        this.$router.push("profile");
       }
     },
   },

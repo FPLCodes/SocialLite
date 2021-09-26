@@ -7,9 +7,6 @@
             <li class="is-active">
               <router-link to="/">Sign In</router-link>
             </li>
-            <li>
-              <router-link to="/sign-up">Sign up</router-link>
-            </li>
           </ul>
           <router-view />
         </div>
@@ -116,7 +113,6 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user.providerData);
-        this.signedIn = true;
       } else {
         console.log("No user signed in");
       }
@@ -128,8 +124,9 @@ export default {
       signInWithEmailAndPassword(auth, this.email, this.password)
         .then((userCredential) => {
           const user = userCredential.user;
-          this.successMessage = "Logged in!";
           console.log(user);
+          this.successMessage = "Logged in!";
+          this.$router.push("profile");
         })
         .catch((error) => {
           this.failedMessage = "Failed to log in";
@@ -145,11 +142,9 @@ export default {
       signInWithPopup(auth, provider)
         .then((result) => {
           const user = result.user;
-          if (user.providerData.length === 2)
-            /* const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          console.log(token); */
-            console.log(user.providerData);
+          if (user.providerData.length === 2) this.$router.push("profile");
+          else this.$router.push("sign-up");
+          console.log(user.providerData);
         })
         .catch((error) => {
           const errorCode = error.code;
