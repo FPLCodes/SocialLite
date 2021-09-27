@@ -17,8 +17,8 @@ const routes = [
     meta: { transition: "slide-right" },
   },
   {
-    path: "/profile",
-    name: "profile",
+    path: "/profile/:id",
+    name: "Profile",
     component: Profile,
     meta: { transition: "slide-right" },
   },

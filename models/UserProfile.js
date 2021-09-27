@@ -28,6 +28,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+  },
 });
 
 const UserProfile = model("userProfile", UserSchema);

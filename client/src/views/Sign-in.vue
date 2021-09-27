@@ -137,9 +137,12 @@ export default {
       signInWithEmailAndPassword(auth, this.email, this.password)
         .then((userCredential) => {
           const user = userCredential.user;
+          const userID = user.providerData[0].uid;
           console.log(user);
           this.successMessage = "Logged in!";
-          this.$router.push("profile");
+          this.$router.push({
+            path: `/profile/${userID}`,
+          });
         })
         .catch((error) => {
           this.failedMessage = "Failed to log in";
@@ -157,7 +160,11 @@ export default {
       signInWithPopup(auth, provider)
         .then((result) => {
           const user = result.user;
-          if (user.providerData.length === 2) this.$router.push("profile");
+          const userID = user.providerData[0].uid;
+          if (user.providerData.length === 2)
+            this.$router.push({
+              path: `/profile/${userID}`,
+            });
           else this.$router.push("sign-up");
           console.log(user.providerData);
         })

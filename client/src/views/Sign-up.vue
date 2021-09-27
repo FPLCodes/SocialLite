@@ -230,6 +230,7 @@ export default {
           gender: this.gender,
           photoURL: user.providerData[0].photoURL,
           uid: user.providerData[0].uid,
+          description: "Sample bio",
         });
 
         // Reset inputs
@@ -241,7 +242,11 @@ export default {
         this.lastName = "";
         this.birthDate = "";
         this.gender = "";
-        this.$router.push("profile"); // Redirect to profile
+        // Redirect to profile
+        const userID = user.providerData[0].uid;
+        this.$router.push({
+          path: `/profile/${userID}`,
+        });
       }
     },
   },
