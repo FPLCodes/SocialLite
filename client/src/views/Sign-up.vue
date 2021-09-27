@@ -40,7 +40,9 @@
                   class="input"
                   type="password"
                   placeholder="Password"
+                  minlength="6"
                   v-model="password"
+                  v-bind:class="{ 'border-red-300': !correctPass }"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
@@ -55,7 +57,9 @@
                   class="input"
                   type="password"
                   placeholder="Confirm password"
+                  minlength="6"
                   v-model="confirmPass"
+                  v-bind:class="{ 'border-red-300': !correctPass }"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
@@ -63,7 +67,14 @@
               </p>
             </div>
 
-            <IncorrectPasswordWarning :message-status="!correctPass" />
+            <incorrectField
+              :message-status="!correctPass"
+              :message="'Passwords do not match'"
+            />
+            <incorrectField
+              :message-status="shortPass"
+              :message="'Password has to be at least 6 characters long'"
+            />
 
             <!-- First name input card -->
             <div class="field">
@@ -133,7 +144,14 @@
                 <button
                   class="button is-success"
                   @click="addUser()"
-                  :disabled="!password || !username"
+                  :disabled="
+                    !password ||
+                      !username ||
+                      !confirmPass ||
+                      !firstName ||
+                      !birthDate ||
+                      !gender
+                  "
                 >
                   Submit
                 </button>
@@ -150,13 +168,13 @@
 import axios from "axios";
 import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
 import UsernameTakenWarning from "../components/usernameTakenWarning.vue";
-import IncorrectPasswordWarning from "../components/incorrectPasswordWarning.vue";
+import incorrectField from "../components/incorrectField.vue";
 
 export default {
   name: "Sign-up",
   components: {
     UsernameTakenWarning,
-    IncorrectPasswordWarning,
+    incorrectField,
   },
   data() {
     return {
@@ -167,6 +185,7 @@ export default {
       password: "",
       confirmPass: "",
       correctPass: true,
+      shortPass: false,
       firstName: "",
       lastName: "",
       birthDate: "",
@@ -199,54 +218,63 @@ export default {
       if (existingUser[0]) {
         this.userExists = "This username is already taken";
         this.usernameError = true;
-      }
-      if (!existingUser[0]) {
+      } else {
         this.userExists = "";
         this.usernameError = false;
       }
       // Check if password and confirm password inputs match
       if (this.password !== this.confirmPass) this.correctPass = false;
-      // Create new user
-      else {
-        this.correctPass = true;
+      else this.correctPass = true;
+
+      if (this.password.length <= 5) this.shortPass = true;
+      else this.shortPass = false;
+
+      // Create new user if all conditions met
+      if (
+        !this.usernameError &&
+        this.correctPass &&
+        !this.firstNameMissing &&
+        !this.shortPass
+      ) {
         // Update password in firebase
         const auth = getAuth();
         const user = auth.currentUser;
         updatePassword(user, this.password)
-          .then(() => {
+          .then(async () => {
             console.log(user.providerData[0].uid);
             console.log("Updated password");
+
+            // Create user in MongoDB database
+            const response = await axios.post("api/userProfiles/", {
+              username: this.username,
+              firstName: this.firstName,
+              lastName: this.lastName,
+              birthDate: this.birthDate,
+              gender: this.gender,
+              photoURL: user.providerData[0].photoURL,
+              uid: user.providerData[0].uid,
+              description: "Sample bio",
+            });
+
+            // Reset inputs
+            this.users.push(response.data);
+            this.username = "";
+            this.password = "";
+            this.confirmPass = "";
+            this.firstName = "";
+            this.lastName = "";
+            this.birthDate = "";
+            this.gender = "";
+
+            // Redirect to profile
+            const userID = user.providerData[0].uid;
+            this.$router.push({
+              path: `/profile/${userID}`,
+            });
           })
           .catch((error) => {
             console.log(error);
           });
-
-        // Create user in MongoDB database
-        const response = await axios.post("api/userProfiles/", {
-          username: this.username,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          birthDate: this.birthDate,
-          gender: this.gender,
-          photoURL: user.providerData[0].photoURL,
-          uid: user.providerData[0].uid,
-          description: "Sample bio",
-        });
-
-        // Reset inputs
-        this.users.push(response.data);
-        this.username = "";
-        this.password = "";
-        this.confirmPass = "";
-        this.firstName = "";
-        this.lastName = "";
-        this.birthDate = "";
-        this.gender = "";
-        // Redirect to profile
-        const userID = user.providerData[0].uid;
-        this.$router.push({
-          path: `/profile/${userID}`,
-        });
       }
     },
   },

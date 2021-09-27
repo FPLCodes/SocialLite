@@ -6,7 +6,7 @@
     >
       <i class="fas fa-exclamation-triangle -ml-3 mr-2 md:-mt-2"></i>
       <p class="-mt-2 text-sm sm:-mt-3 sm:text-base">
-        Password does not match
+        {{ message }}
       </p>
     </div>
   </transition>
@@ -14,9 +14,10 @@
 
 <script>
 export default {
-  name: "incorrectPasswordWarning",
+  name: "incorrectField",
   props: {
     messageStatus: Boolean,
+    message: String,
   },
 };
 </script>

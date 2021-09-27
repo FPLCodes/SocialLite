@@ -72,7 +72,7 @@ export default {
       selected: false,
     };
   },
-  async created() {
+  async mounted() {
     // Get users from MongoDB
     const response = await axios.get("../api/userProfiles/");
     this.users = response.data;

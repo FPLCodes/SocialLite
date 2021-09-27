@@ -23,7 +23,7 @@
                   v-model="email"
                 />
                 <span class="icon is-small is-left">
-                  <i class="fas fa-user"></i>
+                  <i class="fas fa-envelope"></i>
                 </span>
               </p>
             </div>
