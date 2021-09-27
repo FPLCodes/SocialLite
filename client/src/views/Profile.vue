@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto w-2/6 pt-10">
+  <div class="container mx-auto w-3/4 pt-10 sm:w-2/3 md:w-2/4 xl:w-2/6">
     <div class="card">
       <div class="card-content">
         <div class="media">
@@ -13,43 +13,71 @@
             </figure>
           </div>
           <div class="media-content mt-1">
-            <p class="title is-4">{{ firstName }} {{ lastName }}</p>
-            <p class="subtitle is-6">{{ username }}</p>
+            <div class="flex gap-2">
+              <p class="title is-4" v-if="!selected">{{ firstName }}</p>
+              <input
+                type="text"
+                class="border-2"
+                v-if="selected"
+                v-model="editedFirstName"
+              />
+              <p class="title is-4" v-if="!selected">{{ lastName }}</p>
+              <input
+                type="text"
+                class="border-2"
+                v-if="selected"
+                v-model="editedLastName"
+              />
+            </div>
+            <p class="subtitle is-6 -mt-5" v-if="!selected">@{{ username }}</p>
           </div>
         </div>
 
-        <div class="content flex items-center border-2 rounded-md pr-2 h-10">
+        <div class="content flex items-center pr-2 h-20">
           <div
             v-if="!selected"
-            class="border-1 rounded-md w-full h-10 px-2 mt-4"
+            class="border-1 rounded-md w-11/12 h-20 px-2 mt-4"
           >
             {{ description }}
           </div>
-          <input
+          <textarea
             type="text"
-            class="border-2 rounded-md w-full h-10 px-2"
-            maxlength="30"
+            class="border-2 rounded-md w-full h-20 px-2 pt-1 outline-none"
+            maxlength="100"
             v-if="selected"
             v-model="editedDesc"
           />
-          <i
-            class="far fa-edit ml-2 mb-1 cursor-pointer"
-            v-if="!selected"
-            @click="select"
-          ></i>
-          <i
-            class="fas fa-check ml-2 mb-1 cursor-pointer"
-            v-if="selected"
-            @click="changeDesc"
-          ></i>
         </div>
       </div>
     </div>
 
-    <!-- Sign-out button -->
-    <button class="button is-danger mt-3 shadow-md" @click="signOut">
-      Sign out
-    </button>
+    <div class="flex items-center justify-between gap-3 mx-1">
+      <div
+        class="flex gap-2 items-center w-36 mt-2 pl-2 border-2 rounded shadow-sm h-10"
+      >
+        <div class="text-md mt-px">Edit Profile</div>
+        <i
+          class="far fa-edit cursor-pointer ml-3"
+          v-if="!selected"
+          @click="select"
+        ></i>
+        <i
+          class="fas fa-check cursor-pointer"
+          v-if="selected"
+          @click="updateProfileInfo"
+        ></i>
+        <i
+          class="far fa-times-circle cursor-pointer"
+          v-if="selected"
+          @click="unselect"
+        ></i>
+      </div>
+
+      <!-- Sign-out button -->
+      <button class="button is-danger mt-3 shadow" @click="signOut">
+        Sign out
+      </button>
+    </div>
   </div>
 </template>
 
@@ -63,7 +91,9 @@ export default {
       currUser: [],
       username: "",
       firstName: "",
+      editedFirstName: "",
       lastName: "",
+      editedLastName: "",
       birthDate: "",
       gender: "",
       photoURL: "",
@@ -97,6 +127,7 @@ export default {
             this.gender = userInDB.gender;
             this.photoURL = userInDB.photoURL;
             this.description = userInDB.description;
+            if (this.description === "") this.description = "Add a bio";
           }
         });
       } else {
@@ -109,22 +140,33 @@ export default {
     select() {
       this.selected = true;
       this.editedDesc = this.description;
+      this.editedFirstName = this.firstName;
+      this.editedLastName = this.lastName;
     },
     // Finish editing bio
     unselect() {
       this.selected = false;
       this.editedDesc = "";
+      this.editedFirstName = "";
+      this.editedLastName = "";
     },
     // Update bio
-    async changeDesc() {
+    async updateProfileInfo() {
+      if (!this.editedFirstName) this.editedFirstName = this.firstName;
+      if (!this.editedLastName) this.editedLastName = this.lastName;
       const response = await axios.put(
         "../api/userProfiles/" + this.currUser[0]._id,
         {
+          firstName: this.editedFirstName,
+          lastName: this.editedLastName,
           description: this.editedDesc,
         }
       );
       this.currUser[0] = response.data;
       this.description = this.currUser[0].description;
+      this.firstName = this.currUser[0].firstName;
+      this.lastName = this.currUser[0].lastName;
+      if (this.description === "") this.description = "Add a bio";
       this.unselect();
     },
     signOut() {
@@ -147,4 +189,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+div {
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+</style>

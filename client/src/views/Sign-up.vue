@@ -210,10 +210,13 @@ export default {
   methods: {
     async addUser() {
       // Check for existing username
-      let existingUser = [];
+      /* let existingUser = [];
       this.users.forEach((user) => {
         if (user.username === this.username) existingUser.push(user);
-      });
+      }); */
+      const existingUser = this.users.filter(
+        (user) => user.username === this.user
+      );
       // Warn user if found existing username
       if (existingUser[0]) {
         this.userExists = "This username is already taken";
