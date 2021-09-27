@@ -11,9 +11,9 @@
           <router-view />
         </div>
 
-        <!-- Email input card -->
         <div class="card">
           <div class=" card-content">
+            <!-- Email input card -->
             <div class="field">
               <p class="control has-icons-left has-icons-right">
                 <input
@@ -150,6 +150,11 @@ export default {
           const errorMessage = error.message;
           console.log(errorCode);
           console.log(errorMessage);
+          if (errorCode === "auth/wrong-password")
+            this.failedMessage = "Incorrect password";
+          if (errorCode === "auth/too-many-requests")
+            this.failedMessage =
+              "Too many failed login attemps. Try again later";
         });
     },
 

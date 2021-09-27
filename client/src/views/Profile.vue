@@ -17,18 +17,18 @@
               <p class="title is-4" v-if="!selected">{{ firstName }}</p>
               <input
                 type="text"
-                class="border-2"
+                class="border-2 rounded w-40 sm:w-60 xl:w-72"
                 v-if="selected"
                 v-model="editedFirstName"
               />
               <p class="title is-4" v-if="!selected">{{ lastName }}</p>
-              <input
-                type="text"
-                class="border-2"
-                v-if="selected"
-                v-model="editedLastName"
-              />
             </div>
+            <input
+              type="text"
+              class="mt-2 border-2 rounded w-40 sm:w-60 xl:w-72"
+              v-if="selected"
+              v-model="editedLastName"
+            />
             <p class="subtitle is-6 -mt-5" v-if="!selected">@{{ username }}</p>
           </div>
         </div>
@@ -51,13 +51,13 @@
       </div>
     </div>
 
-    <div class="flex items-center justify-between gap-3 mx-1">
+    <div class="flex items-center justify-between gap-3">
       <div
-        class="flex gap-2 items-center w-36 mt-2 pl-2 border-2 rounded shadow-sm h-10"
+        class="flex gap-2 items-center w-36 mt-2 pl-2 border-2 rounded shadow-sm h-10 bg-white"
       >
         <div class="text-md mt-px">Edit Profile</div>
         <i
-          class="far fa-edit cursor-pointer ml-3"
+          class="far fa-edit cursor-pointer ml-3 -mt-px mb-px"
           v-if="!selected"
           @click="select"
         ></i>

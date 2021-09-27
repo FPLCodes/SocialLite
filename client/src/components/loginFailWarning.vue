@@ -13,7 +13,7 @@
       <div class="card bg-red-400 mt-3 h-10" v-if="failedMessage">
         <div class="card-content grid grid-cols-2">
           <div class="content font-semibold pt-1 -mt-5">
-            {{ failedMessage }}
+            <i class="fas fa-exclamation-circle mr-2"></i>{{ failedMessage }}
           </div>
         </div>
       </div>
