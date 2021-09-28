@@ -128,14 +128,7 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const auth = getAuth();
-        signOut(auth)
-          .then(() => {
-            console.log("Signed out!");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        console.log(user.providerData);
       } else {
         console.log("No user signed in");
       }

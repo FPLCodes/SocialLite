@@ -53,24 +53,18 @@
 
     <div class="flex items-center justify-between gap-3">
       <div
-        class="flex gap-2 items-center w-36 mt-2 pl-2 border-2 rounded shadow-sm h-10 bg-white"
+        class="flex gap-2 items-center mt-2 px-4 py-3 rounded shadow-sm h-10 bg-blue-500 text-white"
       >
-        <div class="text-md mt-px">Edit Profile</div>
-        <i
-          class="far fa-edit cursor-pointer ml-3 -mt-px mb-px"
-          v-if="!selected"
-          @click="select"
-        ></i>
-        <i
-          class="fas fa-check cursor-pointer"
+        <button class="text-md mt-px" v-if="!selected" @click="select">
+          Edit profile
+        </button>
+        <button
+          class="text-md mt-px"
           v-if="selected"
           @click="updateProfileInfo"
-        ></i>
-        <i
-          class="far fa-times-circle cursor-pointer"
-          v-if="selected"
-          @click="unselect"
-        ></i>
+        >
+          Save profile
+        </button>
       </div>
 
       <!-- Sign-out button -->
