@@ -166,7 +166,12 @@
 
 <script>
 import axios from "axios";
-import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
+import {
+  getAuth,
+  updatePassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
 import UsernameTakenWarning from "../components/usernameTakenWarning.vue";
 import incorrectField from "../components/incorrectField.vue";
 
@@ -201,7 +206,18 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user.providerData);
+        // Sign out any user who already has an account
+        if (user.providerData.length === 2) {
+          const auth = getAuth();
+          signOut(auth)
+            .then(() => {
+              console.log("Signed out!");
+              this.$router.push({ path: "/" }); // Redirect to sign-in page
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       } else {
         console.log("No user signed in");
       }
@@ -209,11 +225,6 @@ export default {
   },
   methods: {
     async addUser() {
-      // Check for existing username
-      /* let existingUser = [];
-      this.users.forEach((user) => {
-        if (user.username === this.username) existingUser.push(user);
-      }); */
       const existingUser = this.users.filter(
         (user) => user.username === this.user
       );
