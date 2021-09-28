@@ -60,7 +60,11 @@
               <!-- Google Sign-in button -->
               <div class="field">
                 <p class="control flex gap-2">
-                  <button class="button is-success" @click="googleSignIn()">
+                  <button
+                    class="button bg-blue-500 text-white"
+                    @click="googleSignIn()"
+                  >
+                    <i class="fab fa-google mr-3"></i>
                     Sign in with Google
                   </button>
                   <button
@@ -124,7 +128,14 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user.providerData);
+        const auth = getAuth();
+        signOut(auth)
+          .then(() => {
+            console.log("Signed out!");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
         console.log("No user signed in");
       }
@@ -141,20 +152,45 @@ export default {
           console.log(user);
           this.successMessage = "Logged in!";
           this.$router.push({
-            path: `/profile/${userID}`,
+            path: `/profile/${userID}`, // Redirect to user profile
           });
         })
         .catch((error) => {
-          this.failedMessage = "Failed to log in";
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode);
           console.log(errorMessage);
-          if (errorCode === "auth/wrong-password")
+
+          // Incorrect email
+          if (errorCode === "auth/invalid-email") {
+            this.failedMessage = "Invalid email";
+            setTimeout(() => {
+              this.failedMessage = "";
+            }, 5000);
+          }
+
+          // Incorrect password
+          else if (errorCode === "auth/wrong-password") {
             this.failedMessage = "Incorrect password";
-          if (errorCode === "auth/too-many-requests")
+            setTimeout(() => {
+              this.failedMessage = "";
+            }, 5000);
+
+            // Too many incorrect attempts
+          } else if (errorCode === "auth/too-many-requests") {
             this.failedMessage =
-              "Too many failed login attemps. Try again later";
+              "Too many failed login attempts. Please try again later";
+            setTimeout(() => {
+              this.failedMessage = "";
+            }, 5000);
+          }
+          // Unknown error
+          else {
+            this.failedMessage = "There was an error trying to log in";
+            setTimeout(() => {
+              this.failedMessage = "";
+            }, 5000);
+          }
         });
     },
 
@@ -182,10 +218,14 @@ export default {
           console.log(errorMessage);
           console.log(email);
           console.log(credential);
+          this.failedMessage = "Failed to sign in";
+          setTimeout(() => {
+            this.failedMessage = "";
+          }, 5000);
         });
     },
 
-    // Sign out function
+    // Sign out user
     signOut() {
       const auth = getAuth();
       signOut(auth)
