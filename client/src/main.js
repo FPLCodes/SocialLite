@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./assets/tailwind.css";
 import router from "./router";
-import firebase from "firebase/compat/app";
+import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAz0UIhALssPcxQz9ulmiMayGQTisREC4w",
@@ -14,7 +14,7 @@ const firebaseConfig = {
   measurementId: "G-YCSW4FR6QW",
 };
 
-firebase.initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 createApp(App)
   .use(router)

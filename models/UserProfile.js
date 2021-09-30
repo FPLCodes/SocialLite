@@ -31,6 +31,9 @@ const UserSchema = new Schema({
   description: {
     type: String,
   },
+  friendRequests: {
+    type: Array,
+  },
 });
 
 const UserProfile = model("userProfile", UserSchema);

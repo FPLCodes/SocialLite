@@ -2,25 +2,30 @@ import { createRouter, createWebHistory } from "vue-router";
 import SignUp from "../views/Sign-up.vue";
 import SignIn from "../views/Sign-in.vue";
 import Profile from "../views/Profile.vue";
+import ProfileVisit from "../views/ProfileVisit.vue";
 
 const routes = [
   {
     path: "/",
     name: "Sign-in",
     component: SignIn,
-    meta: { transition: "slide-left" },
   },
   {
     path: "/sign-up",
     name: "Sign-up",
     component: SignUp,
-    meta: { transition: "slide-right" },
   },
   {
     path: "/profile/:id",
     name: "Profile",
     component: Profile,
-    meta: { transition: "slide-right" },
+    meta: { transitionName: "slide" },
+  },
+  {
+    path: "/profileVisit/:id",
+    name: "ProfileVisit",
+    component: ProfileVisit,
+    meta: { transitionName: "slide" },
   },
 ];
 

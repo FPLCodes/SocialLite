@@ -6,6 +6,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const UserProfileRoutes = require("./routes/api/userProfiles");
+const ChatMessageRoutes = require("./routes/api/chatMessages");
 
 app.use(cors());
 app.use(morgan("tiny"));
@@ -20,7 +21,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/userProfiles", UserProfileRoutes);
-app.get("/", (req, res) => res.send("Working"));
+app.use("/api/chatMessages", ChatMessageRoutes);
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)

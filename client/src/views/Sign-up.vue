@@ -269,9 +269,9 @@ export default {
               uid: user.providerData[0].uid,
               description: "Sample bio",
             });
+            this.users.push(response.data);
 
             // Reset inputs
-            this.users.push(response.data);
             this.username = "";
             this.password = "";
             this.confirmPass = "";

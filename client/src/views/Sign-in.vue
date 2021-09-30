@@ -61,7 +61,7 @@
               <div class="field">
                 <p class="control flex gap-2">
                   <button
-                    class="button bg-blue-500 text-white"
+                    class="button bg-blue-500 text-white hover:text-white"
                     @click="googleSignIn()"
                   >
                     <i class="fab fa-google mr-3"></i>
