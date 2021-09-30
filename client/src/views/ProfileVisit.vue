@@ -62,44 +62,19 @@
       </div>
     </div>
 
-    <!-- Search Card -->
-    <div class="w-2/4 justify-self-start ml-5">
-      <div class="card">
-        <div class="field has-addons flex">
-          <div class="control w-full">
-            <input
-              class="input"
-              type="text"
-              placeholder="Find users"
-              v-model="search"
-            />
-          </div>
-          <div class="control">
-            <button class="button is-info">
-              <i class="fas fa-search pr-2"></i>
-            </button>
-          </div>
-        </div>
-        <li
-          class="flex items-center mb-1 p-1 cursor-pointer hover:bg-gray-50"
-          v-for="user in searchedUsers"
-          :key="user.username"
-        >
-          <figure class="image is-32x32 mr-2">
-            <img :src="user.photoURL" alt="pf" class="is-rounded" />
-          </figure>
-          <a @click="goToUser(user)">{{ user.username }}</a>
-        </li>
-      </div>
-    </div>
+    <SearchBox />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import SearchBox from "../components/searchBox.vue";
 export default {
   name: "ProfileVisit",
+  components: {
+    SearchBox,
+  },
   data() {
     return {
       users: [],

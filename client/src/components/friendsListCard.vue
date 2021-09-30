@@ -4,15 +4,21 @@
       <header class="card-header w-full">
         <div class="tabs is-toggle is-fullwidth w-full">
           <ul>
-            <li>
+            <li
+              v-bind:class="{ 'is-active': showList }"
+              @click="showList = true"
+            >
               <a>
                 <span class="icon is-small"
                   ><i class="fas fa-user-friends"></i
                 ></span>
-                <span>Friends</span>
+                <span>Friends ({{ friendsList.length }})</span>
               </a>
             </li>
-            <li class="is-active">
+            <li
+              v-bind:class="{ 'is-active': !showList }"
+              @click="showList = false"
+            >
               <a>
                 <span class="icon is-small"
                   ><i class="fas fa-user-plus"></i
@@ -23,7 +29,21 @@
           </ul>
         </div>
       </header>
-      <div class="border-2">
+      <div class="border-2 -mt-px" v-if="showList">
+        <li
+          v-for="user in friendsList"
+          :key="user.username"
+          class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 bg-gray-50 hover:bg-gray-100"
+        >
+          <div class="flex items-center">
+            <figure class="image is-32x32">
+              <img :src="user.pic" alt="pf" class="is-rounded" />
+            </figure>
+            <a class="justify-self-start ml-2">{{ user.username }}</a>
+          </div>
+        </li>
+      </div>
+      <div class="border-2 -mt-px" v-if="!showList && friendReqs">
         <li
           v-for="request in friendReqs"
           :key="request.username"
@@ -38,11 +58,14 @@
           <div class="flex justify-self-end">
             <button
               class="button is-success h-8 w-5 mr-1"
-              @click="acceptFriend"
+              @click="acceptFriend(request.uid)"
             >
               <i class="fas fa-check"></i>
             </button>
-            <button class="button is-danger h-8 w-5" @click="denyFriend">
+            <button
+              class="button is-danger h-8 w-5"
+              @click="removeReq(request.uid)"
+            >
               <i class="fas fa-times"></i>
             </button>
           </div>
@@ -60,8 +83,10 @@ export default {
   data() {
     return {
       users: [],
-      currUser: [],
+      currUser: {},
       friendReqs: [],
+      friendsList: [],
+      showList: true,
     };
   },
   async mounted() {
@@ -80,7 +105,7 @@ export default {
             userInDB.uid === this.$route.params.id &&
             userInDB.uid === user.providerData[0].uid
           ) {
-            this.currUser.push(userInDB);
+            this.currUser = userInDB;
             this.username = userInDB.username;
             this.firstName = userInDB.firstName;
             if (userInDB.lastName) this.lastName = userInDB.lastName;
@@ -90,30 +115,96 @@ export default {
             this.description = userInDB.description;
             if (this.description === "") this.description = "Add a bio";
             this.friendReqs = userInDB.friendRequests;
+            this.friendsList = userInDB.friendsList;
+            this.userID = userInDB.uid;
+            this.loggedInUser = user.providerData[0];
           }
         });
-        this.friendReqs.forEach((request, i) => {
-          this.users.forEach((userInDB) => {
-            if (request === userInDB.uid) {
-              this.friendReqs[i] = {
-                username: userInDB.username,
-                pic: userInDB.photoURL,
-                uid: userInDB.uid,
-              };
-            }
-          });
-        });
+        this.loadFriendReq();
+        this.loadFriendsList();
       } else {
         console.log("No user signed in");
       }
+      console.log(this.currUser);
     });
   },
   methods: {
-    acceptFriend() {
-      console.log("Accepted!");
+    loadFriendReq() {
+      this.friendReqs.forEach((request, i) => {
+        this.users.forEach((userInDB) => {
+          if (request === userInDB.uid) {
+            this.friendReqs[i] = {
+              username: userInDB.username,
+              pic: userInDB.photoURL,
+              uid: userInDB.uid,
+            };
+          }
+        });
+      });
     },
-    denyFriend() {
-      console.log("Denied");
+    loadFriendsList() {
+      this.friendsList.forEach((user, i) => {
+        this.users.forEach((userInDB) => {
+          if (user === userInDB.uid) {
+            this.friendsList[i] = {
+              username: userInDB.username,
+              pic: userInDB.photoURL,
+              uid: userInDB.uid,
+            };
+          }
+        });
+      });
+    },
+    acceptFriend(id) {
+      let updatedFriendsList = [];
+      if (this.currUser.friendsList[0])
+        updatedFriendsList = this.currUser.friendsList;
+      updatedFriendsList.push(id);
+      this.users.forEach(async (userInDB) => {
+        if (userInDB.uid === this.loggedInUser.uid) {
+          try {
+            const response = await axios.put(
+              "../api/userProfiles/" + this.currUser._id,
+              {
+                friendsList: updatedFriendsList,
+              }
+            );
+            this.currUser = response.data;
+            this.friendReqs = this.currUser.friendRequests;
+            this.friendsList = this.currUser.friendsList;
+            this.loadFriendReq();
+            this.loadFriendsList();
+            this.removeReq(id);
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      });
+    },
+    removeReq(id) {
+      let updatedFriendReq = [];
+      updatedFriendReq = this.currUser.friendRequests.filter(
+        (user) => user.uid !== id
+      );
+      this.users.forEach(async (userInDB) => {
+        if (userInDB.uid === this.loggedInUser.uid) {
+          try {
+            const response = await axios.put(
+              "../api/userProfiles/" + this.currUser._id,
+              {
+                friendRequests: updatedFriendReq,
+              }
+            );
+            this.currUser = response.data;
+            this.friendReqs = this.currUser.friendRequests;
+            this.friendsList = this.currUser.friendsList;
+            this.loadFriendReq();
+            this.loadFriendsList();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      });
     },
   },
 };
