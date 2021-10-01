@@ -6,23 +6,19 @@
 
     <SearchBox />
 
-    <ChatBox />
-
-    <FriendsListCard />
+    <FriendsListCard class="col-span-2" />
   </div>
 </template>
 
 <script>
 import SearchBox from "../components/searchBox.vue";
 import ProfileCard from "../components/profileCard.vue";
-import ChatBox from "../components/chatBox.vue";
 import FriendsListCard from "../components/friendsListCard.vue";
 export default {
   name: "Profile",
   components: {
     SearchBox,
     ProfileCard,
-    ChatBox,
     FriendsListCard,
   },
 };

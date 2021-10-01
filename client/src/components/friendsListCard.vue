@@ -1,75 +1,102 @@
 <template>
-  <div class="w-2/4 justify-self-start ml-5 mt-3">
-    <div class="card">
-      <header class="card-header w-full">
-        <div class="tabs is-toggle is-fullwidth w-full">
-          <ul>
-            <li
-              v-bind:class="{ 'is-active': showList }"
-              @click="showList = true"
-            >
-              <a>
-                <span class="icon is-small"
-                  ><i class="fas fa-user-friends"></i
-                ></span>
-                <span>Friends ({{ friendsList.length }})</span>
-              </a>
-            </li>
-            <li
-              v-bind:class="{ 'is-active': !showList }"
-              @click="showList = false"
-            >
-              <a>
-                <span class="icon is-small"
-                  ><i class="fas fa-user-plus"></i
-                ></span>
-                <span>Requests ({{ friendReqs.length }})</span>
-              </a>
-            </li>
-          </ul>
+  <div class="flex w-full h-full">
+    <div class="ml-20 mt-3 w-full h-full">
+      <div
+        class="card border-2 grid grid-cols-2 grid-rows-2 justify-items-start min-w-max"
+      >
+        <header class="justify-self-stretch card-header bg-blue-50 h-10">
+          <div class="w-max -mt-px">
+            <p class="card-header-title">Chat box</p>
+          </div>
+        </header>
+        <div
+          class="field justify-self-start w-full h-full col-start-2 row-span-full"
+        >
+          <div class="flex gap-2 w-full h-full border-l-2">
+            <div class="control w-full">
+              <div class="card w-full">
+                <header class="card-header w-full">
+                  <div class="tabs is-toggle is-fullwidth w-full">
+                    <ul>
+                      <li
+                        v-bind:class="{ 'is-active': showList }"
+                        @click="showList = true"
+                      >
+                        <a>
+                          <span class="icon is-small"
+                            ><i class="fas fa-user-friends"></i
+                          ></span>
+                          <span>Friends ({{ friendsList.length }})</span>
+                        </a>
+                      </li>
+                      <li
+                        v-bind:class="{ 'is-active': !showList }"
+                        @click="showList = false"
+                      >
+                        <a>
+                          <span class="icon is-small"
+                            ><i class="fas fa-user-plus"></i
+                          ></span>
+                          <span>Requests ({{ friendReqs.length }})</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </header>
+                <div class="border-2 -mt-px" v-if="showList">
+                  <li
+                    v-for="user in friendsList"
+                    :key="user.username"
+                    class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 cursor-pointer bg-gray-50 hover:bg-gray-100"
+                    @click="chat"
+                  >
+                    <div class="flex items-center">
+                      <figure class="image is-32x32">
+                        <img :src="user.pic" alt="pf" class="is-rounded" />
+                      </figure>
+                      <p class="justify-self-start ml-2">
+                        {{ user.username }}
+                      </p>
+                    </div>
+                  </li>
+                </div>
+                <div class="border-2 -mt-px" v-if="!showList && friendReqs">
+                  <li
+                    v-for="request in friendReqs"
+                    :key="request.username"
+                    class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 bg-gray-50 hover:bg-gray-100"
+                  >
+                    <div class="flex items-center">
+                      <figure class="image is-32x32">
+                        <img :src="request.pic" alt="pf" class="is-rounded" />
+                      </figure>
+                      <a class="justify-self-start ml-2">{{
+                        request.username
+                      }}</a>
+                    </div>
+                    <div class="flex justify-self-end">
+                      <button
+                        class="button is-success h-8 w-5 mr-1"
+                        @click="acceptFriend(request.uid)"
+                      >
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button
+                        class="button is-danger h-8 w-5"
+                        @click="removeReq(request.uid)"
+                      >
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </li>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </header>
-      <div class="border-2 -mt-px" v-if="showList">
-        <li
-          v-for="user in friendsList"
-          :key="user.username"
-          class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 bg-gray-50 hover:bg-gray-100"
-        >
-          <div class="flex items-center">
-            <figure class="image is-32x32">
-              <img :src="user.pic" alt="pf" class="is-rounded" />
-            </figure>
-            <a class="justify-self-start ml-2">{{ user.username }}</a>
-          </div>
-        </li>
-      </div>
-      <div class="border-2 -mt-px" v-if="!showList && friendReqs">
-        <li
-          v-for="request in friendReqs"
-          :key="request.username"
-          class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 bg-gray-50 hover:bg-gray-100"
-        >
-          <div class="flex items-center">
-            <figure class="image is-32x32">
-              <img :src="request.pic" alt="pf" class="is-rounded" />
-            </figure>
-            <a class="justify-self-start ml-2">{{ request.username }}</a>
-          </div>
-          <div class="flex justify-self-end">
-            <button
-              class="button is-success h-8 w-5 mr-1"
-              @click="acceptFriend(request.uid)"
-            >
-              <i class="fas fa-check"></i>
-            </button>
-            <button
-              class="button is-danger h-8 w-5"
-              @click="removeReq(request.uid)"
-            >
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </li>
+        <div>
+          Test
+        </div>
       </div>
     </div>
   </div>
@@ -93,7 +120,7 @@ export default {
     // Get users from MongoDB
     const response = await axios.get("../api/userProfiles/");
     this.users = response.data;
-    this.currUser = [];
+    this.currUser = {};
 
     // Check for logged in user & get user info
     const auth = getAuth();
@@ -125,7 +152,6 @@ export default {
       } else {
         console.log("No user signed in");
       }
-      console.log(this.currUser);
     });
   },
   methods: {
@@ -155,31 +181,45 @@ export default {
         });
       });
     },
-    acceptFriend(id) {
+    async acceptFriend(id) {
       let updatedFriendsList = [];
       if (this.currUser.friendsList[0])
         updatedFriendsList = this.currUser.friendsList;
       updatedFriendsList.push(id);
-      this.users.forEach(async (userInDB) => {
-        if (userInDB.uid === this.loggedInUser.uid) {
-          try {
-            const response = await axios.put(
-              "../api/userProfiles/" + this.currUser._id,
-              {
-                friendsList: updatedFriendsList,
-              }
-            );
-            this.currUser = response.data;
-            this.friendReqs = this.currUser.friendRequests;
-            this.friendsList = this.currUser.friendsList;
-            this.loadFriendReq();
-            this.loadFriendsList();
-            this.removeReq(id);
-          } catch (err) {
-            console.log(err);
-          }
-        }
+
+      let userInDB = {};
+      this.users.forEach((user) => {
+        if (user.uid === id) userInDB = user;
       });
+      try {
+        const response1 = await axios.put(
+          "../api/userProfiles/" + this.currUser._id,
+          {
+            friendsList: updatedFriendsList,
+          }
+        );
+        this.currUser = response1.data;
+
+        updatedFriendsList = [];
+        if (userInDB.friendsList[0]) updatedFriendsList = userInDB.friendsList;
+        updatedFriendsList.push(this.loggedInUser.uid);
+
+        const response2 = await axios.put(
+          "../api/userProfiles/" + userInDB._id,
+          {
+            friendsList: updatedFriendsList,
+          }
+        );
+        console.log(response2);
+
+        this.friendReqs = this.currUser.friendRequests;
+        this.friendsList = this.currUser.friendsList;
+        this.loadFriendReq();
+        this.loadFriendsList();
+        this.removeReq(id);
+      } catch (err) {
+        console.log(err);
+      }
     },
     removeReq(id) {
       let updatedFriendReq = [];

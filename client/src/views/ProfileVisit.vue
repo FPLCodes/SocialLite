@@ -90,6 +90,7 @@ export default {
       searchedUsers: [],
       search: "",
       loggedInUser: {},
+      reqStatus: true,
     };
   },
   async mounted() {
@@ -135,29 +136,37 @@ export default {
     if (this.search === "") this.searchedUsers = [];
   },
   methods: {
-    sendFriendReq() {
-      this.users.forEach(async (userInDB) => {
+    async sendFriendReq() {
+      let userInDB = {};
+      let updatedFriendRequests = [];
+      this.users.forEach((userInDB) => {
         if (userInDB.uid === this.loggedInUser.uid) {
-          let updatedFriendRequests = [];
-
           if (this.currUser[0].friendRequests)
             updatedFriendRequests = this.currUser[0].friendRequests;
-          updatedFriendRequests.push(userInDB.uid);
 
-          try {
-            const response = await axios.put(
-              "../api/userProfiles/" + this.currUser[0]._id,
-              {
-                friendRequests: updatedFriendRequests,
-              }
-            );
-            this.currUser[0] = response.data;
-            console.log("Sent friend request!");
-          } catch (err) {
-            console.log(err);
-          }
+          updatedFriendRequests.forEach((reqs) => {
+            if (reqs === userInDB.uid) {
+              console.log("Request already exists!");
+              this.reqStatus = false;
+            }
+          });
         }
       });
+      if (this.reqStatus) {
+        updatedFriendRequests.push(userInDB.uid);
+        try {
+          const response = await axios.put(
+            "../api/userProfiles/" + this.currUser[0]._id,
+            {
+              friendRequests: updatedFriendRequests,
+            }
+          );
+          this.currUser[0] = response.data;
+          console.log("Sent friend request!");
+        } catch (err) {
+          console.log(err);
+        }
+      }
     },
     goToUser(searchedUser) {
       // Redirect to user profile
