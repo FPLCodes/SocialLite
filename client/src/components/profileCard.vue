@@ -1,7 +1,7 @@
 <template>
-  <div class="ml-20">
-    <div class="card">
-      <div class="card-content">
+  <div class="ml-20 w-2/5">
+    <div class="card border-2">
+      <div class="card-content -m-3">
         <div class="media">
           <div class="media-left">
             <figure class="image is-64x64">

@@ -1,25 +1,23 @@
 <template>
-  <div
-    class="grid grid-cols-2 grid-rows-2 gap-5 justify-items-stretch container mx-auto pt-5"
-  >
+  <div class="flex flex-wrap justify-items-stretch container mx-auto pt-5">
     <ProfileCard />
 
     <SearchBox />
 
-    <FriendsListCard class="col-span-2" />
+    <SocialBox />
   </div>
 </template>
 
 <script>
 import SearchBox from "../components/searchBox.vue";
 import ProfileCard from "../components/profileCard.vue";
-import FriendsListCard from "../components/friendsListCard.vue";
+import SocialBox from "../components/socialBox.vue";
 export default {
   name: "Profile",
   components: {
     SearchBox,
     ProfileCard,
-    FriendsListCard,
+    SocialBox,
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-2/4 justify-self-start ml-5">
+  <div class="justify-self-start ml-5 w-3/6">
     <div class="card">
       <div class="field has-addons flex">
         <div class="control w-full">
@@ -16,7 +16,10 @@
           </button>
         </div>
       </div>
-      <div class="border-2 -mt-4" v-if="searchedUsers[0]">
+      <div
+        class="border-2 -mt-4 max-h-52 overflow-auto"
+        v-if="searchedUsers[0]"
+      >
         <li
           class="flex items-center p-1 pt-2 cursor-pointer border-b-2 bg-gray-50 hover:bg-gray-100"
           v-for="user in searchedUsers"

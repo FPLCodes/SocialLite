@@ -1,19 +1,10 @@
 <template>
-  <div class="flex w-full h-full">
-    <div class="ml-20 mt-3 w-full h-full">
-      <div
-        class="card border-2 grid grid-cols-2 grid-rows-2 justify-items-start min-w-max"
-      >
-        <header class="justify-self-stretch card-header bg-blue-50 h-10">
-          <div class="w-max -mt-px">
-            <p class="card-header-title">Chat box</p>
-          </div>
-        </header>
-        <div
-          class="field justify-self-start w-full h-full col-start-2 row-span-full"
-        >
-          <div class="flex gap-2 w-full h-full border-l-2">
-            <div class="control w-full">
+  <div class="flex w-full h-full mt-3">
+    <div class="ml-20 w-full">
+      <div class="flex mr-5 border-2">
+        <div class="field w-2/5">
+          <div class="flex w-full h-full border-l-2">
+            <div class="control w-full h-full">
               <div class="card w-full">
                 <header class="card-header w-full">
                   <div class="tabs is-toggle is-fullwidth w-full">
@@ -43,7 +34,10 @@
                     </ul>
                   </div>
                 </header>
-                <div class="border-2 -mt-px" v-if="showList">
+                <div
+                  class="border-2 -mt-px max-h-96 overflow-auto"
+                  v-if="showList"
+                >
                   <li
                     v-for="user in friendsList"
                     :key="user.username"
@@ -94,47 +88,63 @@
             </div>
           </div>
         </div>
-        <div class="w-full -mt-8">
-          <ul class="grid grid-cols-1 w-full">
-            <li
-              class="w-max mr-2 ml-2"
-              v-bind:class="{
-                'justify-self-end': message.sender === username,
-              }"
-              v-for="message in chat"
-              :key="message.message"
-            >
-              <!-- Messages sent by user -->
-              <div class="flex" v-if="message.sender === username">
-                <div class="px-2 py-1 border-2 h-8 rounded-xl ml-52">
-                  {{ message.message }}
-                </div>
-                <figure class="image is-32x32 ml-2">
-                  <img :src="message.senderPhoto" alt="pf" class="is-rounded" />
-                </figure>
-              </div>
 
-              <!-- Messages sent by others -->
-              <div class="flex" v-if="message.sender !== username">
-                <figure class="image is-32x32 mr-2">
-                  <img :src="message.senderPhoto" alt="pf" class="is-rounded" />
-                </figure>
-                <div class="px-2 py-1 border-2 h-8 rounded-xl mr-40">
-                  {{ message.message }}
+        <div class="w-full">
+          <header class="card-header bg-blue-50 border-2 h-10">
+            <div class="w-max -mt-1">
+              <p class="card-header-title">Chat box</p>
+            </div>
+          </header>
+          <div class="w-full border-2 max-h-96 overflow-auto">
+            <ul class="grid grid-cols-1 w-full" v-if="chat[0]">
+              <li
+                class="w-max mr-2 ml-2 pt-1"
+                v-bind:class="{
+                  'justify-self-end': message.sender === username,
+                }"
+                v-for="message in chat"
+                :key="message.message"
+              >
+                <!-- Messages sent by user -->
+                <div class="flex" v-if="message.sender === username">
+                  <div class="px-2 py-1 border-2 h-8 rounded-xl ml-52 bg-white">
+                    {{ message.message }}
+                  </div>
+                  <figure class="image is-32x32 ml-2">
+                    <img
+                      :src="message.senderPhoto"
+                      alt="pf"
+                      class="is-rounded"
+                    />
+                  </figure>
                 </div>
-              </div>
-            </li>
-          </ul>
-          <div class="flex">
-            <input
-              class="input mt-2"
-              type="text"
-              placeholder="Message"
-              v-model="message"
-            />
-            <button class="button is-info mt-2" v-if="message" @click="send">
-              <i class="fas fa-paper-plane"></i>
-            </button>
+
+                <!-- Messages sent by others -->
+                <div class="flex" v-if="message.sender !== username">
+                  <figure class="image is-32x32 mr-2">
+                    <img
+                      :src="message.senderPhoto"
+                      alt="pf"
+                      class="is-rounded"
+                    />
+                  </figure>
+                  <div class="px-2 py-1 border-2 h-8 rounded-xl mr-40 bg-white">
+                    {{ message.message }}
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="flex">
+              <input
+                class="input mt-2"
+                type="text"
+                placeholder="Message"
+                v-model="message"
+              />
+              <button class="button is-info mt-2" v-if="message" @click="send">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -146,7 +156,7 @@
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default {
-  name: "friendsListCard",
+  name: "socialBox",
   data() {
     return {
       users: [],
@@ -294,7 +304,6 @@ export default {
       this.chat = response.data.filter(
         (message) => message.receiverID === id || message.senderID === id
       );
-
       this.currentCode = id;
     },
     async send() {
