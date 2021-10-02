@@ -48,7 +48,7 @@
                     v-for="user in friendsList"
                     :key="user.username"
                     class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 cursor-pointer bg-gray-50 hover:bg-gray-100"
-                    @click="chat"
+                    @click="loadChat(user.uid)"
                   >
                     <div class="flex items-center">
                       <figure class="image is-32x32">
@@ -94,8 +94,48 @@
             </div>
           </div>
         </div>
-        <div>
-          Test
+        <div class="w-full -mt-8">
+          <ul class="grid grid-cols-1 w-full">
+            <li
+              class="w-max mr-2 ml-2"
+              v-bind:class="{
+                'justify-self-end': message.sender === username,
+              }"
+              v-for="message in chat"
+              :key="message.message"
+            >
+              <!-- Messages sent by user -->
+              <div class="flex" v-if="message.sender === username">
+                <div class="px-2 py-1 border-2 h-8 rounded-xl ml-52">
+                  {{ message.message }}
+                </div>
+                <figure class="image is-32x32 ml-2">
+                  <img :src="message.senderPhoto" alt="pf" class="is-rounded" />
+                </figure>
+              </div>
+
+              <!-- Messages sent by others -->
+              <div class="flex" v-if="message.sender !== username">
+                <figure class="image is-32x32 mr-2">
+                  <img :src="message.senderPhoto" alt="pf" class="is-rounded" />
+                </figure>
+                <div class="px-2 py-1 border-2 h-8 rounded-xl mr-40">
+                  {{ message.message }}
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="flex">
+            <input
+              class="input mt-2"
+              type="text"
+              placeholder="Message"
+              v-model="message"
+            />
+            <button class="button is-info mt-2" v-if="message" @click="send">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -114,6 +154,8 @@ export default {
       friendReqs: [],
       friendsList: [],
       showList: true,
+      chat: [],
+      message: "",
     };
   },
   async mounted() {
@@ -245,6 +287,26 @@ export default {
           }
         }
       });
+    },
+    async loadChat(id) {
+      this.receiverID = id;
+      const response = await axios.get("../api/chatMessages/");
+      this.chat = response.data.filter(
+        (message) => message.receiverID === id || message.senderID === id
+      );
+
+      this.currentCode = id;
+    },
+    async send() {
+      const response = await axios.post("../api/chatMessages/", {
+        message: this.message,
+        sender: this.username,
+        senderPhoto: this.photoURL,
+        senderID: this.userID,
+        receiverID: this.receiverID,
+      });
+      this.chat.push(response.data);
+      this.message = "";
     },
   },
 };
