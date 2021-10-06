@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-wrap justify-items-stretch container mx-auto pt-5">
-    <ProfileCard />
-
-    <SearchBox />
-
+  <div class="flex flex-wrap w-full">
     <SocialBox />
+    <div class="w-2/4 justify-self-center">
+      <SearchBox />
+      <ProfileCard />
+    </div>
   </div>
 </template>
 

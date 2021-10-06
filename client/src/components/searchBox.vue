@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-self-start ml-5 w-3/6">
+  <div class="justify-self-start w-full my-5">
     <div class="card">
       <div class="field has-addons flex">
         <div class="control w-full">

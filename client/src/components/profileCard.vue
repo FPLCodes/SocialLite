@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-20 w-2/5">
+  <div class="w-full">
     <div class="card border-2">
       <div class="card-content -m-3">
         <div class="media">
