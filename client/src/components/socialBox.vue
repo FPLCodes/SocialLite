@@ -1,187 +1,224 @@
 <template>
   <div>
     <div class="w-full h-full">
-      <div class="w-full">
-        <div class="mr-5 border-2">
-          <div class=" flex field w-full h-screen">
-            <div class="w-full h-full border-l-2">
-              <div class="control w-full h-full relative">
-                <div class="card w-full">
-                  <div class="flex mx-auto">
-                    <h1
-                      class="text-black font-semibold text-5xl"
-                      style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
+      <div style="background-color: #1E1E1E">
+        <div class=" flex field w-full h-screen">
+          <div class="w-full h-full">
+            <div
+              class="control w-full h-full relative"
+              style="background: #1E1E1E;"
+            >
+              <div
+                class="flex mx-auto justify-center pt-5"
+                style="background: #1E1E1E;"
+              >
+                <h1
+                  class="text-white font-semibold text-5xl"
+                  style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
+                >
+                  Social
+                </h1>
+                <h1
+                  class="font-semibold text-5xl"
+                  style="color: #62D7F0; text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
+                >
+                  Lite
+                </h1>
+              </div>
+              <div class="card w-full" style="background-color: #1E1E1E">
+                <header class="card-header w-full px-2 pt-10">
+                  <div class="w-full rounded-md">
+                    <ul
+                      class="flex justify-center h-8 items-center"
+                      style="background-color: #415D6C;"
                     >
-                      Social
-                    </h1>
-                    <h1
-                      class="font-semibold text-5xl"
-                      style="color: #62D7F0; text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
-                    >
-                      Lite
-                    </h1>
+                      <li
+                        class="w-full text-center h-full pt-1"
+                        v-bind:class="{ active: showList }"
+                        @click="showList = true"
+                      >
+                        <a class="flex gap-1 justify-center items-center">
+                          <span class="icon is-small"
+                            ><i class="fas fa-user-friends"></i
+                          ></span>
+                          <span class="text-white"
+                            >Friends ({{ friendsList.length }})</span
+                          >
+                        </a>
+                      </li>
+                      <li
+                        v-bind:class="{ active: !showList }"
+                        @click="showList = false"
+                        class="w-full text-center h-full pt-1"
+                      >
+                        <a class="flex gap-1 justify-center items-center">
+                          <span class="icon is-small"
+                            ><i class="fas fa-user-plus"></i
+                          ></span>
+                          <span class="text-white"
+                            >Requests ({{ friendReqs.length }})</span
+                          >
+                        </a>
+                      </li>
+                    </ul>
                   </div>
-                  <header class="card-header w-full">
-                    <div class="tabs is-toggle is-fullwidth w-full">
-                      <ul style="background-color: #415D6C;">
-                        <li
-                          v-bind:class="{ active: showList }"
-                          @click="showList = true"
-                        >
-                          <a>
-                            <span class="icon is-small"
-                              ><i class="fas fa-user-friends"></i
-                            ></span>
-                            <span class="text-white"
-                              >Friends ({{ friendsList.length }})</span
-                            >
-                          </a>
-                        </li>
-                        <li
-                          v-bind:class="{ active: !showList }"
-                          @click="showList = false"
-                        >
-                          <a>
-                            <span class="icon is-small"
-                              ><i class="fas fa-user-plus"></i
-                            ></span>
-                            <span class="text-white"
-                              >Requests ({{ friendReqs.length }})</span
-                            >
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </header>
-                  <div
-                    class="border-2 -mt-px max-h-96 overflow-auto"
-                    v-if="showList"
-                  >
-                    <li
-                      v-for="user in friendsList"
-                      :key="user.username"
-                      class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 cursor-pointer bg-gray-50 hover:bg-gray-100"
-                      @click="loadChat(user.uid)"
-                    >
-                      <div class="flex items-center">
-                        <figure class="image is-32x32">
-                          <img :src="user.pic" alt="pf" class="is-rounded" />
-                        </figure>
-                        <p class="justify-self-start ml-2">
-                          {{ user.username }}
-                        </p>
-                      </div>
-                    </li>
+                </header>
+
+                <div class="field has-addons flex px-2 pt-3">
+                  <div class="control w-full opacity-90">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Search friends"
+                    />
                   </div>
-                  <div class="border-2 -mt-px" v-if="!showList && friendReqs">
-                    <li
-                      v-for="request in friendReqs"
-                      :key="request.username"
-                      class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 bg-gray-50 hover:bg-gray-100"
-                    >
-                      <div class="flex items-center">
-                        <figure class="image is-32x32">
-                          <img :src="request.pic" alt="pf" class="is-rounded" />
-                        </figure>
-                        <a class="justify-self-start ml-2">{{
-                          request.username
-                        }}</a>
-                      </div>
-                      <div class="flex justify-self-end">
-                        <button
-                          class="button is-success h-8 w-5 mr-1"
-                          @click="acceptFriend(request.uid)"
-                        >
-                          <i class="fas fa-check"></i>
-                        </button>
-                        <button
-                          class="button is-danger h-8 w-5"
-                          @click="removeReq(request.uid)"
-                        >
-                          <i class="fas fa-times"></i>
-                        </button>
-                      </div>
-                    </li>
+                  <div class="control rounded">
+                    <button class="button is-info">
+                      <i class="fas fa-search pr-2"></i>
+                    </button>
                   </div>
                 </div>
 
-                <div class="w-full absolute bottom-0">
-                  <header class="card-header bg-blue-50 border-2 h-11">
-                    <div class="flex w-max">
-                      <figure class="image is-32x32 ml-2 mt-1 -mr-2">
-                        <img
-                          :src="currChatUser.senderPhoto"
-                          alt="pf"
-                          class="is-rounded"
-                        />
+                <div class="-mt-px max-h-96 overflow-auto px-2" v-if="showList">
+                  <li
+                    v-for="user in friendsList"
+                    :key="user.username"
+                    class="grid grid-cols-2 justify-items-stretch p-1 pt-3 cursor-pointer text-white"
+                    @click="loadChat(user.uid)"
+                  >
+                    <div class="flex items-center">
+                      <figure class="image is-32x32">
+                        <img :src="user.pic" alt="pf" class="is-rounded" />
                       </figure>
-                      <p class="card-header-title">{{ currChatUser.sender }}</p>
+                      <p class="justify-self-start ml-2 text-lg">
+                        {{ user.username }}
+                      </p>
                     </div>
-                  </header>
-                  <div class="border-2 max-h-96 overflow-y-auto">
-                    <ul class="grid grid-cols-1 w-full" v-if="chat[0]">
-                      <li
-                        class="w-max mr-2 ml-2 pt-2"
-                        v-bind:class="{
-                          'justify-self-end': message.senderID === currUser.uid,
-                        }"
-                        v-for="message in chat"
-                        :key="message.message"
-                      >
-                        <!-- Messages sent by user -->
-                        <div
-                          class="flex"
-                          v-if="message.senderID === currUser.uid"
-                        >
-                          <div
-                            class="px-2 py-1 border-2 h-8 rounded-xl ml-52 bg-white"
-                          >
-                            {{ message.message }}
-                          </div>
-                          <figure class="image is-32x32 ml-2">
-                            <img
-                              :src="message.senderPhoto"
-                              alt="pf"
-                              class="is-rounded"
-                            />
-                          </figure>
-                        </div>
-
-                        <!-- Messages sent by others -->
-                        <div
-                          class="flex"
-                          v-if="message.senderID !== currUser.uid"
-                        >
-                          <figure class="image is-32x32 mr-2">
-                            <img
-                              :src="message.senderPhoto"
-                              alt="pf"
-                              class="is-rounded"
-                            />
-                          </figure>
-                          <div
-                            class="px-2 py-1 border-2 h-8 rounded-xl mr-40 bg-white"
-                          >
-                            {{ message.message }}
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                    <div class="flex">
-                      <input
-                        class="input mt-2"
-                        type="text"
-                        placeholder="Message"
-                        v-model="message"
-                      />
+                  </li>
+                </div>
+                <div class="-mt-px" v-if="!showList && friendReqs">
+                  <li
+                    v-for="request in friendReqs"
+                    :key="request.username"
+                    class="grid grid-cols-2 justify-items-stretch p-1 border-b-2 bg-gray-50 hover:bg-gray-100"
+                  >
+                    <div class="flex items-center">
+                      <figure class="image is-32x32">
+                        <img :src="request.pic" alt="pf" class="is-rounded" />
+                      </figure>
+                      <a class="justify-self-start ml-2">{{
+                        request.username
+                      }}</a>
+                    </div>
+                    <div class="flex justify-self-end">
                       <button
-                        class="button is-info mt-2"
-                        v-if="message"
-                        @click="send"
+                        class="button is-success h-8 w-5 mr-1"
+                        @click="acceptFriend(request.uid)"
                       >
-                        <i class="fas fa-paper-plane"></i>
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button
+                        class="button is-danger h-8 w-5"
+                        @click="removeReq(request.uid)"
+                      >
+                        <i class="fas fa-times"></i>
                       </button>
                     </div>
+                  </li>
+                </div>
+              </div>
+
+              <div class="w-full absolute bottom-0" v-if="chat[0]">
+                <header
+                  class="card-header bg-blue-50 h-11 "
+                  style="background-color: #1a1a1a"
+                >
+                  <div class="flex w-max items-center">
+                    <figure class="image is-32x32 ml-2 -mr-2">
+                      <img
+                        :src="currChatUser.senderPhoto"
+                        alt="pf"
+                        class="is-rounded"
+                      />
+                    </figure>
+                    <p class="card-header-title text-white">
+                      {{ currChatUser.sender }}
+                    </p>
+                  </div>
+                </header>
+                <div class="max-h-96 overflow-y-auto">
+                  <ul
+                    class="grid grid-cols-1 w-full"
+                    v-if="chat[0]"
+                    style="background-color: #2D2D2D"
+                  >
+                    <li
+                      class="w-max mr-2 ml-2 pt-2"
+                      v-bind:class="{
+                        'justify-self-end': message.senderID === currUser.uid,
+                      }"
+                      v-for="message in chat"
+                      :key="message.message"
+                    >
+                      <!-- Messages sent by user -->
+                      <div
+                        class="flex items-center"
+                        v-if="message.senderID === currUser.uid"
+                      >
+                        <div
+                          class="px-2 py-px h-7 rounded-xl ml-52 text-white"
+                          style="background-color: #0B87AE"
+                        >
+                          <p class="inline-block align-middle">
+                            {{ message.message }}
+                          </p>
+                        </div>
+                        <figure class="image is-32x32 ml-2">
+                          <img
+                            :src="message.senderPhoto"
+                            alt="pf"
+                            class="is-rounded"
+                          />
+                        </figure>
+                      </div>
+
+                      <!-- Messages sent by others -->
+                      <div
+                        class="flex items-center"
+                        v-if="message.senderID !== currUser.uid"
+                      >
+                        <figure class="image is-32x32 mr-2">
+                          <img
+                            :src="message.senderPhoto"
+                            alt="pf"
+                            class="is-rounded "
+                          />
+                        </figure>
+                        <div
+                          class="px-2 py-px h-7 rounded-xl mr-40 text-white"
+                          style="background-color: #0B87AE"
+                        >
+                          <p class="inline-block align-middle">
+                            {{ message.message }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="flex" style="background-color: #2D2D2D">
+                    <input
+                      class="input mt-2 opacity-90"
+                      type="text"
+                      placeholder="Message"
+                      v-model="message"
+                    />
+                    <button
+                      class="button is-info mt-2"
+                      v-if="message"
+                      @click="send"
+                    >
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
                   </div>
                 </div>
               </div>

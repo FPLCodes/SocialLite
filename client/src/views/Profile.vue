@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-wrap w-full">
+  <div class="flex" style="background-color: #212121">
     <SocialBox />
-    <div class="w-2/4 justify-self-center">
+    <div class="w-2/4 justify-self-center ml-5 lg:ml-16">
       <SearchBox />
       <ProfileCard />
     </div>
