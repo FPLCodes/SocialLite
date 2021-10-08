@@ -4,7 +4,10 @@
       <div class=" flex field w-full h-screen">
         <div class="w-full h-full">
           <div class="flex control w-full h-full" style="background: #1E1E1E;">
-            <div class="px-2 border-r-2" style="border-color: rgb(82, 82, 82)">
+            <div
+              class="relative px-2 border-r-2"
+              style="border-color: rgb(82, 82, 82)"
+            >
               <div
                 class="flex mx-auto justify-center pt-5"
                 style="background: #1E1E1E;"
@@ -113,6 +116,12 @@
                   </li>
                 </div>
               </div>
+              <button
+                class="button is-danger absolute bottom-0 w-full -ml-2 h-16 text-xl font-semibold"
+                @click="signOut"
+              >
+                Sign out
+              </button>
             </div>
 
             <!------------------------- Chat box --------------------->
@@ -121,7 +130,7 @@
               style="background-color: #2D2D2D"
             >
               <header
-                class=" bg-blue-50 h-12 sticky z-10"
+                class=" bg-blue-50 h-14 sticky z-10 flex justify-between mr-2"
                 style="background-color: #1a1a1a"
               >
                 <div class="flex w-max items-center" v-if="currChatUser">
@@ -136,6 +145,7 @@
                     {{ currChatUser.sender }}
                   </p>
                 </div>
+                <!-- <i class="fas fa-bars fa-2x mr-4 mt-3 cursor-pointer"></i> -->
               </header>
               <div
                 class="absolute bottom-0 w-full max-h-full overflow-y-auto pb-16"
@@ -225,7 +235,7 @@
 
 <script>
 import axios from "axios";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 export default {
   name: "socialBox",
   data() {
@@ -396,6 +406,22 @@ export default {
       this.chat.push(response.data);
       this.message = "";
       this.scrollToBottom();
+    },
+    signOut() {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          this.username = "";
+          this.firstName = "";
+          this.lastName = "";
+          this.gender = "";
+          this.photoURL = "";
+          console.log("Signed out!");
+          this.$router.push({ path: "/" }); // Redirect to sign-in page
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     scrollToBottom() {
       const container = this.$refs.container;
