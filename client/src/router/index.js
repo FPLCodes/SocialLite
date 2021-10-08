@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import SignUp from "../views/Sign-up.vue";
 import SignIn from "../views/Sign-in.vue";
-import Profile from "../views/Profile.vue";
+import Home from "../views/Home.vue";
 import ProfileVisit from "../views/ProfileVisit.vue";
 
 const routes = [
@@ -16,9 +16,9 @@ const routes = [
     component: SignUp,
   },
   {
-    path: "/profile/:id",
-    name: "Profile",
-    component: Profile,
+    path: "/user/:id",
+    name: "Home",
+    component: Home,
     meta: { transitionName: "slide" },
   },
   {

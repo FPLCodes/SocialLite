@@ -1,23 +1,18 @@
 <template>
   <div class="flex" style="background-color: #212121">
-    <SocialBox />
-    <div class="w-2/4 justify-self-center ml-5 lg:ml-16">
-      <SearchBox />
-      <ProfileCard />
-    </div>
+    <SearchBox />
+    <ProfileCard />
   </div>
 </template>
 
 <script>
 import SearchBox from "../components/searchBox.vue";
 import ProfileCard from "../components/profileCard.vue";
-import SocialBox from "../components/socialBox.vue";
 export default {
-  name: "Profile",
+  name: "Home",
   components: {
     SearchBox,
     ProfileCard,
-    SocialBox,
   },
 };
 </script>

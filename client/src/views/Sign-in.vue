@@ -145,7 +145,7 @@ export default {
           console.log(user);
           this.successMessage = "Logged in!";
           this.$router.push({
-            path: `/profile/${userID}`, // Redirect to user profile
+            path: `/user/${userID}`, // Redirect to user profile
           });
         })
         .catch((error) => {
@@ -197,7 +197,7 @@ export default {
           const userID = user.providerData[0].uid;
           if (user.providerData.length === 2)
             this.$router.push({
-              path: `/profile/${userID}`,
+              path: `/user/${userID}`,
             });
           else this.$router.push("sign-up");
           console.log(user.providerData);

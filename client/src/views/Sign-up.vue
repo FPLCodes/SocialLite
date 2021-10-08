@@ -283,7 +283,7 @@ export default {
             // Redirect to profile
             const userID = user.providerData[0].uid;
             this.$router.push({
-              path: `/profile/${userID}`,
+              path: `/user/${userID}`,
             });
           })
           .catch((error) => {
