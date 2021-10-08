@@ -167,10 +167,10 @@
                       v-if="message.senderID === currUser.uid"
                     >
                       <div
-                        class="px-3 h-6 rounded-xl ml-52 text-white"
+                        class="px-3 h-7 rounded-xl ml-52 text-white"
                         style="background-color: #0B87AE"
                       >
-                        <p class="inline-block align-middle">
+                        <p class="inline-block align-middle pb-px">
                           {{ message.message }}
                         </p>
                       </div>
@@ -196,10 +196,10 @@
                         />
                       </figure>
                       <div
-                        class="px-3 h-6 rounded-xl mr-40 text-white"
+                        class="px-3 h-7 rounded-xl mr-40 text-white"
                         style="background-color: #0B87AE"
                       >
-                        <p class="inline-block align-middle">
+                        <p class="inline-block align-middle pb-px">
                           {{ message.message }}
                         </p>
                       </div>

@@ -2,7 +2,15 @@
   <div id="app" class="bg-gray-50">
     <div class="container w-full h-screen flex items-center">
       <div class="w-1/2 mx-auto max-w-xl mb-20">
-        <div class="card  p-5" style="background-color: #2b2b2b">
+        <div class="card p-5" style="background-color: #2b2b2b">
+          <div class="text-center filter drop-shadow-md">
+            <h1
+              class="text-white font-bold text-4xl pb-5"
+              style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
+            >
+              Sign up
+            </h1>
+          </div>
           <div class="card-content text-white">
             <!-- Username input card -->
             <div class="field filter drop-shadow-md">
@@ -90,7 +98,7 @@
               <!-- Last name input card -->
               <div class="field w-full filter drop-shadow-md">
                 <p class="text-white pb-1">Last name</p>
-                <div class="control has-icons-left">
+                <p class="control has-icons-left">
                   <input
                     class="input text-white border-none"
                     type="text"
@@ -100,42 +108,50 @@
                   <span class="icon is-small is-left">
                     <i class="far fa-user"></i>
                   </span>
-                </div>
+                </p>
               </div>
             </div>
 
             <!-- Birthdate input card -->
             <div class="field filter drop-shadow-md">
-              <datepicker
-                class="text-white z-10"
-                v-model="picked"
-                style="background-color: #2d3a46"
-              />
+              <p class="text-white pb-1">Birthdate</p>
+              <div class="control has-icons-left">
+                <input
+                  class="input text-white border-none"
+                  type="date"
+                  v-model="birthDate"
+                  style="background-color: #2d3a46"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-birthday-cake"></i>
+                </span>
+              </div>
             </div>
 
             <!-- Gender input radio -->
-            <h1 class="font-semibold">Gender:</h1>
-            <div class="control mb-3">
-              <label class="radio">
-                <input type="radio" value="Male" v-model="gender" />
-                Male
-              </label>
-              <label class="radio">
-                <input type="radio" value="Female" v-model="gender" />
-                Female
-              </label>
-              <label class="radio">
-                <input type="radio" value="Others" v-model="gender" />
-                Others
-              </label>
+            <div class="mb-3">
+              <h1 class="font-semibold">Gender:</h1>
+              <div class="control">
+                <label class="radio">
+                  <input type="radio" value="Male" v-model="gender" />
+                  Male
+                </label>
+                <label class="radio">
+                  <input type="radio" value="Female" v-model="gender" />
+                  Female
+                </label>
+                <label class="radio">
+                  <input type="radio" value="Others" v-model="gender" />
+                  Others
+                </label>
+              </div>
             </div>
-
             <!-- Submit button -->
-            <div class="field">
+            <div class="field w-full">
               <p class="control">
                 <!-- Only allow click if username and password is added -->
                 <button
-                  class="button is-success"
+                  class="button is-success w-full"
                   @click="addUser()"
                   :disabled="
                     !password ||
@@ -158,7 +174,6 @@
 </template>
 
 <script>
-import Datepicker from "vue3-datepicker";
 import axios from "axios";
 import {
   getAuth,
@@ -174,7 +189,6 @@ export default {
   components: {
     UsernameTakenWarning,
     incorrectField,
-    Datepicker,
   },
   data() {
     return {
@@ -190,7 +204,6 @@ export default {
       lastName: "",
       birthDate: "",
       gender: "",
-      picked: new Date(),
     };
   },
   async mounted() {
