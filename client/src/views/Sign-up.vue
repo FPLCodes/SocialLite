@@ -2,69 +2,62 @@
   <div id="app" class="bg-gray-50">
     <div class="container w-full h-screen flex items-center">
       <div class="w-1/2 mx-auto max-w-xl mb-20">
-        <!-- Sign-up & Sign-in tabs -->
-        <div class="tabs is-medium">
-          <ul>
-            <li class="is-active">
-              <router-link to="/sign-up">Sign up</router-link>
-            </li>
-          </ul>
-          <router-view />
-        </div>
-
-        <!-- Username input card -->
-        <div class="card">
-          <div class=" card-content">
-            <div class="field">
-              <p class="control has-icons-left has-icons-right">
+        <div class="card  p-5" style="background-color: #2b2b2b">
+          <div class="card-content text-white">
+            <!-- Username input card -->
+            <div class="field filter drop-shadow-md">
+              <p class="text-white pb-1">Username</p>
+              <div class="control has-icons-left has-icons-right text-white">
                 <input
-                  class="input"
+                  class="input text-white border-none"
                   type="text"
-                  placeholder="Username"
                   v-model="username"
                   v-bind:class="{ 'border-red-300': usernameError }"
+                  style="background-color: #2d3a46"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-user"></i>
                 </span>
-              </p>
+              </div>
             </div>
 
             <!-- Show if username is taken -->
             <UsernameTakenWarning :user-exists="userExists" />
 
             <!-- Password input card -->
-            <div class="field">
-              <p class="control has-icons-left">
+            <div class="field filter drop-shadow-md">
+              <p class="text-white pb-1">Password</p>
+              <div class="control has-icons-left">
                 <input
-                  class="input"
+                  class="input text-white border-none"
                   type="password"
-                  placeholder="Password"
                   minlength="6"
                   v-model="password"
                   v-bind:class="{ 'border-red-300': !correctPass }"
+                  style="background-color: #2d3a46"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
-              </p>
+              </div>
             </div>
 
             <!-- Confirm password input card -->
-            <div class="field">
-              <p class="control has-icons-left">
+            <div class="field filter drop-shadow-md">
+              <p class="text-white pb-1">Confirm Password</p>
+              <div class="control has-icons-left">
                 <input
-                  class="input"
+                  class="input text-white border-none"
                   type="password"
-                  placeholder="Confirm password"
                   minlength="6"
                   v-model="confirmPass"
                   v-bind:class="{ 'border-red-300': !correctPass }"
+                  style="background-color: #2d3a46"
                 />
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
-              </p>
+              </div>
             </div>
 
             <incorrectField
@@ -76,48 +69,48 @@
               :message="'Password has to be at least 6 characters long'"
             />
 
-            <!-- First name input card -->
-            <div class="field">
-              <p class="control has-icons-left">
-                <input
-                  class="input"
-                  type="text"
-                  placeholder="First name"
-                  v-model="firstName"
-                />
-                <span class="icon is-small is-left">
-                  <i class="far fa-user"></i>
-                </span>
-              </p>
-            </div>
+            <!-- Names input -->
+            <div class="flex w-full gap-10">
+              <!-- First name input card -->
+              <div class="field w-full filter drop-shadow-md">
+                <p class="text-white pb-1">First name</p>
+                <div class="control has-icons-left">
+                  <input
+                    class="input text-white border-none"
+                    type="text"
+                    v-model="firstName"
+                    style="background-color: #2d3a46"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="far fa-user"></i>
+                  </span>
+                </div>
+              </div>
 
-            <!-- Last name input card -->
-            <div class="field">
-              <p class="control has-icons-left">
-                <input
-                  class="input"
-                  type="text"
-                  placeholder="Last name"
-                  v-model="lastName"
-                />
-                <span class="icon is-small is-left">
-                  <i class="far fa-user"></i>
-                </span>
-              </p>
+              <!-- Last name input card -->
+              <div class="field w-full filter drop-shadow-md">
+                <p class="text-white pb-1">Last name</p>
+                <div class="control has-icons-left">
+                  <input
+                    class="input text-white border-none"
+                    type="text"
+                    v-model="lastName"
+                    style="background-color: #2d3a46"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="far fa-user"></i>
+                  </span>
+                </div>
+              </div>
             </div>
 
             <!-- Birthdate input card -->
-            <div class="field">
-              <p class="control has-icons-left">
-                <input
-                  class="input font-extralight"
-                  type="date"
-                  v-model="birthDate"
-                />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-birthday-cake"></i>
-                </span>
-              </p>
+            <div class="field filter drop-shadow-md">
+              <datepicker
+                class="text-white z-10"
+                v-model="picked"
+                style="background-color: #2d3a46"
+              />
             </div>
 
             <!-- Gender input radio -->
@@ -165,6 +158,7 @@
 </template>
 
 <script>
+import Datepicker from "vue3-datepicker";
 import axios from "axios";
 import {
   getAuth,
@@ -180,6 +174,7 @@ export default {
   components: {
     UsernameTakenWarning,
     incorrectField,
+    Datepicker,
   },
   data() {
     return {
@@ -195,6 +190,7 @@ export default {
       lastName: "",
       birthDate: "",
       gender: "",
+      picked: new Date(),
     };
   },
   async mounted() {
@@ -295,4 +291,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]) {
+  color: transparent;
+}
+</style>

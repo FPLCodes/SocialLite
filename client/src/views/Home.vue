@@ -167,7 +167,7 @@
                       v-if="message.senderID === currUser.uid"
                     >
                       <div
-                        class="px-3 h-7 rounded-xl ml-52 text-white font-semibold"
+                        class="px-3 h-6 rounded-xl ml-52 text-white"
                         style="background-color: #0B87AE"
                       >
                         <p class="inline-block align-middle">
@@ -196,7 +196,7 @@
                         />
                       </figure>
                       <div
-                        class="px-3 h-7 rounded-xl mr-40 text-white font-semibold"
+                        class="px-3 h-6 rounded-xl mr-40 text-white"
                         style="background-color: #0B87AE"
                       >
                         <p class="inline-block align-middle">
