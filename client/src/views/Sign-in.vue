@@ -1,111 +1,109 @@
 <template>
-  <div id="app" class="bg-gray-50">
-    <div>
-      <loading
-        :active="isLoading"
-        :color="'#62D7F0'"
-        :blur="'8px'"
-        :height="200"
-        :width="200"
-        :opacity="0.8"
-        :background-color="'black'"
-        :lock-scroll="true"
-      />
-      <div class="w-full h-screen items-center absolute">
-        <div
-          class="card w-2/6 mx-auto p-10 mt-52"
-          style="background-color: #2b2b2b"
-        >
-          <div class="flex mx-auto justify-center filter drop-shadow-md">
-            <h1
-              class="text-white font-bold text-6xl"
-              style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
-            >
-              Social
-            </h1>
-            <h1
-              class="font-bold text-6xl"
-              style="color: #62D7F0; text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
-            >
-              Lite
-            </h1>
-          </div>
-          <div class="mx-auto max-w-xl mt-14">
-            <div>
-              <div class="card-content">
-                <!-- Email input card -->
-                <div class="field text-lg filter drop-shadow-md">
-                  <p class="text-white pb-1">Email</p>
-                  <div class="control has-icons-left has-icons-right">
-                    <input
-                      class="input border-none text-white"
-                      type="email"
-                      v-model="email"
-                      style="background-color: #2d3a46"
-                    />
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-envelope"></i>
-                    </span>
-                  </div>
+  <div>
+    <loading
+      :active="isLoading"
+      :color="'#62D7F0'"
+      :blur="'8px'"
+      :height="200"
+      :width="200"
+      :opacity="0.8"
+      :background-color="'black'"
+      :lock-scroll="true"
+    />
+    <div class="w-full h-screen items-center absolute">
+      <div
+        class="card w-2/6 mx-auto p-10 mt-52"
+        style="background-color: #2b2b2b"
+      >
+        <div class="flex mx-auto justify-center filter drop-shadow-md">
+          <h1
+            class="text-white font-bold text-6xl"
+            style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
+          >
+            Social
+          </h1>
+          <h1
+            class="font-bold text-6xl"
+            style="color: #62D7F0; text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
+          >
+            Lite
+          </h1>
+        </div>
+        <div class="mx-auto max-w-xl mt-14">
+          <div>
+            <div class="card-content">
+              <!-- Email input card -->
+              <div class="field text-lg filter drop-shadow-md">
+                <p class="text-white pb-1">Email</p>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input border-none text-white"
+                    type="email"
+                    v-model="email"
+                    style="background-color: #2d3a46"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
                 </div>
+              </div>
 
-                <!-- Password input card -->
-                <div class="field text-lg  filter drop-shadow-md">
-                  <p class="text-white pb-1">Password</p>
-                  <p class="control has-icons-left">
-                    <input
-                      class="input border-none text-white"
-                      type="password"
-                      v-model="password"
-                      style="background-color: #2d3a46"
-                    />
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-lock"></i>
-                    </span>
+              <!-- Password input card -->
+              <div class="field text-lg  filter drop-shadow-md">
+                <p class="text-white pb-1">Password</p>
+                <p class="control has-icons-left">
+                  <input
+                    class="input border-none text-white"
+                    type="password"
+                    v-model="password"
+                    style="background-color: #2d3a46"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </p>
+              </div>
+
+              <!-- Login buttons -->
+              <div class="flex gap-2 w-full pt-3 filter drop-shadow-md">
+                <div class="field w-full">
+                  <p class="control">
+                    <button
+                      class="button is-success w-full"
+                      @click.prevent="login()"
+                      :disabled="!password || !email"
+                    >
+                      Login
+                    </button>
                   </p>
                 </div>
 
-                <!-- Login buttons -->
-                <div class="flex gap-2 w-full pt-3 filter drop-shadow-md">
-                  <div class="field w-full">
-                    <p class="control">
-                      <button
-                        class="button is-success w-full"
-                        @click.prevent="login()"
-                        :disabled="!password || !email"
-                      >
-                        Login
-                      </button>
-                    </p>
-                  </div>
-
-                  <!-- Google Sign-in button -->
-                  <div class="field w-full">
-                    <p class="control flex gap-2">
-                      <button
-                        class="button bg-blue-500 text-white transition hover:text-white hover:bg-blue-600 border-none w-full"
-                        @click.prevent="googleSignIn()"
-                      >
-                        <i class="fab fa-google mr-3"></i>
-                        Sign in with Google
-                      </button>
-                      <button
-                        class="button is-danger"
-                        v-if="signedIn === true"
-                        @click="signOut"
-                      >
-                        Sign out
-                      </button>
-                    </p>
-                  </div>
+                <!-- Google Sign-in button -->
+                <div class="field w-full">
+                  <p class="control flex gap-2">
+                    <button
+                      class="button bg-blue-500 text-white transition hover:text-white hover:bg-blue-600 border-none w-full"
+                      @click.prevent="googleSignIn()"
+                    >
+                      <i class="fab fa-google mr-3"></i>
+                      Sign in with Google
+                    </button>
+                    <button
+                      class="button is-danger"
+                      v-if="signedIn === true"
+                      @click="signOut"
+                    >
+                      Sign out
+                    </button>
+                  </p>
                 </div>
-
-                <!-- Login fail/success notification -->
-                <LoginNotification
-                  :success-message="successMessage"
-                  :failed-message="failedMessage"
-                />
               </div>
+
+              <!-- Login fail/success notification -->
+              <LoginNotification
+                :success-message="successMessage"
+                :failed-message="failedMessage"
+              />
             </div>
           </div>
         </div>

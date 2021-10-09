@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="bg-gray-50 h-screen">
+  <div id="app" class="h-screen">
     <router-view v-slot="{ Component, route }">
       <transition :name="route.meta.transition || 'fade'">
         <component :is="Component" :key="route.path" />
@@ -17,5 +17,9 @@ export default {
 <style>
 body {
   font-family: "Roboto";
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }
 </style>
