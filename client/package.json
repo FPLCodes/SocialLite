@@ -16,6 +16,7 @@
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0",
+    "vue-loading-overlay": "4.0",
     "vue-router": "^4.0.11",
     "vue3-datepicker": "^0.2.5"
   },

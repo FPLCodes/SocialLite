@@ -1,9 +1,19 @@
 <template>
   <div id="app" class="bg-gray-50">
     <div>
+      <loading
+        :active="isLoading"
+        :color="'#62D7F0'"
+        :blur="'8px'"
+        :height="200"
+        :width="200"
+        :opacity="0.8"
+        :background-color="'black'"
+        :lock-scroll="true"
+      />
       <div class="w-full h-screen items-center absolute">
         <div
-          class="card w-2/5 mx-auto p-10 mt-52"
+          class="card w-2/6 mx-auto p-10 mt-52"
           style="background-color: #2b2b2b"
         >
           <div class="flex mx-auto justify-center filter drop-shadow-md">
@@ -61,7 +71,7 @@
                     <p class="control">
                       <button
                         class="button is-success w-full"
-                        @click="login()"
+                        @click.prevent="login()"
                         :disabled="!password || !email"
                       >
                         Login
@@ -74,7 +84,7 @@
                     <p class="control flex gap-2">
                       <button
                         class="button bg-blue-500 text-white transition hover:text-white hover:bg-blue-600 border-none w-full"
-                        @click="googleSignIn()"
+                        @click.prevent="googleSignIn()"
                       >
                         <i class="fab fa-google mr-3"></i>
                         Sign in with Google
@@ -109,7 +119,7 @@ import axios from "axios";
 
 import {
   getAuth,
-  signInWithPopup,
+  signInWithRedirect,
   GoogleAuthProvider,
   onAuthStateChanged,
   signOut,
@@ -117,11 +127,14 @@ import {
 } from "firebase/auth";
 
 import LoginNotification from "../components/loginFailWarning.vue";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   name: "Sign-in",
   components: {
     LoginNotification,
+    Loading,
   },
   data() {
     return {
@@ -131,6 +144,8 @@ export default {
       signedIn: false,
       email: "",
       password: "",
+      isLoading: false,
+      fullPage: true,
     };
   },
   async mounted() {
@@ -140,10 +155,22 @@ export default {
 
     // Check for logged in user & get user info
     const auth = getAuth();
+    this.isLoading = true;
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user.providerData);
+        const userID = user.providerData[0].uid;
+
+        if (user.providerData.length === 2) {
+          this.isLoading = false;
+          this.$router.push({
+            path: `/user/${userID}`,
+          });
+        } else {
+          this.isLoading = false;
+          this.$router.push("sign-up");
+        }
       } else {
+        this.isLoading = false;
         console.log("No user signed in");
       }
     });
@@ -205,7 +232,8 @@ export default {
     googleSignIn() {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider)
+      signInWithRedirect(auth, provider);
+      /* getRedirectResult(auth)
         .then((result) => {
           const user = result.user;
           const userID = user.providerData[0].uid;
@@ -229,7 +257,7 @@ export default {
           setTimeout(() => {
             this.failedMessage = "";
           }, 5000);
-        });
+        }); */
     },
 
     // Sign out user
