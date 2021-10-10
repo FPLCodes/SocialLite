@@ -35,7 +35,7 @@
               <!-- Email input card -->
               <div class="field text-lg filter drop-shadow-md">
                 <p class="text-white pb-1">Email</p>
-                <div class="control has-icons-left has-icons-right">
+                <div class="control has-icons-left">
                   <input
                     class="input border-none text-white"
                     type="email"
@@ -51,7 +51,7 @@
               <!-- Password input card -->
               <div class="field text-lg  filter drop-shadow-md">
                 <p class="text-white pb-1">Password</p>
-                <p class="control has-icons-left">
+                <div class="control has-icons-left">
                   <input
                     class="input border-none text-white"
                     type="password"
@@ -61,7 +61,7 @@
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                   </span>
-                </p>
+                </div>
               </div>
 
               <!-- Login buttons -->
@@ -104,6 +104,12 @@
                 :success-message="successMessage"
                 :failed-message="failedMessage"
               />
+
+              <div class="text-white w-full mt-4 -mb-7">
+                <p class="text-center">
+                  Don't have an account? Click sign in with google
+                </p>
+              </div>
             </div>
           </div>
         </div>

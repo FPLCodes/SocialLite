@@ -171,7 +171,7 @@
                     v-if="chat[0]"
                   >
                     <li
-                      class="w-max mr-2 ml-2 pt-2 h-10 filter drop-shadow-md"
+                      class="w-max mr-4 ml-4 pt-2 h-10 filter drop-shadow-md"
                       v-bind:class="{
                         'justify-self-end': message.senderID === currUser.uid,
                       }"
@@ -184,10 +184,15 @@
                         v-if="message.senderID === currUser.uid"
                       >
                         <div
-                          class="px-3 h-7 rounded-xl ml-52 text-white"
+                          class="px-3 h-9 rounded-xl ml-52 text-white"
                           style="background-color: #0B87AE"
                         >
-                          <p class="inline-block align-middle -mb-1">
+                          <p
+                            class="inline-block align-bottom text-xs mr-3 -mb-2 font-light text-gray-200"
+                          >
+                            {{ message.time }}
+                          </p>
+                          <p class="inline-block align-middle -mb-3">
                             {{ message.message }}
                           </p>
                         </div>
@@ -423,26 +428,52 @@ export default {
       this.chat = response.data.filter(
         (message) => message.receiverID === id || message.senderID === id
       );
+      this.getChatTime();
+
       this.currentCode = id;
       this.currChatUser = "";
       this.chat.forEach((message) => {
-        if (message.senderID === id) this.currChatUser = message;
+        if (message.senderID === id) {
+          this.currChatUser = message;
+        }
       });
       setTimeout(() => {
         this.scrollToBottom();
       }, 1);
     },
     async send() {
+      const currTime = new Date();
+
       const response = await axios.post("../api/chatMessages/", {
         message: this.message,
         sender: this.username,
         senderPhoto: this.photoURL,
         senderID: this.userID,
         receiverID: this.receiverID,
+        time: currTime,
       });
       this.chat.push(response.data);
+      this.getChatTime();
       this.message = "";
       this.scrollToBottom();
+    },
+    getChatTime() {
+      this.chat.forEach((message) => {
+        if (message.time) {
+          const date = new Date(message.time);
+          let hours = date.getHours();
+          let minutes = date.getMinutes();
+          let time = "";
+          if (hours < 12) {
+            time = "AM";
+            hours += 12;
+          } else {
+            time = "PM";
+            hours -= 12;
+          }
+          message.time = `${hours}:${minutes} ${time}`;
+        }
+      });
     },
     signOut() {
       const auth = getAuth();

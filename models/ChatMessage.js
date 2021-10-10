@@ -21,6 +21,10 @@ const MessageSchema = new Schema({
     type: String,
     required: true,
   },
+  time: {
+    type: Date,
+    required: true,
+  },
 });
 
 const ChatMessage = model("chatMessage", MessageSchema);
