@@ -1,84 +1,63 @@
 <template>
-  <div
-    class="grid grid-cols-2 grid-rows-2 gap-5 justify-items-stretch container mx-auto pt-5"
-  >
-    <div class="ml-20">
-      <div class="card">
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-64x64">
-                <img
-                  :src="photoURL"
-                  alt="Profile picture"
-                  class="is-rounded shadow"
-                />
-              </figure>
+  <div>
+    <div class="w-full mx-auto">
+      <div class="card h-44 bg-gray-200"></div>
+      <div class="z-10 -mt-7">
+        <button
+          class="button is-info absolute right-0 mr-16 h-14 rounded-full w-36 filter drop-shadow-md"
+          v-if="!friend && !reqStatus"
+          @click="sendFriendReq"
+        >
+          Add friend
+        </button>
+        <button
+          class="button is-danger absolute right-0 mr-16 h-14 rounded-full w-36 filter drop-shadow-md"
+          v-if="reqStatus"
+          @click="removeRequest"
+        >
+          Remove request
+        </button>
+        <button
+          class="button is-danger absolute right-0 mr-16 h-14 rounded-full w-36 filter drop-shadow-md"
+          v-if="friend"
+          @click="removeFriend"
+        >
+          Remove friend
+        </button>
+      </div>
+      <figure class="image is-96x96 ml-24 -mt-5 z-10 filter drop-shadow-md">
+        <img :src="photoURL" alt="Profile picture" class="is-rounded shadow" />
+      </figure>
+      <div class="card-content ml-16">
+        <div class="media">
+          <div class="media-content mt-1">
+            <div class="flex gap-2">
+              <p class="title is-4 text-white">{{ firstName }}</p>
+              <p class="title is-4 text-white">{{ lastName }}</p>
             </div>
-            <div class="media-content mt-1">
-              <div class="flex gap-2">
-                <p class="title is-4" v-if="!selected">{{ firstName }}</p>
-                <input
-                  type="text"
-                  class="border-2 rounded w-40 sm:w-60 xl:w-72"
-                  v-if="selected"
-                  v-model="editedFirstName"
-                />
-                <p class="title is-4" v-if="!selected">{{ lastName }}</p>
-              </div>
-              <input
-                type="text"
-                class="mt-2 border-2 rounded w-40 sm:w-60 xl:w-72"
-                v-if="selected"
-                v-model="editedLastName"
-              />
-              <p class="subtitle is-6 -mt-5" v-if="!selected">
-                @{{ username }}
-              </p>
-            </div>
+            <p class="subtitle is-6 -mt-5 text-white">@{{ username }}</p>
           </div>
+        </div>
 
-          <div class="content flex items-center pr-2 h-20">
-            <div
-              v-if="!selected"
-              class="border-1 rounded-md w-11/12 h-20 px-2 mt-4"
-            >
-              {{ description }}
-            </div>
-            <textarea
-              type="text"
-              class="border-2 rounded-md w-full h-20 px-2 pt-1 outline-none"
-              maxlength="100"
-              v-if="selected"
-              v-model="editedDesc"
-            />
+        <div class="content flex items-center pr-2 h-20">
+          <div class="border-1 rounded-md w-11/12 h-20 mt-6">
+            <p class="text-white">{{ description }}</p>
           </div>
         </div>
       </div>
-      <div class="mt-2">
-        <button class="button is-info" @click="sendFriendReq">
-          Add friend
-        </button>
-      </div>
     </div>
-
-    <SearchBox />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import SearchBox from "../components/searchBox.vue";
 export default {
   name: "ProfileVisit",
-  components: {
-    SearchBox,
-  },
   data() {
     return {
       users: [],
-      currUser: [],
+      currUser: {},
       username: "",
       firstName: "",
       lastName: "",
@@ -86,34 +65,42 @@ export default {
       gender: "",
       photoURL: "",
       description: "",
-      selected: false,
-      searchedUsers: [],
-      search: "",
       loggedInUser: {},
-      reqStatus: true,
+      reqStatus: false,
+      friend: false,
     };
   },
   async mounted() {
     // Get users from MongoDB
     const response = await axios.get("../api/userProfiles/");
     this.users = response.data;
-    this.currUser = [];
+    this.currUser = {};
     this.searchedUsers = [];
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.loggedInUser = user.providerData[0];
-        console.log(this.loggedInUser);
+        this.users.forEach((userInDB) => {
+          if (userInDB.uid === this.loggedInUser.uid) {
+            this.loggedInUser = userInDB;
+          }
+        });
+        this.currUser.friendRequests.forEach((reqID) => {
+          if (reqID === this.loggedInUser.uid) this.reqStatus = true;
+        });
+        this.currUser.friendsList.forEach((friendID) => {
+          if (friendID === this.loggedInUser.uid) this.friend = true;
+        });
+        console.log(this.reqStatus);
       } else {
         console.log("No user signed in");
       }
     });
 
-    // Check for logged in user & get user info
     this.users.forEach((userInDB) => {
       // update info if userID matches URL ID
       if (userInDB.uid === this.$route.params.id) {
-        this.currUser.push(userInDB);
+        this.currUser = userInDB;
         this.username = userInDB.username;
         this.firstName = userInDB.firstName;
         if (userInDB.lastName) this.lastName = userInDB.lastName;
@@ -124,25 +111,14 @@ export default {
         if (this.description === "") this.description = "No bio...";
       }
     });
-    console.log(this.currUser);
-  },
-  beforeUpdate() {
-    this.searchedUsers = this.users
-      .filter((user) =>
-        user.username.toLowerCase().includes(this.search.toLowerCase())
-      )
-      .slice(0, 5);
-
-    if (this.search === "") this.searchedUsers = [];
+    console.log(this.currUser.friendRequests);
   },
   methods: {
     async sendFriendReq() {
-      let userInDB = {};
       let updatedFriendRequests = [];
       this.users.forEach((userInDB) => {
         if (userInDB.uid === this.loggedInUser.uid) {
-          if (this.currUser[0].friendRequests)
-            updatedFriendRequests = this.currUser[0].friendRequests;
+          updatedFriendRequests = this.loggedInUser.friendRequests;
 
           updatedFriendRequests.forEach((reqs) => {
             if (reqs === userInDB.uid) {
@@ -152,34 +128,91 @@ export default {
           });
         }
       });
-      if (this.reqStatus) {
-        updatedFriendRequests.push(userInDB.uid);
+      if (!this.reqStatus) {
+        updatedFriendRequests.push(this.loggedInUser.uid);
         try {
           const response = await axios.put(
-            "../api/userProfiles/" + this.currUser[0]._id,
+            "../api/userProfiles/" + this.currUser._id,
             {
               friendRequests: updatedFriendRequests,
             }
           );
-          this.currUser[0] = response.data;
+          this.reqStatus = true;
+          this.currUser = response.data;
           console.log("Sent friend request!");
         } catch (err) {
           console.log(err);
         }
       }
     },
-    goToUser(searchedUser) {
-      // Redirect to user profile
-      this.$router.push({
-        path: `/profileVisit/${searchedUser.uid}`,
+    async removeRequest() {
+      let updatedFriendRequests = this.currUser.friendsList;
+
+      if (this.reqStatus) {
+        this.currUser.friendRequests.forEach((reqID, index) => {
+          if (reqID === this.loggedInUser.uid)
+            updatedFriendRequests.splice(index, 1);
+        });
+        try {
+          const response = await axios.put(
+            "../api/userProfiles/" + this.currUser._id,
+            {
+              friendRequests: updatedFriendRequests,
+            }
+          );
+          this.reqStatus = false;
+          this.currUser = response.data;
+          console.log("Removed request!");
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    },
+    async removeFriend() {
+      let updatedFriendsList1 = this.loggedInUser.friendsList;
+      let updatedFriendsList2 = this.currUser.friendsList;
+
+      this.loggedInUser.friendsList.forEach((friendID, index) => {
+        if (friendID === this.$route.params.id)
+          updatedFriendsList1.splice(index, 1);
       });
-      this.search = "";
+      this.currUser.friendsList.forEach((friendID, index) => {
+        if (friendID === this.loggedInUser.uid)
+          updatedFriendsList2.splice(index, 1);
+      });
+
+      try {
+        const response1 = await axios.put(
+          "../api/userProfiles/" + this.loggedInUser._id,
+          {
+            friendsList: updatedFriendsList1,
+          }
+        );
+        this.loggedInUser = response1.data;
+
+        const response2 = await axios.put(
+          "../api/userProfiles/" + this.currUser._id,
+          {
+            friendsList: updatedFriendsList2,
+          }
+        );
+        this.currUser = response2.data;
+
+        this.friend = false;
+        console.log("Removed friend!");
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };
 </script>
 
 <style>
+body {
+  font-family: "Roboto";
+}
+
 div {
   word-wrap: break-word;
   overflow: hidden;

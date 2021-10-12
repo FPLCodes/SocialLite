@@ -237,31 +237,6 @@ export default {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
       signInWithRedirect(auth, provider);
-      /* getRedirectResult(auth)
-        .then((result) => {
-          const user = result.user;
-          const userID = user.providerData[0].uid;
-          if (user.providerData.length === 2)
-            this.$router.push({
-              path: `/user/${userID}`,
-            });
-          else this.$router.push("sign-up");
-          console.log(user.providerData);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          const email = error.email;
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          console.log(errorCode);
-          console.log(errorMessage);
-          console.log(email);
-          console.log(credential);
-          this.failedMessage = "Failed to sign in";
-          setTimeout(() => {
-            this.failedMessage = "";
-          }, 5000);
-        }); */
     },
 
     // Sign out user

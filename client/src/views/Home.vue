@@ -43,7 +43,7 @@
                         >
                           <a class="flex gap-1 justify-center items-center">
                             <span class="text-white font-semibold"
-                              >Friends ({{ friendsList.length }})</span
+                              >Friends ({{ friends.length }})</span
                             >
                           </a>
                         </li>
@@ -79,7 +79,7 @@
 
                   <div class="-mt-px px-2" v-if="showList">
                     <li
-                      v-for="user in friendsList"
+                      v-for="user in friends"
                       :key="user.username"
                       class="p-1 pt-3 cursor-pointer text-white transition transform hover:scale-105"
                       @click="loadChat(user.uid)"
@@ -94,19 +94,19 @@
                       </div>
                     </li>
                   </div>
-                  <div class="-mt-px" v-if="!showList && friendReqs">
+                  <div class="-mt-px px-2" v-if="!showList && friendReqs">
                     <li
                       v-for="request in friendReqs"
                       :key="request.username"
-                      class="p-1 border-b-2 bg-gray-50 hover:bg-gray-100"
+                      class="flex justify-between p-1 pt-3 text-white"
                     >
                       <div class="flex items-center">
                         <figure class="image is-32x32">
                           <img :src="request.pic" alt="pf" class="is-rounded" />
                         </figure>
-                        <a class="justify-self-start ml-2">{{
-                          request.username
-                        }}</a>
+                        <p class="justify-self-start ml-2">
+                          {{ request.username }}
+                        </p>
                       </div>
                       <div class="flex justify-self-end">
                         <button
@@ -144,13 +144,16 @@
                         class="is-rounded"
                       />
                     </figure>
-                    <p class="card-header-title text-white">
+                    <p
+                      class="card-header-title text-white cursor-pointer"
+                      @click="openProfile(currChatUser.senderID)"
+                    >
                       {{ currChatUser.sender }}
                     </p>
                   </div>
                   <div v-if="chat[0]">
                     <i
-                      class="fas fa-bars fa-2xl pt-5 mt-1 pr-4 filter drop-shadow-md cursor-pointer"
+                      class="fas fa-bars fa-2xl pt-5 mt-1 pr-4 filter drop-shadow-md cursor-pointer absolute right-0"
                       @click="showMenu ? (showMenu = false) : (showMenu = true)"
                     ></i>
                   </div>
@@ -187,13 +190,13 @@
                           class="px-3 h-9 rounded-xl ml-52 text-white"
                           style="background-color: #0B87AE"
                         >
-                          <p
-                            class="inline-block align-bottom text-xs mr-3 -mb-2 font-light text-gray-200"
-                          >
-                            {{ message.time }}
-                          </p>
                           <p class="inline-block align-middle -mb-3">
                             {{ message.message }}
+                          </p>
+                          <p
+                            class="inline-block align-bottom text-xs ml-3 -mb-2 font-light text-gray-200"
+                          >
+                            {{ message.time }}
                           </p>
                         </div>
                         <figure class="image is-32x32 ml-2">
@@ -218,11 +221,16 @@
                           />
                         </figure>
                         <div
-                          class="px-3 h-7 rounded-xl mr-40 text-white"
+                          class="px-3 h-9 rounded-xl mr-40 text-white"
                           style="background-color: #0B87AE"
                         >
-                          <p class="inline-block align-middle -mb-1">
+                          <p class="inline-block align-middle -mb-3">
                             {{ message.message }}
+                          </p>
+                          <p
+                            class="inline-block align-bottom text-xs ml-3 -mb-2 font-light text-gray-200"
+                          >
+                            {{ message.time }}
                           </p>
                         </div>
                       </div>
@@ -284,7 +292,7 @@ export default {
       users: [],
       currUser: {},
       friendReqs: [],
-      friendsList: [],
+      friends: [],
       showList: true,
       chat: [],
       message: "",
@@ -318,7 +326,7 @@ export default {
             this.description = userInDB.description;
             if (this.description === "") this.description = "Add a bio";
             this.friendReqs = userInDB.friendRequests;
-            this.friendsList = userInDB.friendsList;
+            this.friends = userInDB.friendsList;
             this.userID = userInDB.uid;
             this.loggedInUser = user.providerData[0];
           }
@@ -345,10 +353,10 @@ export default {
       });
     },
     loadFriendsList() {
-      this.friendsList.forEach((user, i) => {
+      this.friends.forEach((user, i) => {
         this.users.forEach((userInDB) => {
           if (user === userInDB.uid) {
-            this.friendsList[i] = {
+            this.friends[i] = {
               username: userInDB.username,
               pic: userInDB.photoURL,
               uid: userInDB.uid,
@@ -368,6 +376,7 @@ export default {
         if (user.uid === id) userInDB = user;
       });
       try {
+        console.log(updatedFriendsList);
         const response1 = await axios.put(
           "../api/userProfiles/" + this.currUser._id,
           {
@@ -380,16 +389,13 @@ export default {
         if (userInDB.friendsList[0]) updatedFriendsList = userInDB.friendsList;
         updatedFriendsList.push(this.loggedInUser.uid);
 
-        const response2 = await axios.put(
-          "../api/userProfiles/" + userInDB._id,
-          {
-            friendsList: updatedFriendsList,
-          }
-        );
-        console.log(response2);
+        console.log(updatedFriendsList);
+        await axios.put("../api/userProfiles/" + userInDB._id, {
+          friendsList: updatedFriendsList,
+        });
 
         this.friendReqs = this.currUser.friendRequests;
-        this.friendsList = this.currUser.friendsList;
+        this.friends = this.currUser.friendsList;
         this.loadFriendReq();
         this.loadFriendsList();
         this.removeReq(id);
@@ -426,7 +432,9 @@ export default {
       this.receiverID = id;
       const response = await axios.get("../api/chatMessages/");
       this.chat = response.data.filter(
-        (message) => message.receiverID === id || message.senderID === id
+        (message) =>
+          (message.receiverID === this.userID && message.senderID === id) ||
+          (message.receiverID === id && message.senderID === this.userID)
       );
       this.getChatTime();
 
@@ -459,20 +467,15 @@ export default {
     },
     getChatTime() {
       this.chat.forEach((message) => {
-        if (message.time) {
-          const date = new Date(message.time);
-          let hours = date.getHours();
-          let minutes = date.getMinutes();
-          let time = "";
-          if (hours < 12) {
-            time = "AM";
-            hours += 12;
-          } else {
-            time = "PM";
-            hours -= 12;
-          }
-          message.time = `${hours}:${minutes} ${time}`;
-        }
+        const date = new Date(message.time);
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let time = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
+        if (hours === 0) hours = 12;
+
+        message.time = `${hours}:${(minutes =
+          minutes < 10 ? (minutes = "0" + minutes) : minutes)} ${time}`;
       });
     },
     signOut() {
@@ -494,6 +497,11 @@ export default {
     scrollToBottom() {
       const container = this.$refs.container;
       container.scrollTop = container.scrollHeight;
+    },
+    openProfile(id) {
+      this.$router.push({
+        path: `/profileVisit/${id}`, // Redirect to user profile
+      });
     },
   },
 };
