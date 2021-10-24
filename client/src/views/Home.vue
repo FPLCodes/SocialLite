@@ -1,7 +1,7 @@
 <template>
-  <div style="border-color: rgb(82, 82, 82)">
+  <div class="homebg">
     <div class="flex justify-items-stretch w-9/12 mx-auto">
-      <div class="flex-auto" style="background-color: #1E1E1E">
+      <div class="flex-auto">
         <div class=" flex field w-full">
           <div class="w-full h-full">
             <div class="flex control w-full" style="background: #1E1E1E;">
@@ -9,10 +9,7 @@
                 class="relative px-2 border-r-2"
                 style="border-color: rgb(82, 82, 82)"
               >
-                <div
-                  class="flex mx-auto justify-center pt-5 cursor-default"
-                  style="background: #1E1E1E;"
-                >
+                <div class="flex mx-auto justify-center pt-5 cursor-default">
                   <h1
                     class="text-gray-50 font-bold text-5xl"
                     style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
@@ -26,7 +23,7 @@
                     Lite
                   </h1>
                 </div>
-                <div class="card w-full" style="background-color: #1E1E1E">
+                <div class="w-full">
                   <header class="card-header w-full px-2 pt-10">
                     <div class="w-full rounded-md">
                       <ul
@@ -74,14 +71,14 @@
                     </div>
                   </div>
 
-                  <div class="-mt-px px-2" v-if="showList">
+                  <div class="pt-1 px-2" v-if="showList">
                     <li
                       v-for="user in friends"
                       :key="user.username"
-                      class="p-1 py-2 mt-1 cursor-pointer text-gray-50 bg-gray-700 transition-all rounded-lg hover:bg-gray-600"
+                      class="p-1 py-2 cursor-pointer text-gray-50 transition-all rounded-lg"
                       @click="loadChat(user.uid)"
                     >
-                      <transition name="slide-fade">
+                      <div class="flist-item">
                         <div class="flex items-center">
                           <figure class="image is-32x32">
                             <img :src="user.pic" alt="pf" class="is-rounded" />
@@ -90,7 +87,10 @@
                             {{ user.username }}
                           </p>
                         </div>
-                      </transition>
+                        <div
+                          class="w-0 h-0.5 bg-gray-50 mt-2 transition-all flist-effect duration-300"
+                        ></div>
+                      </div>
                     </li>
                   </div>
                   <div class="-mt-px px-2" v-if="!showList && friendReqs">
@@ -145,7 +145,7 @@
                     </figure>
                     <p
                       class="card-header-title text-gray-200 cursor-pointer"
-                      @click="openProfile(currChatUser.senderID)"
+                      @click="visitProfile(currChatUser.senderID)"
                     >
                       {{ currChatUser.sender }}
                     </p>
@@ -262,17 +262,18 @@
       <div class="flex-none mr-52" v-if="showMenu">
         <div
           class="container w-52 pt-44 absolute h-screen text-gray-100 text-center text-2xl"
+          style="background-color: #1a1a1a"
         >
           <div class="menu-item">
-            <h1 class=" transition">
+            <h1>
               Home feed
             </h1>
             <div
               class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
             ></div>
           </div>
-          <div class="menu-item">
-            <h1 class="transition">
+          <div class="menu-item" @click="openProfile(this.userID)">
+            <h1>
               Profile
             </h1>
             <div
@@ -280,7 +281,7 @@
             ></div>
           </div>
           <div class="menu-item">
-            <h1 class="transition" @click="signOut">
+            <h1 @click="signOut">
               Sign out
             </h1>
             <div
@@ -508,9 +509,14 @@ export default {
       const container = this.$refs.container;
       container.scrollTop = container.scrollHeight;
     },
+    visitProfile(id) {
+      this.$router.push({
+        path: `/profileVisit/${id}`, // Redirect to friends profile
+      });
+    },
     openProfile(id) {
       this.$router.push({
-        path: `/profileVisit/${id}`, // Redirect to user profile
+        path: `/profile/${id}`, // Redirect to user profile
       });
     },
   },
@@ -518,15 +524,14 @@ export default {
 </script>
 
 <style>
-.slide-fade-enter-active {
-  transition: all 0.8s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-  opacity: 0;
+.homebg {
+  background: rgb(34, 34, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(34, 34, 36, 1) 0%,
+    rgba(45, 45, 50, 1) 50%,
+    rgba(34, 34, 36, 1) 100%
+  );
 }
 
 body {
@@ -559,6 +564,10 @@ textarea {
 }
 
 .menu-item:hover .menu-effect {
+  width: 100%;
+}
+
+.flist-item:hover .flist-effect {
   width: 100%;
 }
 

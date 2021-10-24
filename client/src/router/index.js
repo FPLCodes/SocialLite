@@ -3,6 +3,7 @@ import SignUp from "../views/Sign-up.vue";
 import SignIn from "../views/Sign-in.vue";
 import Home from "../views/Home.vue";
 import ProfileVisit from "../views/ProfileVisit.vue";
+import Profile from "../views/Profile.vue";
 
 const routes = [
   {
@@ -19,13 +20,16 @@ const routes = [
     path: "/user/:id",
     name: "Home",
     component: Home,
-    meta: { transitionName: "slide" },
   },
   {
-    path: "/profileVisit/:id",
+    path: "/profile/:id",
+    name: "Profile",
+    component: Profile,
+  },
+  {
+    path: "/profile/:id",
     name: "ProfileVisit",
     component: ProfileVisit,
-    meta: { transitionName: "slide" },
   },
 ];
 

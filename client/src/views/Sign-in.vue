@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mainbg">
     <loading
       :active="isLoading"
       :color="'#62D7F0'"
@@ -10,14 +10,14 @@
       :background-color="'black'"
       :lock-scroll="true"
     />
-    <div class="w-full h-screen items-center absolute">
+    <div class="w-full h-screen items-center absolute mainbg">
       <div
         class="card w-2/6 mx-auto p-10 mt-52"
         style="background-color: #2b2b2b"
       >
         <div class="flex mx-auto justify-center filter drop-shadow-md">
           <h1
-            class="text-white font-bold text-6xl"
+            class="text-gray-50 font-bold text-6xl"
             style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
           >
             Social
@@ -34,10 +34,10 @@
             <div class="card-content">
               <!-- Email input card -->
               <div class="field text-lg filter drop-shadow-md">
-                <p class="text-white pb-1">Email</p>
+                <p class="text-gray-100 pb-1">Email</p>
                 <div class="control has-icons-left">
                   <input
-                    class="input border-none text-white"
+                    class="input border-none text-gray-100"
                     type="email"
                     v-model="email"
                     style="background-color: #2d3a46"
@@ -50,10 +50,10 @@
 
               <!-- Password input card -->
               <div class="field text-lg  filter drop-shadow-md">
-                <p class="text-white pb-1">Password</p>
+                <p class="text-gray-100 pb-1">Password</p>
                 <div class="control has-icons-left">
                   <input
-                    class="input border-none text-white"
+                    class="input border-none text-gray-100"
                     type="password"
                     v-model="password"
                     style="background-color: #2d3a46"
@@ -82,7 +82,7 @@
                 <div class="field w-full">
                   <p class="control flex gap-2">
                     <button
-                      class="button bg-blue-500 text-white transition hover:text-white hover:bg-blue-600 border-none w-full"
+                      class="button bg-blue-500 text-gray-100 transition hover:text-gray-100 hover:bg-blue-600 border-none w-full"
                       @click.prevent="googleSignIn()"
                     >
                       <i class="fab fa-google mr-3"></i>
@@ -105,7 +105,7 @@
                 :failed-message="failedMessage"
               />
 
-              <div class="text-white w-full mt-6 -mb-7">
+              <div class="text-gray-100 w-full mt-6 -mb-7">
                 <p class="text-center">
                   Don't have an account? Click sign in with google
                 </p>
@@ -276,5 +276,15 @@ export default {
 
 #app {
   background-color: #212121;
+}
+
+.mainbg {
+  background: rgb(26, 26, 28);
+  background: linear-gradient(
+    90deg,
+    rgba(26, 26, 28, 1) 10%,
+    rgba(36, 36, 40, 1) 50%,
+    rgba(26, 26, 28, 1) 90%
+  );
 }
 </style>
