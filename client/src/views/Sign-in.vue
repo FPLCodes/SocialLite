@@ -105,7 +105,7 @@
                 :failed-message="failedMessage"
               />
 
-              <div class="text-white w-full mt-4 -mb-7">
+              <div class="text-white w-full mt-6 -mb-7">
                 <p class="text-center">
                   Don't have an account? Click sign in with google
                 </p>

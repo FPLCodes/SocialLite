@@ -1,13 +1,10 @@
 <template>
   <div style="border-color: rgb(82, 82, 82)">
-    <div class="flex justify-items-stretch w-full h-full mx-auto">
+    <div class="flex justify-items-stretch w-9/12 mx-auto">
       <div class="flex-auto" style="background-color: #1E1E1E">
-        <div class=" flex field w-full h-screen">
+        <div class=" flex field w-full">
           <div class="w-full h-full">
-            <div
-              class="flex control w-full h-full"
-              style="background: #1E1E1E;"
-            >
+            <div class="flex control w-full" style="background: #1E1E1E;">
               <div
                 class="relative px-2 border-r-2"
                 style="border-color: rgb(82, 82, 82)"
@@ -17,7 +14,7 @@
                   style="background: #1E1E1E;"
                 >
                   <h1
-                    class="text-white font-bold text-5xl"
+                    class="text-gray-50 font-bold text-5xl"
                     style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
                   >
                     Social
@@ -33,7 +30,7 @@
                   <header class="card-header w-full px-2 pt-10">
                     <div class="w-full rounded-md">
                       <ul
-                        class="flex justify-center h-8 items-center"
+                        class="flex justify-center h-8 items-center text-gray-50"
                         style="background-color: #415D6C;"
                       >
                         <li
@@ -81,17 +78,19 @@
                     <li
                       v-for="user in friends"
                       :key="user.username"
-                      class="p-1 pt-3 cursor-pointer text-white transition transform hover:scale-105"
+                      class="p-1 py-2 mt-1 cursor-pointer text-gray-50 bg-gray-700 transition-all rounded-lg hover:bg-gray-600"
                       @click="loadChat(user.uid)"
                     >
-                      <div class="flex items-center">
-                        <figure class="image is-32x32">
-                          <img :src="user.pic" alt="pf" class="is-rounded" />
-                        </figure>
-                        <p class="justify-self-start ml-2 text-lg">
-                          {{ user.username }}
-                        </p>
-                      </div>
+                      <transition name="slide-fade">
+                        <div class="flex items-center">
+                          <figure class="image is-32x32">
+                            <img :src="user.pic" alt="pf" class="is-rounded" />
+                          </figure>
+                          <p class="justify-self-start ml-2 text-lg">
+                            {{ user.username }}
+                          </p>
+                        </div>
+                      </transition>
                     </li>
                   </div>
                   <div class="-mt-px px-2" v-if="!showList && friendReqs">
@@ -145,7 +144,7 @@
                       />
                     </figure>
                     <p
-                      class="card-header-title text-white cursor-pointer"
+                      class="card-header-title text-gray-200 cursor-pointer"
                       @click="openProfile(currChatUser.senderID)"
                     >
                       {{ currChatUser.sender }}
@@ -174,7 +173,7 @@
                     v-if="chat[0]"
                   >
                     <li
-                      class="w-max mr-4 ml-4 pt-2 h-10 filter drop-shadow-md"
+                      class="w-max mr-4 ml-4 pt-1 mt-1 h-10 filter drop-shadow-md"
                       v-bind:class="{
                         'justify-self-end': message.senderID === currUser.uid,
                       }"
@@ -187,19 +186,19 @@
                         v-if="message.senderID === currUser.uid"
                       >
                         <div
-                          class="px-3 h-9 rounded-xl ml-52 text-white"
+                          class="px-3 h-9 rounded-xl ml-52 text-gray-50"
                           style="background-color: #0B87AE"
                         >
                           <p class="inline-block align-middle -mb-3">
                             {{ message.message }}
                           </p>
                           <p
-                            class="inline-block align-bottom text-xs ml-3 -mb-2 font-light text-gray-200"
+                            class="inline-block align-bottom text-xs ml-3 -mb-2 font-light"
                           >
                             {{ message.time }}
                           </p>
                         </div>
-                        <figure class="image is-32x32 ml-2">
+                        <figure class="image w-9 ml-2">
                           <img
                             :src="message.senderPhoto"
                             alt="pf"
@@ -210,10 +209,10 @@
 
                       <!-- Messages sent by others -->
                       <div
-                        class="flex items-center"
+                        class="flex items-center text-gray-50"
                         v-if="message.senderID !== currUser.uid"
                       >
-                        <figure class="image is-32x32 mr-2">
+                        <figure class="image w-9 mr-2">
                           <img
                             :src="message.senderPhoto"
                             alt="pf"
@@ -252,7 +251,7 @@
                     v-if="message"
                     @click="send"
                   >
-                    <i class="fas fa-paper-plane"></i>
+                    <i class="fas fa-paper-plane mr-1"></i>
                   </button>
                 </div>
               </div>
@@ -262,20 +261,32 @@
       </div>
       <div class="flex-none mr-52" v-if="showMenu">
         <div
-          class="container w-52 pt-44 absolute h-screen text-white text-center text-2xl"
+          class="container w-52 pt-44 absolute h-screen text-gray-100 text-center text-2xl"
         >
-          <h1 class="menu-item transition transform hover:scale-105">
-            Home feed
-          </h1>
-          <h1 class="menu-item transition transform hover:scale-105">
-            Profile
-          </h1>
-          <h1
-            class="menu-item transition transform hover:scale-105"
-            @click="signOut"
-          >
-            Sign out
-          </h1>
+          <div class="menu-item">
+            <h1 class=" transition">
+              Home feed
+            </h1>
+            <div
+              class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
+            ></div>
+          </div>
+          <div class="menu-item">
+            <h1 class="transition">
+              Profile
+            </h1>
+            <div
+              class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
+            ></div>
+          </div>
+          <div class="menu-item">
+            <h1 class="transition" @click="signOut">
+              Sign out
+            </h1>
+            <div
+              class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -452,7 +463,7 @@ export default {
     async send() {
       const currTime = new Date();
 
-      const response = await axios.post("../api/chatMessages/", {
+      await axios.post("../api/chatMessages/", {
         message: this.message,
         sender: this.username,
         senderPhoto: this.photoURL,
@@ -460,8 +471,7 @@ export default {
         receiverID: this.receiverID,
         time: currTime,
       });
-      this.chat.push(response.data);
-      this.getChatTime();
+      this.loadChat(this.receiverID);
       this.message = "";
       this.scrollToBottom();
     },
@@ -508,6 +518,17 @@ export default {
 </script>
 
 <style>
+.slide-fade-enter-active {
+  transition: all 0.8s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  opacity: 0;
+}
+
 body {
   font-family: "Roboto";
 }
@@ -535,6 +556,10 @@ textarea {
   height: 3rem;
   margin-top: 1rem;
   cursor: pointer;
+}
+
+.menu-item:hover .menu-effect {
+  width: 100%;
 }
 
 /* width */
