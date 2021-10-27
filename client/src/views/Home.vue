@@ -75,7 +75,7 @@
                     <li
                       v-for="user in friends"
                       :key="user.username"
-                      class="p-1 py-2 cursor-pointer text-gray-50 transition-all rounded-lg"
+                      class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
                       @click="loadChat(user.uid)"
                     >
                       <div class="flist-item">
@@ -88,7 +88,7 @@
                           </p>
                         </div>
                         <div
-                          class="w-0 h-0.5 bg-gray-50 mt-2 transition-all flist-effect duration-300"
+                          class="w-0 h-0.5 bg-gray-300 mt-2 transition-all flist-effect duration-300"
                         ></div>
                       </div>
                     </li>
@@ -124,6 +124,26 @@
                     </li>
                   </div>
                 </div>
+                <div
+                  class="absolute bottom-4 w-full text-center -ml-2 text-gray-50 text-xl"
+                >
+                  <div class="menu-item">
+                    <h1>
+                      Find users
+                    </h1>
+                    <div
+                      class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
+                    ></div>
+                  </div>
+                  <div class="menu-item">
+                    <h1 @click="signOut">
+                      Sign out
+                    </h1>
+                    <div
+                      class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
+                    ></div>
+                  </div>
+                </div>
               </div>
 
               <!------------------------- Chat box --------------------->
@@ -132,11 +152,11 @@
                 style="background-color: #2D2D2D"
               >
                 <header
-                  class="h-14 sticky z-10 flex justify-between"
+                  class="h-16 sticky z-10 flex justify-between"
                   style="background-color: #1a1a1a"
                 >
                   <div class="flex w-max items-center" v-if="currChatUser">
-                    <figure class="image is-32x32 ml-2 -mr-2">
+                    <figure class="image is-32x32 ml-3 -mr-2">
                       <img
                         :src="currChatUser.senderPhoto"
                         alt="pf"
@@ -151,16 +171,26 @@
                     </p>
                   </div>
                   <div v-if="chat[0]">
-                    <i
-                      class="fas fa-bars fa-2xl pt-5 mt-1 pr-4 filter drop-shadow-md cursor-pointer absolute right-0"
-                      @click="showMenu ? (showMenu = false) : (showMenu = true)"
-                    ></i>
+                    <figure
+                      class="image is-48x48 mt-2 pt-px mr-3 absolute right-0 transition filter drop-shadow-md hover:drop-shadow-lg"
+                    >
+                      <img
+                        class="cursor-pointer is-rounded"
+                        :src="this.photoURL"
+                        @click="openProfile(this.userID)"
+                      />
+                    </figure>
                   </div>
-                  <div class="w-full" v-if="!chat[0]">
-                    <i
-                      class="fas fa-bars fa-2xl pt-5 mt-1 pr-4 filter drop-shadow-md cursor-pointer absolute right-0"
-                      @click="showMenu ? (showMenu = false) : (showMenu = true)"
-                    ></i>
+                  <div v-if="!chat[0]">
+                    <figure
+                      class="image is-48x48 mt-2 pt-px mr-3 absolute right-0 transition filter drop-shadow-md hover:drop-shadow-lg"
+                    >
+                      <img
+                        class="cursor-pointer is-rounded"
+                        :src="this.photoURL"
+                        @click="openProfile(this.userID)"
+                      />
+                    </figure>
                   </div>
                 </header>
                 <div
@@ -245,6 +275,7 @@
                     type="text"
                     placeholder="Message"
                     v-model="message"
+                    @keyup.enter="send"
                   />
                   <button
                     class="button is-info my-3 mr-2 rounded-3xl filter drop-shadow-md"
@@ -264,14 +295,6 @@
           class="container w-52 pt-44 absolute h-screen text-gray-100 text-center text-2xl"
           style="background-color: #1a1a1a"
         >
-          <div class="menu-item">
-            <h1>
-              Home feed
-            </h1>
-            <div
-              class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
-            ></div>
-          </div>
           <div class="menu-item" @click="openProfile(this.userID)">
             <h1>
               Profile

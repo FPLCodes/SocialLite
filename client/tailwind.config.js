@@ -17,6 +17,9 @@ module.exports = {
     extend: {
       borderRadius: ["hover", "focus"],
       width: ["hover"],
+      margin: ["responsive", "hover"],
+      padding: ["hover"],
+      dropShadow: ["responsive", "hover", "focus", "active", "group-hover"],
     },
   },
   plugins: [],
