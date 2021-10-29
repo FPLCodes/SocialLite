@@ -190,7 +190,7 @@ export default {
           console.log(user);
           this.successMessage = "Logged in!";
           this.$router.push({
-            path: `/user/${userID}`, // Redirect to user profile
+            path: `/user/${userID}`, // Redirect to home page
           });
         })
         .catch((error) => {

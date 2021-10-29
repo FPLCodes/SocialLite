@@ -76,7 +76,7 @@
                       v-for="user in friends"
                       :key="user.username"
                       class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
-                      @click="loadChat(user.uid)"
+                      @click="loadChat(), (this.receiverID = user.uid)"
                     >
                       <div class="flist-item">
                         <div class="flex items-center">
@@ -199,7 +199,7 @@
                   v-if="chat[0]"
                 >
                   <ul
-                    class="grid grid-cols-1 max-w-full pb-3 z-0"
+                    class="grid grid-cols-1 max-w-full pb-3 z-0 mt-16"
                     v-if="chat[0]"
                   >
                     <li
@@ -228,13 +228,6 @@
                             {{ message.time }}
                           </p>
                         </div>
-                        <figure class="image w-9 ml-2">
-                          <img
-                            :src="message.senderPhoto"
-                            alt="pf"
-                            class="is-rounded"
-                          />
-                        </figure>
                       </div>
 
                       <!-- Messages sent by others -->
@@ -269,6 +262,7 @@
                 <div
                   class="flex absolute bottom-0 w-full z-10"
                   style="background-color: #A4A4A4"
+                  v-if="chat[0]"
                 >
                   <input
                     class="input my-3 opacity-90 rounded-xl mx-2 filter drop-shadow-lg"
@@ -321,7 +315,7 @@
 import axios from "axios";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 export default {
-  name: "socialBox",
+  name: "Home",
   data() {
     return {
       users: [],
@@ -333,6 +327,8 @@ export default {
       message: "",
       currChatUser: "",
       showMenu: false,
+      photoURL: "",
+      receiverID: "",
     };
   },
   async mounted() {
@@ -355,11 +351,7 @@ export default {
             this.username = userInDB.username;
             this.firstName = userInDB.firstName;
             if (userInDB.lastName) this.lastName = userInDB.lastName;
-            this.birthDate = userInDB.birthDate;
-            this.gender = userInDB.gender;
             this.photoURL = userInDB.photoURL;
-            this.description = userInDB.description;
-            if (this.description === "") this.description = "Add a bio";
             this.friendReqs = userInDB.friendRequests;
             this.friends = userInDB.friendsList;
             this.userID = userInDB.uid;
@@ -463,26 +455,28 @@ export default {
         }
       });
     },
-    async loadChat(id) {
-      this.receiverID = id;
+    async loadChat() {
       const response = await axios.get("../api/chatMessages/");
       this.chat = response.data.filter(
         (message) =>
-          (message.receiverID === this.userID && message.senderID === id) ||
-          (message.receiverID === id && message.senderID === this.userID)
+          (message.receiverID === this.userID &&
+            message.senderID === this.receiverID) ||
+          (message.receiverID === this.receiverID &&
+            message.senderID === this.userID)
       );
       this.getChatTime();
 
-      this.currentCode = id;
+      this.currentCode = this.receiverID;
       this.currChatUser = "";
       this.chat.forEach((message) => {
-        if (message.senderID === id) {
+        if (message.senderID === this.receiverID) {
           this.currChatUser = message;
         }
       });
       setTimeout(() => {
         this.scrollToBottom();
       }, 1);
+      console.log("");
     },
     async send() {
       const currTime = new Date();
@@ -495,7 +489,7 @@ export default {
         receiverID: this.receiverID,
         time: currTime,
       });
-      this.loadChat(this.receiverID);
+      this.loadChat();
       this.message = "";
       this.scrollToBottom();
     },
@@ -596,7 +590,7 @@ textarea {
 
 /* width */
 div::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 /* Track */
