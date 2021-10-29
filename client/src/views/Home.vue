@@ -64,6 +64,7 @@
                         class="input h-9 pr-20"
                         type="text"
                         placeholder="Search"
+                        v-model="friendsSearch"
                       />
                       <span class="icon is-small is-left">
                         <i class="fas fa-search mb-1"></i>
@@ -329,6 +330,7 @@ export default {
       showMenu: false,
       photoURL: "",
       receiverID: "",
+      friendsSearch: "",
     };
   },
   async mounted() {
@@ -364,6 +366,14 @@ export default {
         console.log("No user signed in");
       }
     });
+  },
+  beforeUpdate() {
+    let search = this.friendsSearch.toLowerCase();
+    if (search)
+      this.friends = this.friends.filter((user) =>
+        user.username.toLowerCase().includes(search)
+      );
+    else this.friends = [...this.currUser.friendsList];
   },
   methods: {
     loadFriendReq() {
@@ -422,7 +432,7 @@ export default {
         });
 
         this.friendReqs = this.currUser.friendRequests;
-        this.friends = this.currUser.friendsList;
+        this.friends = [...this.currUser.friendsList];
         this.loadFriendReq();
         this.loadFriendsList();
         this.removeReq(id);
