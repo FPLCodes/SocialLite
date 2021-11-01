@@ -338,6 +338,7 @@ export default {
     const response = await axios.get("../api/userProfiles/");
     this.users = response.data;
     this.currUser = {};
+    console.log(this.users);
 
     // Check for logged in user & get user info
     const auth = getAuth();
