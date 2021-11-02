@@ -338,8 +338,6 @@ export default {
     const response = await axios.get("../api/userProfiles/");
     this.users = response.data;
     this.currUser = {};
-    console.log(process.env.MONGO_URI);
-    console.log(process.env.NODE_ENV);
 
     // Check for logged in user & get user info
     const auth = getAuth();
@@ -478,7 +476,6 @@ export default {
       );
       this.getChatTime();
 
-      this.currentCode = this.receiverID;
       this.currChatUser = "";
       this.chat.forEach((message) => {
         if (message.senderID === this.receiverID) {
@@ -493,6 +490,14 @@ export default {
       const currTime = new Date();
 
       await axios.post("../api/chatMessages/", {
+        message: this.message,
+        sender: this.username,
+        senderPhoto: this.photoURL,
+        senderID: this.userID,
+        receiverID: this.receiverID,
+        time: currTime,
+      });
+      this.chat.push({
         message: this.message,
         sender: this.username,
         senderPhoto: this.photoURL,
