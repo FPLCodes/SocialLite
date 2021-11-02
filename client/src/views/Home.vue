@@ -339,6 +339,7 @@ export default {
     this.users = response.data;
     this.currUser = {};
     console.log(process.env.MONGO_URI);
+    console.log(process.env.NODE_ENV);
 
     // Check for logged in user & get user info
     const auth = getAuth();
