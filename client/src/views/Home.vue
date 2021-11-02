@@ -314,6 +314,8 @@
 
 <script>
 import axios from "axios";
+import { io } from "socket.io-client";
+import { format } from "timeago.js";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 export default {
   name: "Home",
@@ -331,13 +333,14 @@ export default {
       photoURL: "",
       receiverID: "",
       friendsSearch: "",
+      socket: "",
+      arrivalMessage: null,
     };
   },
   async mounted() {
     // Get users from MongoDB
     const response = await axios.get("../api/userProfiles/");
     this.users = response.data;
-    this.currUser = {};
 
     // Check for logged in user & get user info
     const auth = getAuth();
@@ -362,6 +365,23 @@ export default {
         });
         this.loadFriendReq();
         this.loadFriendsList();
+
+        this.socket = io("ws://localhost:8900");
+
+        this.socket.emit("addUser", this.currUser.uid);
+        this.socket.on("getUsers", (users) => {
+          console.log(users);
+        });
+        this.socket.on("getMessage", (data) => {
+          this.arrivalMessage = {
+            message: data.message,
+            sender: data.sender,
+            senderPhoto: data.senderPhoto,
+            senderID: data.senderID,
+            receiverID: data.receiverID,
+            time: data.time,
+          };
+        });
       } else {
         console.log("No user signed in");
       }
@@ -374,6 +394,10 @@ export default {
         user.username.toLowerCase().includes(search)
       );
     else this.friends = [...this.currUser.friendsList];
+
+    this.arrivalMessage &&
+      this.chat?.includes(this.arrivalMessage.senderID) &&
+      this.chat.push(this.arrivalMessage);
   },
   methods: {
     loadFriendReq() {
@@ -474,10 +498,10 @@ export default {
           (message.receiverID === this.receiverID &&
             message.senderID === this.userID)
       );
-      this.getChatTime();
 
       this.currChatUser = "";
       this.chat.forEach((message) => {
+        message.time = format(message.time);
         if (message.senderID === this.receiverID) {
           this.currChatUser = message;
         }
@@ -488,39 +512,22 @@ export default {
     },
     async send() {
       const currTime = new Date();
+      const msg = {
+        message: this.message,
+        sender: this.username,
+        senderPhoto: this.photoURL,
+        senderID: this.userID,
+        receiverID: this.receiverID,
+        time: currTime,
+      };
 
-      await axios.post("../api/chatMessages/", {
-        message: this.message,
-        sender: this.username,
-        senderPhoto: this.photoURL,
-        senderID: this.userID,
-        receiverID: this.receiverID,
-        time: currTime,
-      });
-      this.chat.push({
-        message: this.message,
-        sender: this.username,
-        senderPhoto: this.photoURL,
-        senderID: this.userID,
-        receiverID: this.receiverID,
-        time: currTime,
-      });
+      this.socket.emit("sendMessage", msg);
+
+      await axios.post("../api/chatMessages/", msg);
+      this.chat.push(msg);
       this.loadChat();
       this.message = "";
       this.scrollToBottom();
-    },
-    getChatTime() {
-      this.chat.forEach((message) => {
-        const date = new Date(message.time);
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let time = hours >= 12 ? "PM" : "AM";
-        hours = hours % 12;
-        if (hours === 0) hours = 12;
-
-        message.time = `${hours}:${(minutes =
-          minutes < 10 ? (minutes = "0" + minutes) : minutes)} ${time}`;
-      });
     },
     signOut() {
       const auth = getAuth();
