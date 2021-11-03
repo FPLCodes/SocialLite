@@ -366,7 +366,7 @@ export default {
         this.loadFriendReq();
         this.loadFriendsList();
 
-        this.socket = io(`ws://localhost:${process.env.PORT || 8900}`);
+        this.socket = io("ws://localhost:8900");
 
         this.socket.emit("addUser", this.currUser.uid);
         this.socket.on("getUsers", (users) => {

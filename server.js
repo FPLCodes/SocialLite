@@ -15,7 +15,7 @@ let server = {
   },
 };
 
-const io = require("socket.io")(process.env.PORT || 8900, server);
+const io = require("socket.io")(8900, server);
 
 let users = [];
 
