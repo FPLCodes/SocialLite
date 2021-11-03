@@ -383,6 +383,7 @@ export default {
           };
           console.log(this.arrivalMessage);
           this.chat.push(this.arrivalMessage);
+          this.loadChat();
         });
       } else {
         console.log("No user signed in");
