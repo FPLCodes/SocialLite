@@ -11,15 +11,9 @@ const path = require("path");
 
 let server = {
   cors: {
-    origin: "http://localhost:8080",
+    origin: "*",
   },
 };
-if (process.env.NODE_ENV === "production")
-  server = {
-    cors: {
-      origin: "https://social-lite-app.herokuapp.com",
-    },
-  };
 
 const io = require("socket.io")(8900, server);
 
@@ -45,20 +39,10 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
-  socket.on(
-    "sendMessage",
-    ({ message, sender, senderPhoto, senderID, receiverID, time }) => {
-      const user = getUser(receiverID);
-      io.to(user.socketId).emit("getMessage", {
-        message,
-        sender,
-        senderPhoto,
-        senderID,
-        receiverID,
-        time,
-      });
-    }
-  );
+  socket.on("sendMessage", (receiverID) => {
+    const user = getUser(receiverID);
+    io.to(user.socketId).emit("getMessage");
+  });
 
   socket.on("disconnect", () => {
     console.log("A user has disconnected!");

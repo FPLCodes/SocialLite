@@ -372,19 +372,8 @@ export default {
         this.socket.on("getUsers", (users) => {
           console.log(users);
         });
-        this.socket.on("getMessage", (data) => {
-          this.arrivalMessage = {
-            message: data.message,
-            sender: data.sender,
-            senderPhoto: data.senderPhoto,
-            senderID: data.senderID,
-            receiverID: data.receiverID,
-            time: data.time,
-          };
-          console.log(this.arrivalMessage);
-          this.chat.push(this.arrivalMessage);
-          this.loadChat();
-        });
+
+        this.socket.on("getMessage", () => this.loadChat());
       } else {
         console.log("No user signed in");
       }
@@ -505,6 +494,7 @@ export default {
           this.currChatUser = message;
         }
       });
+      console.log(this.chat);
       setTimeout(() => {
         this.scrollToBottom();
       }, 1);
@@ -520,13 +510,11 @@ export default {
         time: currTime,
       };
 
-      this.socket.emit("sendMessage", msg);
-
       await axios.post("../api/chatMessages/", msg);
-      this.chat.push(msg);
-      this.loadChat();
+      this.socket.emit("sendMessage", this.receiverID);
+
       this.message = "";
-      this.scrollToBottom();
+      this.loadChat();
     },
     signOut() {
       const auth = getAuth();
