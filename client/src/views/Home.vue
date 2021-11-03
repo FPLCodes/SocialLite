@@ -208,8 +208,8 @@
                       v-bind:class="{
                         'justify-self-end': message.senderID === currUser.uid,
                       }"
-                      v-for="message in chat"
-                      :key="message.message"
+                      v-for="(message, index) in chat"
+                      :key="index"
                     >
                       <!-- Messages sent by user -->
                       <div
@@ -366,7 +366,7 @@ export default {
         this.loadFriendReq();
         this.loadFriendsList();
 
-        this.socket = io("ws://localhost:8900");
+        this.socket = io("ws://localhost:" + (process.env.PORT || 3000));
 
         this.socket.emit("addUser", this.currUser.uid);
         this.socket.on("getUsers", (users) => {
@@ -478,23 +478,24 @@ export default {
       });
     },
     async loadChat() {
-      const response = await axios.get("../api/chatMessages/");
-      this.chat = response.data.filter(
-        (message) =>
-          (message.receiverID === this.userID &&
-            message.senderID === this.receiverID) ||
-          (message.receiverID === this.receiverID &&
-            message.senderID === this.userID)
-      );
+      await axios.get("../api/chatMessages/").then((response) => {
+        this.chat = response.data.filter(
+          (message) =>
+            (message.receiverID === this.userID &&
+              message.senderID === this.receiverID) ||
+            (message.receiverID === this.receiverID &&
+              message.senderID === this.userID)
+        );
 
-      this.currChatUser = "";
-      this.chat.forEach((message) => {
-        message.time = format(message.time);
-        if (message.senderID === this.receiverID) {
-          this.currChatUser = message;
-        }
+        this.currChatUser = "";
+        this.chat.forEach((message) => {
+          message.time = format(message.time);
+          if (message.senderID === this.receiverID) {
+            this.currChatUser = message;
+          }
+        });
       });
-      console.log(this.chat);
+
       setTimeout(() => {
         this.scrollToBottom();
       }, 1);
