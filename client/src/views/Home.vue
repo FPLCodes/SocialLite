@@ -333,7 +333,7 @@ export default {
       photoURL: "",
       receiverID: "",
       friendsSearch: "",
-      socket: "",
+      socket: null,
       arrivalMessage: null,
     };
   },
@@ -381,6 +381,8 @@ export default {
             receiverID: data.receiverID,
             time: data.time,
           };
+          console.log(this.arrivalMessage);
+          this.chat.push(this.arrivalMessage);
         });
       } else {
         console.log("No user signed in");
@@ -394,10 +396,6 @@ export default {
         user.username.toLowerCase().includes(search)
       );
     else this.friends = [...this.currUser.friendsList];
-
-    this.arrivalMessage &&
-      this.chat?.includes(this.arrivalMessage.senderID) &&
-      this.chat.push(this.arrivalMessage);
   },
   methods: {
     loadFriendReq() {
