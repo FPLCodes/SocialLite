@@ -334,6 +334,7 @@ export default {
       friendsSearch: "",
       socket: null,
       arrivalMessage: null,
+      onlineUsers: [],
     };
   },
   async mounted() {
@@ -370,6 +371,7 @@ export default {
         this.socket.emit("addUser", this.userID);
         this.socket.on("getUsers", (users) => {
           console.log(users);
+          this.onlineUsers = users;
         });
 
         this.socket.on("getMessage", () => this.loadChat());
