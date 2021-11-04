@@ -5,19 +5,19 @@
         <div class="card p-5" style="background-color: #2b2b2b">
           <div class="text-center filter drop-shadow-md">
             <h1
-              class="text-white font-bold text-4xl pb-5"
+              class="text-gray-50 font-bold text-4xl pb-5"
               style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
             >
               Sign up
             </h1>
           </div>
-          <div class="card-content text-white">
+          <div class="card-content text-gray-50">
             <!-- Username input card -->
             <div class="field filter drop-shadow-md">
-              <p class="text-white pb-1">Username</p>
-              <div class="control has-icons-left has-icons-right text-white">
+              <p class="text-gray-50 pb-1">Username</p>
+              <div class="control has-icons-left has-icons-right text-gray-50">
                 <input
-                  class="input text-white border-none"
+                  class="input text-gray-50 border-none"
                   type="text"
                   v-model="username"
                   v-bind:class="{ 'border-red-300': usernameError }"
@@ -34,10 +34,10 @@
 
             <!-- Password input card -->
             <div class="field filter drop-shadow-md">
-              <p class="text-white pb-1">Password</p>
+              <p class="text-gray-50 pb-1">Password</p>
               <div class="control has-icons-left">
                 <input
-                  class="input text-white border-none"
+                  class="input text-gray-50 border-none"
                   type="password"
                   minlength="6"
                   v-model="password"
@@ -52,10 +52,10 @@
 
             <!-- Confirm password input card -->
             <div class="field filter drop-shadow-md">
-              <p class="text-white pb-1">Confirm Password</p>
+              <p class="text-gray-50 pb-1">Confirm Password</p>
               <div class="control has-icons-left">
                 <input
-                  class="input text-white border-none"
+                  class="input text-gray-50 border-none"
                   type="password"
                   minlength="6"
                   v-model="confirmPass"
@@ -81,10 +81,10 @@
             <div class="flex w-full gap-10">
               <!-- First name input card -->
               <div class="field w-full filter drop-shadow-md">
-                <p class="text-white pb-1">First name</p>
+                <p class="text-gray-50 pb-1">First name</p>
                 <div class="control has-icons-left">
                   <input
-                    class="input text-white border-none"
+                    class="input text-gray-50 border-none"
                     type="text"
                     v-model="firstName"
                     style="background-color: #2d3a46"
@@ -97,10 +97,10 @@
 
               <!-- Last name input card -->
               <div class="field w-full filter drop-shadow-md">
-                <p class="text-white pb-1">Last name</p>
+                <p class="text-gray-50 pb-1">Last name</p>
                 <p class="control has-icons-left">
                   <input
-                    class="input text-white border-none"
+                    class="input text-gray-50 border-none"
                     type="text"
                     v-model="lastName"
                     style="background-color: #2d3a46"
@@ -114,10 +114,10 @@
 
             <!-- Birthdate input card -->
             <div class="field filter drop-shadow-md">
-              <p class="text-white pb-1">Birthdate</p>
+              <p class="text-gray-50 pb-1">Birthdate</p>
               <div class="control has-icons-left">
                 <input
-                  class="input text-white border-none"
+                  class="input text-gray-50 border-none"
                   type="date"
                   v-model="birthDate"
                   style="background-color: #2d3a46"
