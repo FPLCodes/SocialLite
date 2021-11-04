@@ -263,7 +263,6 @@
                 <div
                   class="flex absolute bottom-0 w-full z-10"
                   style="background-color: #A4A4A4"
-                  v-if="chat[0]"
                 >
                   <input
                     class="input my-3 opacity-90 rounded-xl mx-2 filter drop-shadow-lg"
@@ -368,7 +367,7 @@ export default {
 
         this.socket = io("ws://localhost:8900");
 
-        this.socket.emit("addUser", this.currUser.uid);
+        this.socket.emit("addUser", this.userID);
         this.socket.on("getUsers", (users) => {
           console.log(users);
         });
