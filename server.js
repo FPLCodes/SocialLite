@@ -39,8 +39,10 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
-  socket.on("sendMessage", () => {
-    io.emit("getMessage");
+  socket.on("sendMessage", (receiverID) => {
+    const user = getUser(receiverID);
+    if (user) io.to(user.socketId).emit("getMessage");
+    else io.emit("getMessage");
   });
 
   socket.on("disconnect", () => {
