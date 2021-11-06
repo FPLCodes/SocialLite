@@ -465,9 +465,10 @@ export default {
         } else this.chatSize = 0;
       });
 
-      /* setTimeout(() => {
-        this.scrollToBottom();
-      }, 1); */
+      if (this.chat.length >= 20)
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 1);
     },
     send() {
       const currTime = new Date();

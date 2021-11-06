@@ -5,7 +5,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      body: ["Roboto", "Helvetica", "Arial", "sans-serif"],
+      body: ["Helvetica", "Arial", "sans-serif", "Roboto"],
     },
     colors: {
       gray: colors.trueGray,
