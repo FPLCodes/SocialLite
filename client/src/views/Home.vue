@@ -478,7 +478,7 @@ export default {
         senderPhoto: this.photoURL,
         senderID: this.userID,
         receiverID: this.receiverID,
-        time: currTime.toDateString(),
+        time: currTime.toString(),
       });
       this.message = "";
     },
