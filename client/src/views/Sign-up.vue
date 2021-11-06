@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="bg-gray-50">
+  <div id="app" class="bg-gray-50 font-sans">
     <div class="container w-full h-screen flex items-center">
       <div class="w-1/2 mx-auto max-w-xl mb-20">
         <div class="card p-5" style="background-color: #2b2b2b">

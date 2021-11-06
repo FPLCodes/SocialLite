@@ -1,5 +1,5 @@
 <template>
-  <div class="homebg">
+  <div class="homebg font-sans">
     <div class="flex justify-items-stretch w-9/12 mx-auto">
       <div class="flex-auto">
         <div class=" flex field w-full">
@@ -526,10 +526,6 @@ export default {
     rgba(45, 45, 50, 1) 50%,
     rgba(34, 34, 36, 1) 100%
   );
-}
-
-body {
-  font-family: "Roboto";
 }
 
 div {

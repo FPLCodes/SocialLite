@@ -1,5 +1,5 @@
 <template>
-  <div class="mainbg">
+  <div class="mainbg font-sans">
     <loading
       :active="isLoading"
       :color="'#62D7F0'"
