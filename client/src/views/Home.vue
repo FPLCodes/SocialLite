@@ -263,6 +263,7 @@
                 <div
                   class="flex absolute bottom-0 w-full z-10"
                   style="background-color: #A4A4A4"
+                  v-if="this.receiverID"
                 >
                   <input
                     class="input my-3 opacity-90 rounded-xl mx-2 filter drop-shadow-lg"
@@ -459,16 +460,20 @@ export default {
               (message.receiverID === this.receiverID &&
                 message.senderID === this.userID)
           );
-          console.log(this.receiverID);
-          console.log(this.chat);
           this.chatSize = Object.keys(data).length;
+
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 10);
+
+          this.currChatUser = "";
+          this.chat.forEach((message) => {
+            if (message.senderID === receiverID) {
+              this.currChatUser = message;
+            }
+          });
         } else this.chatSize = 0;
       });
-
-      if (this.chat.length >= 20)
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 1);
     },
     send() {
       const currTime = new Date();
