@@ -472,13 +472,13 @@ export default {
     send() {
       const currTime = new Date();
 
-      set(ref(this.db, "Chats/message" + (this.chatSize + 1)), {
+      set(ref(this.db, "Chats/" + (this.chatSize + 1)), {
         message: this.message,
         sender: this.username,
         senderPhoto: this.photoURL,
         senderID: this.userID,
         receiverID: this.receiverID,
-        time: currTime.toString(),
+        time: currTime.toDateString(),
       });
       this.message = "";
     },
