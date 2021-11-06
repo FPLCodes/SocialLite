@@ -77,7 +77,7 @@
                       v-for="user in friends"
                       :key="user.username"
                       class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
-                      @click="loadChat(), (this.receiverID = user.uid)"
+                      @click="loadChat(user.uid)"
                     >
                       <div class="flist-item">
                         <div class="flex items-center">
@@ -284,38 +284,16 @@
           </div>
         </div>
       </div>
-      <div class="flex-none mr-52" v-if="showMenu">
-        <div
-          class="container w-52 pt-44 absolute h-screen text-gray-100 text-center text-2xl"
-          style="background-color: #1a1a1a"
-        >
-          <div class="menu-item" @click="openProfile(this.userID)">
-            <h1>
-              Profile
-            </h1>
-            <div
-              class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
-            ></div>
-          </div>
-          <div class="menu-item">
-            <h1 @click="signOut">
-              Sign out
-            </h1>
-            <div
-              class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
-            ></div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { io } from "socket.io-client";
-import { format } from "timeago.js";
+/* import { io } from "socket.io-client";
+import { format } from "timeago.js"; */
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getDatabase, ref, onValue, set } from "firebase/database";
 export default {
   name: "Home",
   data() {
@@ -328,13 +306,9 @@ export default {
       chat: [],
       message: "",
       currChatUser: "",
-      showMenu: false,
       photoURL: "",
       receiverID: "",
       friendsSearch: "",
-      socket: null,
-      arrivalMessage: null,
-      onlineUsers: [],
     };
   },
   async mounted() {
@@ -366,15 +340,8 @@ export default {
         this.loadFriendReq();
         this.loadFriendsList();
 
-        this.socket = io("ws://localhost:8900");
-
-        this.socket.emit("addUser", this.userID);
-        this.socket.on("getUsers", (users) => {
-          console.log(users);
-          this.onlineUsers = users;
-        });
-
-        this.socket.on("getMessage", () => this.loadChat());
+        const db = getDatabase();
+        this.db = db;
       } else {
         console.log("No user signed in");
       }
@@ -478,45 +445,42 @@ export default {
         }
       });
     },
-    async loadChat() {
-      await axios.get("../api/chatMessages/").then((response) => {
-        this.chat = response.data.filter(
-          (message) =>
-            (message.receiverID === this.userID &&
-              message.senderID === this.receiverID) ||
-            (message.receiverID === this.receiverID &&
-              message.senderID === this.userID)
-        );
+    loadChat(receiverID) {
+      this.receiverID = receiverID;
+      const chatRef = ref(this.db, "Chats/");
 
-        this.currChatUser = "";
-        this.chat.forEach((message) => {
-          message.time = format(message.time);
-          if (message.senderID === this.receiverID) {
-            this.currChatUser = message;
-          }
-        });
+      onValue(chatRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.chat = Object.values(data).filter(
+            (message) =>
+              (message.receiverID === this.userID &&
+                message.senderID === this.receiverID) ||
+              (message.receiverID === this.receiverID &&
+                message.senderID === this.userID)
+          );
+          console.log(this.receiverID);
+          console.log(this.chat);
+          this.chatSize = Object.keys(data).length;
+        } else this.chatSize = 0;
       });
 
-      setTimeout(() => {
+      /* setTimeout(() => {
         this.scrollToBottom();
-      }, 1);
+      }, 1); */
     },
-    async send() {
+    send() {
       const currTime = new Date();
-      const msg = {
+
+      set(ref(this.db, "Chats/message" + (this.chatSize + 1)), {
         message: this.message,
         sender: this.username,
         senderPhoto: this.photoURL,
         senderID: this.userID,
         receiverID: this.receiverID,
-        time: currTime,
-      };
-
-      await axios.post("../api/chatMessages/", msg);
-      this.socket.emit("sendMessage", this.receiverID);
-
+        time: currTime.toString(),
+      });
       this.message = "";
-      this.loadChat();
     },
     signOut() {
       const auth = getAuth();
