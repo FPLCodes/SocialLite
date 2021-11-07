@@ -194,7 +194,10 @@
                     </figure>
                   </div>
                 </header>
-                <div v-if="!chat[0]" class="mx-auto text-center h-full mt-20">
+                <div
+                  v-if="!this.receiverID"
+                  class="mx-auto text-center h-full mt-20"
+                >
                   <h1 class="text-gray-50 text-xl">
                     Click on a user to start chatting!
                   </h1>
