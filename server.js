@@ -9,49 +9,6 @@ const UserProfileRoutes = require("./routes/api/userProfiles");
 const ChatMessageRoutes = require("./routes/api/chatMessages");
 const path = require("path");
 
-let server = {
-  cors: {
-    origin: "*",
-  },
-};
-
-const io = require("socket.io")(8900, server);
-
-let users = [];
-
-const addUser = (userId, socketId) => {
-  !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
-};
-
-const removeUser = (socketId) => {
-  users = users.filter((user) => user.socketId !== socketId);
-};
-
-const getUser = (userId) => {
-  return users.find((user) => user.userId === userId);
-};
-
-io.on("connection", (socket) => {
-  console.log("a user connected.");
-  socket.on("addUser", (userID) => {
-    addUser(userID, socket.id);
-    io.emit("getUsers", users);
-  });
-
-  socket.on("sendMessage", (receiverID) => {
-    const user = getUser(receiverID);
-    if (user) io.to(user.socketId).emit("getMessage");
-    else io.emit("getMessage");
-  });
-
-  socket.on("disconnect", () => {
-    console.log("A user has disconnected!");
-    removeUser(socket.id);
-    io.emit("getUsers", users);
-  });
-});
-
 app.use(cors());
 app.use(morgan("tiny"));
 app.use(bodyParser.json());
