@@ -1,6 +1,6 @@
 <template>
   <div class="homebg font-sans">
-    <div class="flex justify-items-stretch w-9/12 mx-auto">
+    <div class="flex justify-items-stretch xl:w-9/12 mx-auto">
       <div class="flex-auto">
         <div class=" flex field w-full">
           <div class="w-full h-full">
@@ -194,6 +194,11 @@
                     </figure>
                   </div>
                 </header>
+                <div v-if="!chat[0]" class="mx-auto text-center h-full mt-20">
+                  <h1 class="text-gray-50 text-xl">
+                    Click on a user to start chatting!
+                  </h1>
+                </div>
                 <div
                   class="absolute bottom-0 w-full max-h-full overflow-y-auto pb-16"
                   ref="container"
@@ -204,7 +209,7 @@
                     v-if="chat[0]"
                   >
                     <li
-                      class="w-max mr-4 ml-4 pt-1 mt-1 h-10 filter drop-shadow-md"
+                      class="w-max mr-4 ml-4 pt-1 mt-1 filter drop-shadow-md"
                       v-bind:class="{
                         'justify-self-end': message.senderID === currUser.uid,
                       }"
@@ -217,16 +222,13 @@
                         v-if="message.senderID === currUser.uid"
                       >
                         <div
-                          class="px-3 h-9 rounded-xl ml-52 text-gray-50"
+                          class="px-3 py-1 rounded-xl ml-52 text-gray-50"
                           style="background-color: #0B87AE"
                         >
-                          <p class="inline-block align-middle -mb-3">
-                            {{ message.message }}
-                          </p>
                           <p
-                            class="inline-block align-bottom text-xs ml-3 -mb-2 font-light"
+                            class="inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
                           >
-                            {{ message.time }}
+                            {{ message.message }}
                           </p>
                         </div>
                       </div>
@@ -244,16 +246,13 @@
                           />
                         </figure>
                         <div
-                          class="px-3 h-9 rounded-xl mr-40 text-white"
+                          class="px-3 py-1 rounded-xl mr-40 text-gray-50"
                           style="background-color: #0B87AE"
                         >
-                          <p class="inline-block align-middle -mb-3">
-                            {{ message.message }}
-                          </p>
                           <p
-                            class="inline-block align-bottom text-xs ml-3 -mb-2 font-light text-gray-200"
+                            class="inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
                           >
-                            {{ message.time }}
+                            {{ message.message }}
                           </p>
                         </div>
                       </div>
