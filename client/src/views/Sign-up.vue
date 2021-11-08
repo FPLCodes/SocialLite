@@ -1,8 +1,17 @@
 <template>
   <div id="app" class="bg-gray-50 font-sans">
     <div class="container w-full h-screen flex items-center">
-      <div class="w-1/2 mx-auto max-w-xl mb-20">
+      <div
+        class="mx-auto max-w-xl mb-20 w-10/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12"
+      >
         <div class="card p-5" style="background-color: #2b2b2b">
+          <div
+            class="flex text-gray-50 items-center cursor-pointer"
+            @click="signOut"
+          >
+            <i class="fas fa-long-arrow-alt-left mr-1"></i>
+            <p>Go back</p>
+          </div>
           <div class="text-center filter drop-shadow-md">
             <h1
               class="text-gray-50 font-bold text-4xl pb-5"
@@ -299,6 +308,17 @@ export default {
             console.log(error);
           });
       }
+    },
+    signOut() {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          console.log("Signed out!");
+          this.$router.push({ path: "/" }); // Redirect to sign-in page
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

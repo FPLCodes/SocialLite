@@ -12,7 +12,7 @@
     />
     <div class="w-full h-screen items-center absolute mainbg">
       <div
-        class="card w-2/6 mx-auto p-10 mt-52"
+        class="card mx-auto p-10 mt-52 w-10/12 md:w-8/12 lg:w-6/12 xl:w-5/12 2xl:w-4/12"
         style="background-color: #2b2b2b"
       >
         <div class="flex mx-auto justify-center filter drop-shadow-md">
@@ -106,8 +106,11 @@
               />
 
               <div class="text-gray-100 w-full mt-6 -mb-7">
-                <p class="text-center">
-                  Don't have an account? Click sign in with google
+                <p
+                  class="text-center cursor-pointer"
+                  @click.prevent="googleSignIn()"
+                >
+                  Don't have an account? Click here to sign up
                 </p>
               </div>
             </div>
