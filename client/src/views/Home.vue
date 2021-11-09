@@ -98,7 +98,7 @@
                     <li
                       v-for="request in friendReqs"
                       :key="request.username"
-                      class="flex justify-between p-1 pt-3 text-white"
+                      class="flex justify-between p-1 pt-3 text-gray-50"
                     >
                       <div class="flex items-center">
                         <figure class="image is-32x32">
@@ -149,6 +149,7 @@
                         <button
                           class="button is-info w-full mt-2"
                           :disabled="!userSearch"
+                          @click="sendFriendReq"
                         >
                           Send request
                         </button>
@@ -359,7 +360,6 @@ export default {
             this.friendReqs = userInDB.friendRequests;
             this.friends = userInDB.friendsList;
             this.userID = userInDB.uid;
-            this.loggedInUser = user.providerData[0];
           }
         });
         this.loadFriendReq();
@@ -367,6 +367,7 @@ export default {
 
         const db = getDatabase();
         this.db = db;
+        this.currUser.friendsList.forEach((user) => console.log(user.uid));
       } else {
         console.log("No user signed in");
       }
@@ -383,120 +384,105 @@ export default {
   methods: {
     loadFriendReq() {
       this.friendReqs.forEach((request, i) => {
-        this.users.forEach((userInDB) => {
-          if (request === userInDB.uid) {
-            this.friendReqs[i] = {
-              username: userInDB.username,
-              pic: userInDB.photoURL,
-              uid: userInDB.uid,
-            };
-          }
-        });
+        const userInDB = this.users.find(
+          (userInDB) => request === userInDB.uid
+        );
+        this.friendReqs[i] = {
+          username: userInDB.username,
+          pic: userInDB.photoURL,
+          uid: userInDB.uid,
+        };
       });
     },
     loadFriendsList() {
       this.friends.forEach((user, i) => {
-        this.users.forEach((userInDB) => {
-          if (user === userInDB.uid) {
-            this.friends[i] = {
-              username: userInDB.username,
-              pic: userInDB.photoURL,
-              uid: userInDB.uid,
-            };
-          }
-        });
+        const userInDB = this.users.find((userInDB) => user === userInDB.uid);
+        this.friends[i] = {
+          username: userInDB.username,
+          pic: userInDB.photoURL,
+          uid: userInDB.uid,
+        };
       });
     },
-    async sendFriendReq() {
+    sendFriendReq() {
       let updatedFriendRequests = [];
-      this.users.forEach((userInDB) => {
-        if (userInDB.uid === this.loggedInUser.uid) {
-          updatedFriendRequests = this.loggedInUser.friendRequests;
+      this.users.forEach(async (userInDB) => {
+        if (userInDB.username === this.userSearch) {
+          updatedFriendRequests = userInDB.friendRequests;
 
-          updatedFriendRequests.forEach(async (reqs) => {
-            if (reqs === userInDB.uid) {
-              console.log("Request already exists!");
-            } else {
-              updatedFriendRequests.push(this.loggedInUser.uid);
-              try {
-                const response = await axios.put(
-                  "../api/userProfiles/" + this.currUser._id,
-                  {
-                    friendRequests: updatedFriendRequests,
-                  }
-                );
-                this.currUser = response.data;
-                console.log("Sent friend request!");
-              } catch (err) {
-                console.log(err);
-              }
+          const exists = updatedFriendRequests.find(
+            (reqs) => reqs === this.currUser.uid
+          );
+
+          if (exists) console.log("Request already exists!");
+          else if (userInDB.username === this.username)
+            console.log("You cannot add yourself!");
+          else {
+            updatedFriendRequests.push(this.currUser.uid);
+            try {
+              await axios.put("../api/userProfiles/" + userInDB._id, {
+                friendRequests: updatedFriendRequests,
+              });
+              console.log("Sent friend request!");
+            } catch (err) {
+              console.log(err);
             }
-          });
+          }
         }
       });
     },
     async acceptFriend(id) {
       let updatedFriendsList = [];
-      if (this.currUser.friendsList[0])
-        updatedFriendsList = this.currUser.friendsList;
+      this.currUser.friendsList.forEach((user) =>
+        updatedFriendsList.push(user.uid)
+      );
+      console.log(updatedFriendsList);
       updatedFriendsList.push(id);
-
-      let userInDB = {};
-      this.users.forEach((user) => {
-        if (user.uid === id) userInDB = user;
-      });
       try {
         console.log(updatedFriendsList);
-        const response1 = await axios.put(
+        const response = await axios.put(
           "../api/userProfiles/" + this.currUser._id,
           {
             friendsList: updatedFriendsList,
           }
         );
-        this.currUser = response1.data;
+        this.currUser = response.data;
+        this.removeReq(id);
 
+        const userInDB = this.users.find((user) => user.uid === id);
         updatedFriendsList = [];
-        if (userInDB.friendsList[0]) updatedFriendsList = userInDB.friendsList;
-        updatedFriendsList.push(this.loggedInUser.uid);
+        updatedFriendsList = userInDB.friendsList;
+        updatedFriendsList.push(this.currUser.uid);
 
         console.log(updatedFriendsList);
         await axios.put("../api/userProfiles/" + userInDB._id, {
           friendsList: updatedFriendsList,
         });
-
-        this.friendReqs = this.currUser.friendRequests;
-        this.friends = [...this.currUser.friendsList];
-        this.loadFriendReq();
-        this.loadFriendsList();
-        this.removeReq(id);
       } catch (err) {
         console.log(err);
       }
     },
-    removeReq(id) {
+    async removeReq(id) {
       let updatedFriendReq = [];
       updatedFriendReq = this.currUser.friendRequests.filter(
         (user) => user.uid !== id
       );
-      this.users.forEach(async (userInDB) => {
-        if (userInDB.uid === this.loggedInUser.uid) {
-          try {
-            const response = await axios.put(
-              "../api/userProfiles/" + this.currUser._id,
-              {
-                friendRequests: updatedFriendReq,
-              }
-            );
-            this.currUser = response.data;
-            this.friendReqs = this.currUser.friendRequests;
-            this.friendsList = this.currUser.friendsList;
-            this.loadFriendReq();
-            this.loadFriendsList();
-          } catch (err) {
-            console.log(err);
+
+      try {
+        const response = await axios.put(
+          "../api/userProfiles/" + this.currUser._id,
+          {
+            friendRequests: updatedFriendReq,
           }
-        }
-      });
+        );
+        this.currUser = response.data;
+        this.friendReqs = this.currUser.friendRequests;
+        this.friends = this.currUser.friendsList;
+        this.loadFriendReq();
+        this.loadFriendsList();
+      } catch (err) {
+        console.log(err);
+      }
     },
     loadChat(receiverID) {
       this.receiverID = receiverID;
