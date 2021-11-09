@@ -1,6 +1,6 @@
 <template>
   <div class="homebg font-sans">
-    <div class="flex justify-items-stretch xl:w-9/12 mx-auto">
+    <div class="flex justify-items-stretch mx-auto xl:w-9/12">
       <div class="flex-auto">
         <div class=" flex field w-full">
           <div class="w-full h-full">
@@ -9,7 +9,7 @@
                 class="relative px-2 border-r-2"
                 style="border-color: rgb(82, 82, 82)"
               >
-                <div class="flex mx-auto justify-center pt-5 cursor-default">
+                <div class="flex justify-center pt-5 cursor-default">
                   <h1
                     class="text-gray-50 font-bold text-5xl"
                     style="text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);"
@@ -128,14 +128,34 @@
                 <div
                   class="absolute bottom-4 w-full text-center -ml-2 text-gray-50 text-xl"
                 >
-                  <div class="menu-item">
+                  <div class="menu-item" @click="findUsers = !findUsers">
                     <h1>
-                      Find users
+                      Add friend
                     </h1>
                     <div
                       class="menu-effect w-0 h-0.5 mt-2 mx-auto bg-gray-500 transition-all duration-300"
                     ></div>
                   </div>
+
+                  <div v-if="findUsers">
+                    <div class="field has-addons flex mx-3 pb-1">
+                      <div class="w-full opacity-90 rounded-md items-center">
+                        <input
+                          class="input h-9 pr-20"
+                          type="text"
+                          placeholder="Username"
+                          v-model="userSearch"
+                        />
+                        <button
+                          class="button is-info w-full mt-2"
+                          :disabled="!userSearch"
+                        >
+                          Send request
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="menu-item">
                     <h1 @click="signOut">
                       Sign out
@@ -199,7 +219,7 @@
                   class="mx-auto text-center h-full mt-20"
                 >
                   <h1 class="text-gray-50 text-xl">
-                    Click on a user to start chatting!
+                    Click on a user to start chatting
                   </h1>
                 </div>
                 <div
@@ -312,6 +332,8 @@ export default {
       photoURL: "",
       receiverID: "",
       friendsSearch: "",
+      userSearch: "",
+      findUsers: false,
     };
   },
   async mounted() {
@@ -383,6 +405,34 @@ export default {
             };
           }
         });
+      });
+    },
+    async sendFriendReq() {
+      let updatedFriendRequests = [];
+      this.users.forEach((userInDB) => {
+        if (userInDB.uid === this.loggedInUser.uid) {
+          updatedFriendRequests = this.loggedInUser.friendRequests;
+
+          updatedFriendRequests.forEach(async (reqs) => {
+            if (reqs === userInDB.uid) {
+              console.log("Request already exists!");
+            } else {
+              updatedFriendRequests.push(this.loggedInUser.uid);
+              try {
+                const response = await axios.put(
+                  "../api/userProfiles/" + this.currUser._id,
+                  {
+                    friendRequests: updatedFriendRequests,
+                  }
+                );
+                this.currUser = response.data;
+                console.log("Sent friend request!");
+              } catch (err) {
+                console.log(err);
+              }
+            }
+          });
+        }
       });
     },
     async acceptFriend(id) {
