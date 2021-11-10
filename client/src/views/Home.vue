@@ -72,7 +72,10 @@
                     </div>
                   </div>
 
-                  <div class="pt-1 px-2" v-if="showList">
+                  <div
+                    class="pt-1 px-2 max-h-100 overflow-y-auto"
+                    v-if="showList"
+                  >
                     <li
                       v-for="user in friends"
                       :key="user.username"
@@ -99,7 +102,10 @@
                       </div>
                     </li>
                   </div>
-                  <div class="-mt-px px-2" v-if="!showList && friendReqs">
+                  <div
+                    class="-mt-px px-2 max-h-100 overflow-y-auto"
+                    v-if="!showList && friendReqs"
+                  >
                     <li
                       v-for="request in friendReqs"
                       :key="request.username"
@@ -136,7 +142,8 @@
                   </div>
                 </div>
                 <div
-                  class="absolute bottom-4 w-full text-center -ml-2 text-gray-50 text-xl"
+                  class="absolute bottom-2 w-full text-center -ml-2 text-gray-50 text-xl"
+                  style="border-color: rgb(82, 82, 82)"
                 >
                   <div class="menu-item" @click="findUsers = !findUsers">
                     <h1>
@@ -193,10 +200,7 @@
               </div>
 
               <!------------------------- Chat box --------------------->
-              <div
-                class="w-full h-screen relative"
-                style="background-color: #2D2D2D"
-              >
+              <div class="w-full h-screen relative chat">
                 <header
                   class="h-16 sticky z-10 flex justify-between"
                   style="background-color: #1a1a1a"
@@ -244,9 +248,9 @@
                 </header>
                 <div
                   v-if="!this.receiverID"
-                  class="mx-auto text-center h-full mt-20"
+                  class="mx-auto text-center h-full chat"
                 >
-                  <h1 class="text-gray-50 text-xl">
+                  <h1 class="text-gray-50 text-xl mt-20">
                     Click on a user to start chatting
                   </h1>
                 </div>
@@ -639,6 +643,15 @@ textarea {
 
 .flist-item:hover .flist-effect {
   width: 100%;
+}
+
+.chat {
+  background: rgb(51, 51, 55);
+  background: linear-gradient(
+    180deg,
+    rgb(49, 49, 53) 0%,
+    rgba(25, 25, 27, 1) 100%
+  );
 }
 
 /* width */
