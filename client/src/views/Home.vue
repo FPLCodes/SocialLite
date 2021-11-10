@@ -82,7 +82,7 @@
                       <div class="flist-item">
                         <div class="flex items-center">
                           <figure class="image is-32x32">
-                            <img :src="user.pic" alt="pf" class="is-rounded" />
+                            <img :src="user.pic" alt="pfp" class="is-rounded" />
                           </figure>
                           <p class="justify-self-start ml-2 text-lg">
                             {{ user.username }}
@@ -102,7 +102,11 @@
                     >
                       <div class="flex items-center">
                         <figure class="image is-32x32">
-                          <img :src="request.pic" alt="pf" class="is-rounded" />
+                          <img
+                            :src="request.pic"
+                            alt="pfp"
+                            class="is-rounded"
+                          />
                         </figure>
                         <p class="justify-self-start ml-2">
                           {{ request.username }}
@@ -146,6 +150,7 @@
                           placeholder="Username"
                           v-model="userSearch"
                         />
+
                         <button
                           class="button is-info w-full mt-2"
                           :disabled="!userSearch"
@@ -153,6 +158,17 @@
                         >
                           Send request
                         </button>
+
+                        <div
+                          class="notification is-warning h-8 mt-2"
+                          v-if="requestSent"
+                        >
+                          <button
+                            class="delete mt-1"
+                            @click="requestSent = !requestSent"
+                          ></button>
+                          <p class="-mt-2 text-sm">{{ requestMessage }}!</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -181,7 +197,7 @@
                     <figure class="image is-32x32 ml-3 -mr-2">
                       <img
                         :src="currChatUser.senderPhoto"
-                        alt="pf"
+                        alt="pfp"
                         class="is-rounded"
                       />
                     </figure>
@@ -265,7 +281,7 @@
                         <figure class="image w-9 mr-2">
                           <img
                             :src="message.senderPhoto"
-                            alt="pf"
+                            alt="pfp"
                             class="is-rounded "
                           />
                         </figure>
@@ -335,6 +351,8 @@ export default {
       friendsSearch: "",
       userSearch: "",
       findUsers: false,
+      requestSent: true,
+      requestMessage: "Error sending request",
     };
   },
   async mounted() {
@@ -367,7 +385,6 @@ export default {
 
         const db = getDatabase();
         this.db = db;
-        console.log(this.currUser.friendRequests);
       } else {
         console.log("No user signed in");
       }
@@ -414,16 +431,20 @@ export default {
             (reqs) => reqs === this.currUser.uid
           );
 
-          if (exists) console.log("Request already exists!");
-          else if (userInDB.username === this.username)
-            console.log("You cannot add yourself!");
-          else {
+          if (exists) {
+            this.requestMessage = "Already sent request";
+            this.requestSent = true;
+          } else if (userInDB.username === this.username) {
+            this.requestMessage = "Cannot add yourself";
+            this.requestSent = true;
+          } else {
             updatedFriendRequests.push(this.currUser.uid);
             try {
               await axios.put("../api/userProfiles/" + userInDB._id, {
                 friendRequests: updatedFriendRequests,
               });
-              console.log("Sent friend request!");
+              this.requestMessage = "Request sent!";
+              this.requestSent = true;
             } catch (err) {
               console.log(err);
             }
