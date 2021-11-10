@@ -6,7 +6,6 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const UserProfileRoutes = require("./routes/api/userProfiles");
-const ChatMessageRoutes = require("./routes/api/chatMessages");
 const path = require("path");
 
 app.use(cors());
@@ -22,7 +21,6 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/userProfiles", UserProfileRoutes);
-app.use("/api/chatMessages", ChatMessageRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/dist"));
