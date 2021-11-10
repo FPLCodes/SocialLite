@@ -367,7 +367,7 @@ export default {
 
         const db = getDatabase();
         this.db = db;
-        this.currUser.friendsList.forEach((user) => console.log(user.uid));
+        console.log(this.currUser.friendRequests);
       } else {
         console.log("No user signed in");
       }
@@ -436,10 +436,9 @@ export default {
       this.currUser.friendsList.forEach((user) =>
         updatedFriendsList.push(user.uid)
       );
-      console.log(updatedFriendsList);
       updatedFriendsList.push(id);
+
       try {
-        console.log(updatedFriendsList);
         const response = await axios.put(
           "../api/userProfiles/" + this.currUser._id,
           {
@@ -454,7 +453,6 @@ export default {
         updatedFriendsList = userInDB.friendsList;
         updatedFriendsList.push(this.currUser.uid);
 
-        console.log(updatedFriendsList);
         await axios.put("../api/userProfiles/" + userInDB._id, {
           friendsList: updatedFriendsList,
         });
@@ -464,9 +462,11 @@ export default {
     },
     async removeReq(id) {
       let updatedFriendReq = [];
-      updatedFriendReq = this.currUser.friendRequests.filter(
-        (user) => user.uid !== id
-      );
+      if (this.currUser.friendRequests.length !== 1) {
+        this.currUser.friendRequests.forEach((user) => {
+          if (user.uid !== id) updatedFriendReq.push(user.uid);
+        });
+      }
 
       try {
         const response = await axios.put(
@@ -475,6 +475,7 @@ export default {
             friendRequests: updatedFriendReq,
           }
         );
+
         this.currUser = response.data;
         this.friendReqs = this.currUser.friendRequests;
         this.friends = this.currUser.friendsList;
