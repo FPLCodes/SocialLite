@@ -149,16 +149,16 @@
 
                   <div v-if="findUsers">
                     <div class="field has-addons flex mx-3 pb-1">
-                      <div class="w-full opacity-90 rounded-md items-center">
+                      <div class="w-full opacity-90 items-center">
                         <input
-                          class="input h-9 pr-20"
+                          class="input h-9 pr-20 rounded-xl"
                           type="text"
                           placeholder="Username"
                           v-model="userSearch"
                         />
 
                         <button
-                          class="button is-info w-full mt-2"
+                          class="button is-info w-full mt-2 transition-all rounded-2xl ease-in"
                           :disabled="!userSearch"
                           @click="sendFriendReq"
                         >
@@ -166,14 +166,16 @@
                         </button>
 
                         <div
-                          class="notification is-warning h-8 mt-2"
+                          class="notification is-warning h-9 mt-2"
                           v-if="requestSent"
                         >
                           <button
                             class="delete mt-1"
                             @click="requestSent = !requestSent"
                           ></button>
-                          <p class="-mt-2 text-sm">{{ requestMessage }}!</p>
+                          <p class="-mt-2 text-sm ml-3 font-medium">
+                            {{ requestMessage }}!
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -453,12 +455,15 @@ export default {
               await axios.put("../api/userProfiles/" + userInDB._id, {
                 friendRequests: updatedFriendRequests,
               });
-              this.requestMessage = "Request sent!";
+              this.requestMessage = "Request sent";
               this.requestSent = true;
             } catch (err) {
               console.log(err);
             }
           }
+        } else {
+          this.requestMessage = "No user found";
+          this.requestSent = true;
         }
       });
     },
