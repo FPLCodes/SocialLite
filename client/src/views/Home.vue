@@ -82,7 +82,12 @@
                       <div class="flist-item">
                         <div class="flex items-center">
                           <figure class="image is-32x32">
-                            <img :src="user.pic" alt="pfp" class="is-rounded" />
+                            <img
+                              :src="user.pic"
+                              onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
+                              alt="pfp"
+                              class="is-rounded"
+                            />
                           </figure>
                           <p class="justify-self-start ml-2 text-lg">
                             {{ user.username }}
@@ -104,6 +109,7 @@
                         <figure class="image is-32x32">
                           <img
                             :src="request.pic"
+                            onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
                             alt="pfp"
                             class="is-rounded"
                           />
@@ -197,6 +203,7 @@
                     <figure class="image is-32x32 ml-3 -mr-2">
                       <img
                         :src="currChatUser.senderPhoto"
+                        onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
                         alt="pfp"
                         class="is-rounded"
                       />
@@ -215,6 +222,7 @@
                       <img
                         class="cursor-pointer is-rounded"
                         :src="this.photoURL"
+                        onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
                         @click="openProfile(this.userID)"
                       />
                     </figure>
@@ -226,6 +234,7 @@
                       <img
                         class="cursor-pointer is-rounded"
                         :src="this.photoURL"
+                        onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
                         @click="openProfile(this.userID)"
                       />
                     </figure>
@@ -281,6 +290,7 @@
                         <figure class="image w-9 mr-2">
                           <img
                             :src="message.senderPhoto"
+                            onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
                             alt="pfp"
                             class="is-rounded "
                           />
@@ -351,7 +361,7 @@ export default {
       friendsSearch: "",
       userSearch: "",
       findUsers: false,
-      requestSent: true,
+      requestSent: false,
       requestMessage: "Error sending request",
     };
   },
