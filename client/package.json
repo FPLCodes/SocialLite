@@ -14,6 +14,7 @@
     "core-js": "^3.6.5",
     "firebase": "^9.1.0",
     "mevn-test": "file:..",
+    "moment": "^2.29.1",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "timeago.js": "^4.0.2",

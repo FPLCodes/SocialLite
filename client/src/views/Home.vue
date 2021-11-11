@@ -285,6 +285,15 @@
                           >
                             {{ message.message }}
                           </p>
+                          <p
+                            class="text-xs text-right font-light text-gray-200"
+                          >
+                            {{ message.time }}
+                          </p>
+                          <button
+                            class="delete"
+                            @click="unsend(index)"
+                          ></button>
                         </div>
                       </div>
 
@@ -309,6 +318,9 @@
                             class="inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
                           >
                             {{ message.message }}
+                          </p>
+                          <p class="text-xs text-left font-light text-gray-200">
+                            {{ message.time }}
                           </p>
                         </div>
                       </div>
@@ -346,10 +358,9 @@
 
 <script>
 import axios from "axios";
-/* import { io } from "socket.io-client";
-import { format } from "timeago.js"; */
+import moment from "moment";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import { getDatabase, ref, onValue, set, remove } from "firebase/database";
 export default {
   name: "Home",
   data() {
@@ -526,19 +537,14 @@ export default {
       }
     },
     loadChat(receiverID) {
+      this.chat = [];
       this.receiverID = receiverID;
-      const chatRef = ref(this.db, "Chats/");
+      const chatRef = ref(this.db, `Chats/${this.userID}/${this.receiverID}/`);
 
       onValue(chatRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          this.chat = Object.values(data).filter(
-            (message) =>
-              (message.receiverID === this.userID &&
-                message.senderID === this.receiverID) ||
-              (message.receiverID === this.receiverID &&
-                message.senderID === this.userID)
-          );
+          this.chat = Object.values(data);
           this.chatSize = Object.keys(data).length;
 
           setTimeout(() => {
@@ -547,6 +553,7 @@ export default {
 
           this.currChatUser = "";
           this.chat.forEach((message) => {
+            message.time = moment(message.time).from(Date.now());
             if (message.senderID === receiverID) {
               this.currChatUser = message;
             }
@@ -555,17 +562,44 @@ export default {
       });
     },
     send() {
-      const currTime = new Date();
-
-      set(ref(this.db, "Chats/" + (this.chatSize + 1)), {
-        message: this.message,
-        sender: this.username,
-        senderPhoto: this.photoURL,
-        senderID: this.userID,
-        receiverID: this.receiverID,
-        time: currTime.toString(),
-      });
+      set(
+        ref(
+          this.db,
+          `Chats/${this.userID}/${this.receiverID}/${this.chatSize + 1}`
+        ),
+        {
+          message: this.message,
+          sender: this.username,
+          senderPhoto: this.photoURL,
+          senderID: this.userID,
+          time: Date.now(),
+          id: this.chatSize,
+        }
+      );
+      set(
+        ref(
+          this.db,
+          `Chats/${this.receiverID}/${this.userID}/${this.chatSize}`
+        ),
+        {
+          message: this.message,
+          sender: this.username,
+          senderPhoto: this.photoURL,
+          senderID: this.userID,
+          time: Date.now(),
+          id: this.chatSize - 1,
+        }
+      );
       this.message = "";
+    },
+    unsend(i) {
+      remove(ref(this.db, `Chats/${this.userID}/${this.receiverID}/${i + 1}`))
+        .then(() => {
+          console.log("Message removed");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     signOut() {
       const auth = getAuth();
