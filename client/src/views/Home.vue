@@ -292,7 +292,7 @@
                           </p>
                           <button
                             class="delete"
-                            @click="unsend(index)"
+                            @click="unsend(message.id)"
                           ></button>
                         </div>
                       </div>
@@ -558,7 +558,10 @@ export default {
               this.currChatUser = message;
             }
           });
-        } else this.chatSize = 0;
+        } else {
+          this.chat = [];
+          this.chatSize = 0;
+        }
       });
     },
     send() {
@@ -576,6 +579,7 @@ export default {
           id: this.chatSize,
         }
       );
+
       set(
         ref(
           this.db,
@@ -592,14 +596,9 @@ export default {
       );
       this.message = "";
     },
-    unsend(i) {
-      remove(ref(this.db, `Chats/${this.userID}/${this.receiverID}/${i + 1}`))
-        .then(() => {
-          console.log("Message removed");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    unsend(id) {
+      remove(ref(this.db, `Chats/${this.userID}/${this.receiverID}/${id + 1}`));
+      remove(ref(this.db, `Chats/${this.receiverID}/${this.userID}/${id + 1}`));
     },
     signOut() {
       const auth = getAuth();
