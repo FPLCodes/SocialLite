@@ -91,7 +91,6 @@ export default {
         this.currUser.friendsList.forEach((friendID) => {
           if (friendID === this.loggedInUser.uid) this.friend = true;
         });
-        console.log(this.reqStatus);
       } else {
         console.log("No user signed in");
       }
@@ -111,7 +110,6 @@ export default {
         if (this.description === "") this.description = "No bio...";
       }
     });
-    console.log(this.currUser.friendRequests);
   },
   methods: {
     async sendFriendReq() {
