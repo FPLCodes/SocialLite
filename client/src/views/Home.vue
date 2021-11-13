@@ -277,23 +277,25 @@
                         v-if="message.senderID === currUser.uid"
                       >
                         <div
-                          class="px-3 py-1 rounded-xl ml-52 text-gray-50"
+                          class="message py-1 rounded-xl ml-52 text-gray-50"
                           style="background-color: #0B87AE"
                         >
+                          <div class="flex mb-1 relative">
+                            <p
+                              class="pl-3 mr-4 inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
+                            >
+                              {{ message.message }}
+                            </p>
+                            <button
+                              class="delete absolute w-full ml-auto transition-all duration-300 ease-in-out mt-px -mr-5 right-0"
+                              @click="unsend(message.id)"
+                            ></button>
+                          </div>
                           <p
-                            class="inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
-                          >
-                            {{ message.message }}
-                          </p>
-                          <p
-                            class="text-xs text-right font-light text-gray-200"
+                            class="time px-3 text-right font-light text-gray-200"
                           >
                             {{ message.time }}
                           </p>
-                          <button
-                            class="delete"
-                            @click="unsend(message.id)"
-                          ></button>
                         </div>
                       </div>
 
@@ -319,7 +321,7 @@
                           >
                             {{ message.message }}
                           </p>
-                          <p class="text-xs text-left font-light text-gray-200">
+                          <p class="time text-left font-light text-gray-200">
                             {{ message.time }}
                           </p>
                         </div>
@@ -685,6 +687,14 @@ textarea {
     rgb(49, 49, 53) 0%,
     rgba(25, 25, 27, 1) 100%
   );
+}
+
+.message:hover .delete {
+  margin-right: 5px;
+}
+
+.time {
+  font-size: 0.7rem;
 }
 
 /* width */
