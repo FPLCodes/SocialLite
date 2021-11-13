@@ -208,7 +208,7 @@
                   <div class="flex w-max items-center" v-if="currChatUser">
                     <figure class="image is-32x32 ml-3 -mr-2">
                       <img
-                        :src="currChatUser.senderPhoto"
+                        :src="currChatUser.photoURL"
                         onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
                         alt="pfp"
                         class="is-rounded"
@@ -216,9 +216,9 @@
                     </figure>
                     <p
                       class="card-header-title text-gray-200 cursor-pointer"
-                      @click="visitProfile(currChatUser.senderID)"
+                      @click="visitProfile(currChatUser.uid)"
                     >
-                      {{ currChatUser.sender }}
+                      {{ currChatUser.username }}
                     </p>
                   </div>
                   <div v-if="chat[0]">
@@ -553,14 +553,16 @@ export default {
             this.scrollToBottom();
           }, 10);
 
-          this.currChatUser = "";
+          this.currChatUser = this.users.find(
+            (user) => user.uid === this.receiverID
+          );
           this.chat.forEach((message) => {
             message.time = moment(message.time).from(Date.now());
-            if (message.senderID === receiverID) {
-              this.currChatUser = message;
-            }
           });
         } else {
+          this.currChatUser = this.users.find(
+            (user) => user.uid === this.receiverID
+          );
           this.chat = [];
           this.chatSize = 0;
         }
