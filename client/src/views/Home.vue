@@ -282,7 +282,7 @@
                         >
                           <div class="flex mb-1 relative">
                             <p
-                              class="pl-3 mr-4 inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
+                              class="pl-3 mr-5 pr-1 inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
                             >
                               {{ message.message }}
                             </p>
@@ -321,7 +321,7 @@
                           >
                             {{ message.message }}
                           </p>
-                          <p class="time text-left font-light text-gray-200">
+                          <p class="time text-right font-light text-gray-200">
                             {{ message.time }}
                           </p>
                         </div>
