@@ -127,7 +127,7 @@
                       <div class="flex justify-self-end">
                         <button
                           class="button is-success h-8 w-5 mr-1"
-                          @click="acceptFriend(request.uid)"
+                          @click="acceptFriend(request)"
                         >
                           <i class="fas fa-check"></i>
                         </button>
@@ -404,8 +404,6 @@ export default {
             this.firstName = userInDB.firstName;
             if (userInDB.lastName) this.lastName = userInDB.lastName;
             this.photoURL = userInDB.photoURL;
-            this.friendReqs = userInDB.friendRequests;
-            this.friends = userInDB.friendsList;
             this.userID = userInDB.uid;
           }
         });
@@ -426,7 +424,7 @@ export default {
       this.friends = this.friends.filter((user) =>
         user.username.toLowerCase().includes(search)
       );
-    else this.friends = [...this.currUser.friendsList];
+    else this.friends = [...this.friendsList];
   },
   methods: {
     loadFriendReq() {
@@ -441,13 +439,16 @@ export default {
       });
     },
     loadFriendsList() {
-      this.friends.forEach((user, i) => {
-        const userInDB = this.users.find((userInDB) => user === userInDB.uid);
-        this.friends[i] = {
-          username: userInDB.username,
-          pic: userInDB.photoURL,
-          uid: userInDB.uid,
-        };
+      this.friends = [];
+      const friendsRef = ref(this.db, `Users/${this.userID}/friends/`);
+
+      onValue(friendsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          console.log(Object.values(data));
+          this.friends = Object.values(data);
+          this.friendsList = Object.values(data);
+        }
       });
     },
     sendFriendReq() {
@@ -470,44 +471,15 @@ export default {
         this.requestMessage = "Request sent";
         this.requestSent = true;
       }
-
-      /* let updatedFriendRequests = [];
-
-      this.users.forEach(async (userInDB) => {
-        if (userInDB.username === this.userSearch) {
-          updatedFriendRequests = userInDB.friendRequests;
-
-          const exists = updatedFriendRequests.find(
-            (reqs) => reqs === this.currUser.uid
-          );
-
-          if (exists) {
-            this.requestMessage = "Already sent request";
-            this.requestSent = true;
-          } else if (userInDB.username === this.username) {
-            this.requestMessage = "Cannot add yourself";
-            this.requestSent = true;
-          } else {
-            updatedFriendRequests.push(this.currUser.uid);
-            try {
-              set(
-                ref(this.db, `Users/${this.receiverID}/requests`),
-                this.userID
-              );
-              this.requestMessage = "Request sent";
-              this.requestSent = true;
-            } catch (err) {
-              console.log(err);
-            }
-          }
-        } else {
-          this.requestMessage = "No user found";
-          this.requestSent = true;
-        }
-      }); */
     },
-    acceptFriend(id) {
-      console.log(id);
+    acceptFriend(userInDB) {
+      set(ref(this.db, `Users/${this.userID}/friends/${userInDB.uid}`), {
+        username: userInDB.username,
+        pic: userInDB.pic,
+        uid: userInDB.uid,
+      });
+
+      this.removeReq(userInDB.uid);
     },
     removeReq(id) {
       remove(ref(this.db, `Users/${this.userID}/requests/${id}`));
