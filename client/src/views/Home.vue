@@ -457,6 +457,9 @@ export default {
       if (this.friends.find((user) => user.username === this.userSearch)) {
         this.requestMessage = "User already added";
         this.requestSent = true;
+        setTimeout(() => {
+          this.requestSent = false;
+        }, 5000);
         return;
       }
 
@@ -483,6 +486,10 @@ export default {
         this.requestMessage = "Request sent";
         this.requestSent = true;
       }
+
+      setTimeout(() => {
+        this.requestSent = false;
+      }, 4000);
     },
     acceptFriend(userInDB) {
       // Add friend in users friends list
