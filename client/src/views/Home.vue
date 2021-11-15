@@ -453,17 +453,28 @@ export default {
       });
     },
     sendFriendReq() {
+      // Check to see if user is already added
+      if (this.friends.find((user) => user.username === this.userSearch)) {
+        this.requestMessage = "User already added";
+        this.requestSent = true;
+        return;
+      }
+
+      // Find user in database array
       const userInDB = this.users.find(
         (user) => user.username === this.userSearch
       );
 
       if (!userInDB) {
+        // If no user found
         this.requestMessage = "No user found";
         this.requestSent = true;
       } else if (userInDB.username === this.username) {
+        // If user tries adding themself
         this.requestMessage = "Cannot add yourself";
         this.requestSent = true;
       } else {
+        // Update database with request
         set(ref(this.db, `Users/${userInDB.uid}/requests/${this.userID}`), {
           username: this.username,
           pic: this.photoURL,
@@ -474,10 +485,18 @@ export default {
       }
     },
     acceptFriend(userInDB) {
+      // Add friend in users friends list
       set(ref(this.db, `Users/${this.userID}/friends/${userInDB.uid}`), {
         username: userInDB.username,
         pic: userInDB.pic,
         uid: userInDB.uid,
+      });
+
+      // Add user in friends friends list
+      set(ref(this.db, `Users/${userInDB.uid}/friends/${this.userID}`), {
+        username: this.username,
+        pic: this.photoURL,
+        uid: this.userID,
       });
 
       this.removeReq(userInDB.uid);
@@ -549,6 +568,7 @@ export default {
       this.message = "";
     },
     unsend(id) {
+      // Remove message for both users
       remove(ref(this.db, `Chats/${this.userID}/${this.receiverID}/${id + 1}`));
       remove(ref(this.db, `Chats/${this.receiverID}/${this.userID}/${id + 1}`));
     },
@@ -556,11 +576,6 @@ export default {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
-          this.username = "";
-          this.firstName = "";
-          this.lastName = "";
-          this.gender = "";
-          this.photoURL = "";
           console.log("Signed out!");
           this.$router.push({ path: "/" }); // Redirect to sign-in page
         })
