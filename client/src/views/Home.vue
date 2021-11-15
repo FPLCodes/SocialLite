@@ -64,7 +64,7 @@
                         class="input h-9 pr-20"
                         type="text"
                         placeholder="Search"
-                        v-model="friendsSearch"
+                        v-model="search"
                       />
                       <span class="icon is-small is-left">
                         <i class="fas fa-search mb-1"></i>
@@ -77,7 +77,7 @@
                     v-if="showList"
                   >
                     <li
-                      v-for="(user, index) in friends"
+                      v-for="(user, index) in filteredSearch"
                       :key="index"
                       class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
                       @click="loadChat(user.uid)"
@@ -104,7 +104,7 @@
                   </div>
                   <div
                     class="-mt-px px-2 max-h-100 overflow-y-auto"
-                    v-if="!showList && friendReqs"
+                    v-if="!showList && filteredSearch"
                   >
                     <li
                       v-for="(request, index) in friendReqs"
@@ -377,7 +377,8 @@ export default {
       currChatUser: "",
       photoURL: "",
       receiverID: "",
-      friendsSearch: "",
+      search: "",
+      filteredSearch: [],
       userSearch: "",
       findUsers: false,
       requestSent: false,
@@ -419,12 +420,14 @@ export default {
     });
   },
   beforeUpdate() {
-    let search = this.friendsSearch.toLowerCase();
-    if (search)
-      this.friends = this.friends.filter((user) =>
-        user.username.toLowerCase().includes(search)
+    if (this.search) {
+      this.filteredSearch = this.friends.filter((user) =>
+        user.username.toLowerCase().includes(this.friendsSearch.toLowerCase())
       );
-    else this.friends = [...this.friendsList];
+    } else {
+      if (this.showList) this.filteredSearch = [...this.friends];
+      else this.filteredSearch = [...this.friendReqs];
+    }
   },
   methods: {
     loadFriendReq() {
@@ -445,9 +448,7 @@ export default {
       onValue(friendsRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          console.log(Object.values(data));
           this.friends = Object.values(data);
-          this.friendsList = Object.values(data);
         }
       });
     },
