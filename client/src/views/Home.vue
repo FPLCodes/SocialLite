@@ -707,7 +707,7 @@ div::-webkit-scrollbar-thumb:hover {
 }
 @keyframes float-in {
   0% {
-    opacity: 0%;
+    opacity: 20%;
     transform: translateY(30px);
   }
   100% {

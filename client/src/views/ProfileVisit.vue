@@ -52,6 +52,7 @@
 <script>
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, onValue } from "firebase/database";
 export default {
   name: "ProfileVisit",
   data() {
@@ -75,22 +76,16 @@ export default {
     const response = await axios.get("../api/userProfiles/");
     this.users = response.data;
     this.currUser = {};
-    this.searchedUsers = [];
+
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        this.loggedInUser = user.providerData[0];
-        this.users.forEach((userInDB) => {
-          if (userInDB.uid === this.loggedInUser.uid) {
-            this.loggedInUser = userInDB;
-          }
-        });
-        this.currUser.friendRequests.forEach((reqID) => {
-          if (reqID === this.loggedInUser.uid) this.reqStatus = true;
-        });
-        this.currUser.friendsList.forEach((friendID) => {
-          if (friendID === this.loggedInUser.uid) this.friend = true;
-        });
+        this.loggedInUser = this.users.find(
+          (userInDB) => userInDB.uid === user.providerData[0].uid
+        );
+
+        this.db = getDatabase();
+        this.currStatus();
       } else {
         console.log("No user signed in");
       }
@@ -112,105 +107,41 @@ export default {
     });
   },
   methods: {
-    async sendFriendReq() {
-      let updatedFriendRequests = [];
-      this.users.forEach((userInDB) => {
-        if (userInDB.uid === this.loggedInUser.uid) {
-          updatedFriendRequests = this.loggedInUser.friendRequests;
-
-          updatedFriendRequests.forEach((reqs) => {
-            if (reqs === userInDB.uid) {
-              console.log("Request already exists!");
-              this.reqStatus = false;
-            }
-          });
-        }
-      });
-      if (!this.reqStatus) {
-        updatedFriendRequests.push(this.loggedInUser.uid);
-        try {
-          const response = await axios.put(
-            "../api/userProfiles/" + this.currUser._id,
-            {
-              friendRequests: updatedFriendRequests,
-            }
+    sendFriendReq() {},
+    removeRequest() {},
+    removeFriend() {},
+    currStatus() {
+      this.friendReqs = [];
+      const reqRef = ref(this.db, `Users/${this.currUser.uid}/requests/`);
+      onValue(reqRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.friendReqs = Object.values(data);
+          this.reqStatus = this.friendReqs.find(
+            (req) => req.uid === this.loggedInUser.uid
           );
-          this.reqStatus = true;
-          this.currUser = response.data;
-          console.log("Sent friend request!");
-        } catch (err) {
-          console.log(err);
+          console.log(this.reqStatus);
         }
-      }
-    },
-    async removeRequest() {
-      let updatedFriendRequests = this.currUser.friendsList;
+      });
 
-      if (this.reqStatus) {
-        this.currUser.friendRequests.forEach((reqID, index) => {
-          if (reqID === this.loggedInUser.uid)
-            updatedFriendRequests.splice(index, 1);
-        });
-        try {
-          const response = await axios.put(
-            "../api/userProfiles/" + this.currUser._id,
-            {
-              friendRequests: updatedFriendRequests,
-            }
+      this.friends = [];
+      const friendsRef = ref(this.db, `Users/${this.currUser.uid}/friends/`);
+      onValue(friendsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          this.friends = Object.values(data);
+          this.friend = this.friends.find(
+            (friend) => friend.uid === this.loggedInUser.uid
           );
-          this.reqStatus = false;
-          this.currUser = response.data;
-          console.log("Removed request!");
-        } catch (err) {
-          console.log(err);
+          console.log(this.friends);
         }
-      }
-    },
-    async removeFriend() {
-      let updatedFriendsList1 = this.loggedInUser.friendsList;
-      let updatedFriendsList2 = this.currUser.friendsList;
-
-      this.loggedInUser.friendsList.forEach((friendID, index) => {
-        if (friendID === this.$route.params.id)
-          updatedFriendsList1.splice(index, 1);
       });
-      this.currUser.friendsList.forEach((friendID, index) => {
-        if (friendID === this.loggedInUser.uid)
-          updatedFriendsList2.splice(index, 1);
-      });
-
-      try {
-        const response1 = await axios.put(
-          "../api/userProfiles/" + this.loggedInUser._id,
-          {
-            friendsList: updatedFriendsList1,
-          }
-        );
-        this.loggedInUser = response1.data;
-
-        const response2 = await axios.put(
-          "../api/userProfiles/" + this.currUser._id,
-          {
-            friendsList: updatedFriendsList2,
-          }
-        );
-        this.currUser = response2.data;
-
-        this.friend = false;
-        console.log("Removed friend!");
-      } catch (err) {
-        console.log(err);
-      }
     },
   },
 };
 </script>
 
 <style>
-body {
-  font-family: "Roboto";
-}
-
 div {
   word-wrap: break-word;
   overflow: hidden;
