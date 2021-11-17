@@ -394,24 +394,20 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        this.users.forEach((userInDB) => {
-          // update info if userID is correct
-          if (
+        // Find the current user in database
+        this.currUser = this.users.find(
+          (userInDB) =>
             userInDB.uid === this.$route.params.id &&
             userInDB.uid === user.providerData[0].uid
-          ) {
-            this.currUser = userInDB;
-            this.username = userInDB.username;
-            this.firstName = userInDB.firstName;
-            if (userInDB.lastName) this.lastName = userInDB.lastName;
-            this.photoURL = userInDB.photoURL;
-            this.userID = userInDB.uid;
-          }
-        });
-
-        const db = getDatabase();
-        this.db = db;
-
+        );
+        if (this.currUser) {
+          this.username = this.currUser.username;
+          this.photoURL = this.currUser.photoURL;
+          this.userID = this.currUser.uid;
+        }
+        // Initialise firebase realtime database
+        this.db = getDatabase();
+        // Load friends list and requests
         this.loadFriendsList();
         this.loadFriendReq();
       } else {
@@ -420,9 +416,10 @@ export default {
     });
   },
   beforeUpdate() {
+    // Search for user(s) that matches the search
     if (this.search) {
       this.filteredSearch = this.friends.filter((user) =>
-        user.username.toLowerCase().includes(this.friendsSearch.toLowerCase())
+        user.username.toLowerCase().includes(this.search.toLowerCase())
       );
     } else {
       if (this.showList) this.filteredSearch = [...this.friends];
@@ -457,6 +454,7 @@ export default {
       if (this.friends.find((user) => user.username === this.userSearch)) {
         this.requestMessage = "User already added";
         this.requestSent = true;
+
         setTimeout(() => {
           this.requestSent = false;
         }, 5000);
@@ -487,6 +485,7 @@ export default {
         this.requestSent = true;
       }
 
+      // Remove notice
       setTimeout(() => {
         this.requestSent = false;
       }, 4000);
