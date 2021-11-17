@@ -73,7 +73,7 @@
                   </div>
 
                   <div
-                    class="pt-1 px-2 max-h-100 overflow-y-auto"
+                    class="pt-1 px-2 h-96 max-h-100 overflow-y-auto"
                     v-if="showList"
                   >
                     <li
@@ -82,32 +82,34 @@
                       class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
                       @click="loadChat(user.uid)"
                     >
-                      <div class="flist-item">
-                        <div class="flex items-center">
-                          <figure class="image is-32x32">
-                            <img
-                              :src="user.pic"
-                              onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
-                              alt="pfp"
-                              class="is-rounded"
-                            />
-                          </figure>
-                          <p class="justify-self-start ml-2 text-lg">
-                            {{ user.username }}
-                          </p>
+                      <transition name="float">
+                        <div class="flist-item" v-if="loaded">
+                          <div class="flex items-center">
+                            <figure class="image is-32x32">
+                              <img
+                                :src="user.pic"
+                                onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
+                                alt="pfp"
+                                class="is-rounded"
+                              />
+                            </figure>
+                            <p class="justify-self-start ml-2 text-lg">
+                              {{ user.username }}
+                            </p>
+                          </div>
+                          <div
+                            class="w-0 h-0.5 bg-gray-300 mt-2 transition-all flist-effect duration-300"
+                          ></div>
                         </div>
-                        <div
-                          class="w-0 h-0.5 bg-gray-300 mt-2 transition-all flist-effect duration-300"
-                        ></div>
-                      </div>
+                      </transition>
                     </li>
                   </div>
                   <div
                     class="-mt-px px-2 max-h-100 overflow-y-auto"
-                    v-if="!showList && filteredSearch"
+                    v-if="!showList"
                   >
                     <li
-                      v-for="(request, index) in friendReqs"
+                      v-for="(request, index) in filteredSearch"
                       :key="index"
                       class="flex justify-between p-1 pt-3 text-gray-50"
                     >
@@ -154,39 +156,41 @@
                     ></div>
                   </div>
 
-                  <div v-if="findUsers">
-                    <div class="field has-addons flex mx-3 pb-1">
-                      <div class="w-full opacity-90 items-center">
-                        <input
-                          class="input h-9 pr-20 rounded-xl"
-                          type="text"
-                          placeholder="Username"
-                          v-model="userSearch"
-                        />
+                  <transition name="float">
+                    <div v-if="findUsers">
+                      <div class="field has-addons flex mx-3 pb-1">
+                        <div class="w-full opacity-90 items-center">
+                          <input
+                            class="input h-9 pr-20 rounded-xl"
+                            type="text"
+                            placeholder="Username"
+                            v-model="userSearch"
+                          />
 
-                        <button
-                          class="button is-info w-full mt-2 transition-all rounded-2xl ease-in"
-                          :disabled="!userSearch"
-                          @click="sendFriendReq"
-                        >
-                          Send request
-                        </button>
-
-                        <div
-                          class="notification is-warning h-9 mt-2"
-                          v-if="requestSent"
-                        >
                           <button
-                            class="delete mt-1"
-                            @click="requestSent = !requestSent"
-                          ></button>
-                          <p class="-mt-2 text-sm ml-3 font-medium">
-                            {{ requestMessage }}!
-                          </p>
+                            class="button is-info w-full mt-2 transition-all rounded-2xl ease-in"
+                            :disabled="!userSearch"
+                            @click="sendFriendReq"
+                          >
+                            Send request
+                          </button>
+
+                          <div
+                            class="notification is-warning h-9 mt-2"
+                            v-if="requestSent"
+                          >
+                            <button
+                              class="delete mt-1"
+                              @click="requestSent = !requestSent"
+                            ></button>
+                            <p class="-mt-2 text-sm ml-3 font-medium">
+                              {{ requestMessage }}!
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </transition>
 
                   <div class="menu-item">
                     <h1 @click="signOut">
@@ -367,6 +371,7 @@ export default {
   name: "Home",
   data() {
     return {
+      loaded: false,
       users: [],
       currUser: {},
       friendReqs: [],
@@ -410,6 +415,10 @@ export default {
         // Load friends list and requests
         this.loadFriendsList();
         this.loadFriendReq();
+
+        setTimeout(() => {
+          this.loaded = true;
+        }, 100);
       } else {
         console.log("No user signed in");
       }
@@ -686,5 +695,24 @@ div::-webkit-scrollbar-thumb {
 /* Handle on hover */
 div::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.float-enter-active {
+  animation: float-in 0.3s;
+  animation-timing-function: ease-out;
+}
+.float-leave-active {
+  animation: float-in 0.3s reverse;
+  animation-timing-function: ease-out;
+}
+@keyframes float-in {
+  0% {
+    opacity: 0%;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 100%;
+    transform: translateY(0px);
+  }
 }
 </style>
