@@ -117,6 +117,21 @@
           </div>
         </div>
       </div>
+      <div class="w-full mt-44">
+        <h1 class="text-center text-gray-200">Made by Sahab Ul Ferdous</h1>
+        <div class="flex justify-center items-center gap-2 mt-2">
+          <a
+            class="fab fa-github fa-2x cursor-pointer"
+            :href="'//' + 'github.com/FPLCodes'"
+            target="_blank"
+          ></a>
+          <a
+            class="fab fa-youtube fa-2x cursor-pointer"
+            :href="'//' + 'youtube.com/channel/UCc7O8GMeaHOVczWNWpqdMDQ'"
+            target="_blank"
+          ></a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -234,14 +249,12 @@ export default {
           }
         });
     },
-
     // Login with Google function
     googleSignIn() {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
       signInWithRedirect(auth, provider);
     },
-
     // Sign out user
     signOut() {
       const auth = getAuth();
@@ -288,6 +301,15 @@ export default {
     rgba(26, 26, 28, 1) 10%,
     rgba(36, 36, 40, 1) 50%,
     rgba(26, 26, 28, 1) 90%
+  );
+}
+
+.card {
+  background: rgb(19, 21, 24);
+  background: linear-gradient(
+    0deg,
+    rgba(19, 21, 24, 1) 0%,
+    rgba(39, 44, 52, 1) 100%
   );
 }
 </style>
