@@ -73,8 +73,9 @@
                   </div>
 
                   <div
-                    class="pt-1 px-2 h-96 max-h-100 overflow-y-auto"
+                    class="pt-1 px-2 max-h-100"
                     v-if="showList"
+                    v-bind:class="[{ 'overflow-y-auto': loaded }]"
                   >
                     <transition-group name="list" tag="p">
                       <li
@@ -144,8 +145,7 @@
                   </div>
                 </div>
                 <div
-                  class="absolute bottom-2 w-full text-center -ml-2 text-gray-50 text-xl"
-                  style="border-color: rgb(82, 82, 82)"
+                  class="absolute bottom-2 w-full text-center -ml-2 text-gray-50 text-xl z-10 overlay-bg"
                 >
                   <div
                     class="menu-item transition-all"
@@ -421,7 +421,7 @@ export default {
 
         setTimeout(() => {
           this.loaded = true;
-        }, 100);
+        }, 500);
       } else {
         console.log("No user signed in");
       }
@@ -430,10 +430,10 @@ export default {
   beforeUpdate() {
     // Search for user(s) that matches the search
     if (this.search) {
-      this.loaded = false;
       this.filteredSearch = this.friends.filter((user) =>
         user.username.toLowerCase().includes(this.search.toLowerCase())
       );
+      this.loaded = false;
     } else {
       this.loaded = true;
       if (this.showList) this.filteredSearch = [...this.friends];
@@ -732,5 +732,9 @@ div::-webkit-scrollbar-thumb:hover {
 .list-leave-to {
   opacity: 100%;
   transform: none;
+}
+
+.overlay-bg {
+  background-color: #1d2125;
 }
 </style>

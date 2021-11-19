@@ -10,7 +10,7 @@ module.exports = {
       "1/2": "50%",
       "3/4": "75%",
       full: "100%",
-      "100": "42rem",
+      "100": "41rem",
     },
     fontFamily: {
       sans: ["Roboto", "Helvetica", "Arial", "sans-serif"],
