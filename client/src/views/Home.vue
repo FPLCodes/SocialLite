@@ -4,7 +4,7 @@
       <div class="flex-auto">
         <div class=" flex field w-full">
           <div class="w-full h-full">
-            <div class="flex control w-full" style="background: #1E1E1E;">
+            <div class="flex control w-full" style="background: #1d2125;">
               <div
                 class="relative px-2 border-r-2"
                 style="border-color: rgb(82, 82, 82)"
@@ -160,7 +160,7 @@
                   </div>
 
                   <transition name="float">
-                    <div v-if="findUsers">
+                    <div spellcheck="false" v-if="findUsers">
                       <div class="field has-addons flex mx-3 pb-1">
                         <div class="w-full opacity-90 items-center">
                           <input
@@ -206,11 +206,11 @@
                 </div>
               </div>
 
-              <!------------------------- Chat box --------------------->
-              <div class="w-full h-screen relative chat">
+              <!-------------------------------- Chat box ---------------------------------->
+              <div class="chat w-full h-screen relative">
                 <header
                   class="h-16 sticky z-10 flex justify-between"
-                  style="background-color: #1a1a1a"
+                  style="background-color: #1d2125"
                 >
                   <div class="flex w-max items-center" v-if="currChatUser">
                     <figure class="image is-32x32 ml-3 -mr-2">
@@ -257,7 +257,7 @@
                   v-if="!this.receiverID"
                   class="mx-auto text-center h-full chat"
                 >
-                  <h1 class="text-gray-50 text-xl mt-20">
+                  <h1 class="text-gray-50 text-xl mt-20 filter drop-shadow-md">
                     Click on a user to start chatting
                   </h1>
                 </div>
@@ -374,6 +374,7 @@ export default {
   name: "Home",
   data() {
     return {
+      loaded: false,
       users: [],
       currUser: {},
       friendReqs: [],
@@ -417,6 +418,10 @@ export default {
         // Load friends list and requests
         this.loadFriendsList();
         this.loadFriendReq();
+
+        setTimeout(() => {
+          this.loaded = true;
+        }, 100);
       } else {
         console.log("No user signed in");
       }
@@ -425,10 +430,12 @@ export default {
   beforeUpdate() {
     // Search for user(s) that matches the search
     if (this.search) {
+      this.loaded = false;
       this.filteredSearch = this.friends.filter((user) =>
         user.username.toLowerCase().includes(this.search.toLowerCase())
       );
     } else {
+      this.loaded = true;
       if (this.showList) this.filteredSearch = [...this.friends];
       else this.filteredSearch = [...this.friendReqs];
     }
@@ -616,12 +623,11 @@ export default {
 
 <style>
 .homebg {
-  background: rgb(34, 34, 36);
+  background: rgb(19, 21, 24);
   background: linear-gradient(
-    90deg,
-    rgba(34, 34, 36, 1) 0%,
-    rgba(45, 45, 50, 1) 50%,
-    rgba(34, 34, 36, 1) 100%
+    0deg,
+    rgba(19, 21, 24, 1) 0%,
+    rgba(39, 44, 52, 1) 100%
   );
 }
 
@@ -659,11 +665,11 @@ textarea {
 }
 
 .chat {
-  background: rgb(51, 51, 55);
+  background: rgb(23, 43, 57);
   background: linear-gradient(
-    180deg,
-    rgb(49, 49, 53) 0%,
-    rgba(25, 25, 27, 1) 100%
+    0deg,
+    rgba(23, 43, 57, 1) 11%,
+    rgba(70, 126, 156, 1) 100%
   );
 }
 
@@ -710,13 +716,21 @@ div::-webkit-scrollbar-thumb:hover {
   transform: translateY(15px);
 }
 
-.list-enter-active,
-.list-leave-active {
-  transition: all 1s ease;
+.list-enter-active {
+  transition: all 0.5s ease;
 }
-.list-enter-from,
-.list-leave-to {
+
+.list-leave-active {
+  transition: none;
+}
+
+.list-enter-from {
   opacity: 0;
   transform: translateY(30px);
+}
+
+.list-leave-to {
+  opacity: 100%;
+  transform: none;
 }
 </style>
