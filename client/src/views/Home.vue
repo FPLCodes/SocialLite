@@ -421,7 +421,7 @@ export default {
 
         setTimeout(() => {
           this.loaded = true;
-        }, 500);
+        }, 600);
       } else {
         console.log("No user signed in");
       }
@@ -435,9 +435,11 @@ export default {
       );
       this.loaded = false;
     } else {
-      this.loaded = true;
       if (this.showList) this.filteredSearch = [...this.friends];
       else this.filteredSearch = [...this.friendReqs];
+      setTimeout(() => {
+        this.loaded = true;
+      }, 600);
     }
   },
   methods: {
