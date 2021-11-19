@@ -76,14 +76,14 @@
                     class="pt-1 px-2 h-96 max-h-100 overflow-y-auto"
                     v-if="showList"
                   >
-                    <li
-                      v-for="(user, index) in filteredSearch"
-                      :key="index"
-                      class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
-                      @click="loadChat(user.uid)"
-                    >
-                      <transition name="float">
-                        <div class="flist-item" v-if="loaded">
+                    <transition-group name="list" tag="p">
+                      <li
+                        v-for="(user, index) in filteredSearch"
+                        :key="index"
+                        class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
+                        @click="loadChat(user.uid)"
+                      >
+                        <div class="flist-item">
                           <div class="flex items-center">
                             <figure class="image is-32x32">
                               <img
@@ -101,8 +101,8 @@
                             class="w-0 h-0.5 bg-gray-300 mt-2 transition-all flist-effect duration-300"
                           ></div>
                         </div>
-                      </transition>
-                    </li>
+                      </li>
+                    </transition-group>
                   </div>
                   <div
                     class="-mt-px px-2 max-h-100 overflow-y-auto"
@@ -147,7 +147,10 @@
                   class="absolute bottom-2 w-full text-center -ml-2 text-gray-50 text-xl"
                   style="border-color: rgb(82, 82, 82)"
                 >
-                  <div class="menu-item" @click="findUsers = !findUsers">
+                  <div
+                    class="menu-item transition-all"
+                    @click="findUsers = !findUsers"
+                  >
                     <h1>
                       Add friend
                     </h1>
@@ -192,7 +195,7 @@
                     </div>
                   </transition>
 
-                  <div class="menu-item">
+                  <div class="menu-item transition-all hover:text-red-400">
                     <h1 @click="signOut">
                       Sign out
                     </h1>
@@ -371,7 +374,6 @@ export default {
   name: "Home",
   data() {
     return {
-      loaded: false,
       users: [],
       currUser: {},
       friendReqs: [],
@@ -415,10 +417,6 @@ export default {
         // Load friends list and requests
         this.loadFriendsList();
         this.loadFriendReq();
-
-        setTimeout(() => {
-          this.loaded = true;
-        }, 100);
       } else {
         console.log("No user signed in");
       }
@@ -697,22 +695,28 @@ div::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
-.float-enter-active {
-  animation: float-in 0.3s;
-  animation-timing-function: ease-out;
-}
+.float-enter-active,
 .float-leave-active {
-  animation: float-in 0.3s reverse;
-  animation-timing-function: ease-out;
+  transition: all 0.3s ease;
 }
-@keyframes float-in {
-  0% {
-    opacity: 20%;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 100%;
-    transform: translateY(0px);
-  }
+
+.float-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.float-leave-to {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
