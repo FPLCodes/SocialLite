@@ -422,7 +422,7 @@ export default {
 
         setTimeout(() => {
           this.loaded = true;
-          this.addLetters("Welcome back " + this.username);
+          this.addLetters("Welcome back " + this.username, 10);
         }, 1000);
       } else {
         console.log("No user signed in");
@@ -621,29 +621,37 @@ export default {
         path: `/profile/${id}`, // Redirect to user profile
       });
     },
-    addLetters(sentence) {
+    addLetters(sentence, delay) {
       sentence = sentence.split("");
       let i = 0;
-      let addLetter = setInterval(() => {
-        this.defaultMessage += sentence[i];
-        i++;
-        if (this.defaultMessage === "Welcome back " + this.username) {
-          clearInterval(addLetter);
-          setTimeout(() => {
-            this.removeLetters();
-          }, 1000);
-        } else if (this.defaultMessage === "Click on a user to start messaging")
-          clearInterval(addLetter);
-      }, 50);
+
+      setTimeout(() => {
+        let addLetter = setInterval(() => {
+          this.defaultMessage += sentence[i]; // Add a letter to message from original sentence
+          i++;
+          // If message is welcome back user, then finish animation & begin removing letters
+          if (this.defaultMessage === "Welcome back " + this.username) {
+            clearInterval(addLetter);
+            setTimeout(() => {
+              this.removeLetters();
+            }, 1000);
+          } else if (
+            // If message is not welcome, then finish adding letters and stop
+            this.defaultMessage === "Click on a user to start messaging"
+          )
+            clearInterval(addLetter);
+        }, 50);
+      }, delay);
     },
     removeLetters() {
       let sentence = this.defaultMessage.split("");
       let addLetter = setInterval(() => {
-        sentence.pop();
+        sentence.pop(); // Remove last letter
         this.defaultMessage = sentence.join("");
+        // Stop removing letters once the message is empty
         if (this.defaultMessage === "") {
           clearInterval(addLetter);
-          this.addLetters("Click on a user to start messaging");
+          this.addLetters("Click on a user to start messaging", 350);
         }
       }, 25);
     },
