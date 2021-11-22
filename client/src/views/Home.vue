@@ -258,7 +258,7 @@
                   class="mx-auto text-center h-full chat"
                 >
                   <h1 class="text-gray-50 text-xl mt-20 filter drop-shadow-md">
-                    Click on a user to start chatting
+                    {{ defaultMessage }}
                   </h1>
                 </div>
                 <div
@@ -391,6 +391,7 @@ export default {
       findUsers: false,
       requestSent: false,
       requestMessage: "Error sending request",
+      defaultMessage: "",
     };
   },
   async mounted() {
@@ -422,6 +423,8 @@ export default {
         setTimeout(() => {
           this.loaded = true;
         }, 1000);
+
+        this.changeDefaultMsg();
       } else {
         console.log("No user signed in");
       }
@@ -618,6 +621,18 @@ export default {
       this.$router.push({
         path: `/profile/${id}`, // Redirect to user profile
       });
+    },
+    changeDefaultMsg() {
+      const sentence = "Click on a user to start messaging".split("");
+      let i = 0;
+      setTimeout(() => {
+        let addLetter = setInterval(() => {
+          this.defaultMessage += sentence[i];
+          i++;
+          if (this.defaultMessage === "Click on a user to start messaging")
+            clearInterval(addLetter);
+        }, 50);
+      }, 500);
     },
   },
 };
