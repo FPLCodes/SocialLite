@@ -424,7 +424,7 @@ export default {
           this.loaded = true;
         }, 1000);
 
-        this.changeDefaultMsg();
+        this.addLetters("Welcome back " + this.username);
       } else {
         console.log("No user signed in");
       }
@@ -622,17 +622,35 @@ export default {
         path: `/profile/${id}`, // Redirect to user profile
       });
     },
-    changeDefaultMsg() {
-      const sentence = "Click on a user to start messaging".split("");
+    addLetters(sentence) {
+      sentence = sentence.split("");
       let i = 0;
       setTimeout(() => {
         let addLetter = setInterval(() => {
           this.defaultMessage += sentence[i];
           i++;
-          if (this.defaultMessage === "Click on a user to start messaging")
+          if (this.defaultMessage === "Welcome back " + this.username) {
+            clearInterval(addLetter);
+            setTimeout(() => {
+              this.removeLetters();
+            }, 1000);
+          } else if (
+            this.defaultMessage === "Click on a user to start messaging"
+          )
             clearInterval(addLetter);
         }, 50);
       }, 500);
+    },
+    removeLetters() {
+      let sentence = this.defaultMessage.split("");
+      let addLetter = setInterval(() => {
+        sentence.pop();
+        this.defaultMessage = sentence.join("");
+        if (this.defaultMessage === "") {
+          clearInterval(addLetter);
+          this.addLetters("Click on a user to start messaging");
+        }
+      }, 25);
     },
   },
 };
