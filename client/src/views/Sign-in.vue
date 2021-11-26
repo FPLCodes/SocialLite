@@ -117,7 +117,7 @@
           </div>
         </div>
       </div>
-      <div class="w-full mt-44">
+      <div class="w-full mt-36">
         <h1 class="text-center text-gray-200">Made by Sahab Ul Ferdous</h1>
         <div class="flex justify-center items-center gap-2 mt-2">
           <a

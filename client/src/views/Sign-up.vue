@@ -4,7 +4,7 @@
       <div
         class="mx-auto max-w-xl mb-20 w-10/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12"
       >
-        <div class="card p-5" style="background-color: #2b2b2b">
+        <div class="card p-5 mt-36" style="background-color: #2b2b2b">
           <div
             class="flex text-gray-50 items-center cursor-pointer"
             @click="signOut"
@@ -175,6 +175,21 @@
                 </button>
               </p>
             </div>
+          </div>
+        </div>
+        <div class="w-full mt-16">
+          <h1 class="text-center text-gray-200">Made by Sahab Ul Ferdous</h1>
+          <div class="flex justify-center items-center gap-2 mt-2">
+            <a
+              class="fab fa-github fa-2x cursor-pointer"
+              :href="'//' + 'github.com/FPLCodes'"
+              target="_blank"
+            ></a>
+            <a
+              class="fab fa-youtube fa-2x cursor-pointer"
+              :href="'//' + 'youtube.com/channel/UCc7O8GMeaHOVczWNWpqdMDQ'"
+              target="_blank"
+            ></a>
           </div>
         </div>
       </div>
