@@ -262,7 +262,7 @@
                   </h1>
                 </div>
                 <div
-                  class="absolute bottom-0 w-full max-h-full overflow-y-auto pb-16"
+                  class="absolute container bottom-0 w-full max-h-full overflow-y-auto pb-16"
                   ref="container"
                   v-if="chat[0]"
                 >
@@ -537,8 +537,12 @@ export default {
       onValue(chatRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          this.chat = Object.values(data);
+          this.count = 0;
+          this.allMessages = Object.values(data);
+          this.chat = this.allMessages.slice(-20);
           this.chatSize = Object.keys(data).length;
+          console.log(this.chatSize);
+          console.log(this.chat.length);
 
           setTimeout(() => {
             this.scrollToBottom();
@@ -610,6 +614,9 @@ export default {
     scrollToBottom() {
       const container = this.$refs.container;
       container.scrollTop = container.scrollHeight;
+      setInterval(() => {
+        window.addEventListener("scroll", this.handleScroll());
+      }, 200);
     },
     visitProfile(id) {
       this.$router.push({
@@ -654,6 +661,14 @@ export default {
           this.addLetters("Click on a user to start messaging", 350);
         }
       }, 25);
+    },
+    handleScroll() {
+      const container = document.querySelector(".container");
+      if (container.scrollTop <= 200 && this.chat.length !== this.chatSize) {
+        this.count += 10;
+        //console.log(this.count);
+        this.chat = this.allMessages.slice(-20 - this.count);
+      }
     },
   },
 };
