@@ -541,8 +541,6 @@ export default {
           this.allMessages = Object.values(data);
           this.chat = this.allMessages.slice(-20);
           this.chatSize = Object.keys(data).length;
-          console.log(this.chatSize);
-          console.log(this.chat.length);
 
           setTimeout(() => {
             this.scrollToBottom();
@@ -612,11 +610,13 @@ export default {
         });
     },
     scrollToBottom() {
-      const container = this.$refs.container;
+      const container = document.querySelector(".container");
       container.scrollTop = container.scrollHeight;
       setInterval(() => {
-        window.addEventListener("scroll", this.handleScroll());
-      }, 200);
+        if (container.scrollTop <= 200 && this.chat.length !== this.chatSize) {
+          window.addEventListener("scroll", this.handleScroll());
+        }
+      }, 10);
     },
     visitProfile(id) {
       this.$router.push({
@@ -664,11 +664,15 @@ export default {
     },
     handleScroll() {
       const container = document.querySelector(".container");
-      if (container.scrollTop <= 200 && this.chat.length !== this.chatSize) {
-        this.count += 10;
-        //console.log(this.count);
+      setTimeout(() => {
+        console.log(container.scrollTop);
+        console.log(container.scrollHeight);
+        this.count += 20;
         this.chat = this.allMessages.slice(-20 - this.count);
-      }
+        container.scrollTop += 25 * this.count;
+        console.log(container.scrollTop);
+        console.log(container.scrollHeight);
+      }, 5);
     },
   },
 };
