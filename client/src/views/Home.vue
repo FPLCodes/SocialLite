@@ -207,7 +207,7 @@
               </div>
 
               <!-------------------------------- Chat box ---------------------------------->
-              <div class="chat w-full h-screen relative">
+              <div class="w-full">
                 <header
                   class="h-16 sticky z-10 flex justify-between"
                   style="background-color: #1d2125"
@@ -253,109 +253,114 @@
                     </figure>
                   </div>
                 </header>
-                <div
-                  v-if="!this.receiverID"
-                  class="mx-auto text-center h-full chat"
-                >
-                  <h1 class="text-gray-50 text-xl mt-20 filter drop-shadow-md">
-                    {{ defaultMessage }}
-                  </h1>
-                </div>
-                <div
-                  class="absolute container bottom-0 w-full max-h-full overflow-y-auto pb-16"
-                  ref="container"
-                  v-if="chat[0]"
-                >
-                  <ul
-                    class="grid grid-cols-1 max-w-full pb-3 z-0 mt-16"
+
+                <div class="chat w-full h-screen relative">
+                  <div
+                    v-if="!this.receiverID"
+                    class="mx-auto text-center h-full chat"
+                  >
+                    <h1
+                      class="text-gray-50 text-xl mt-20 filter drop-shadow-md"
+                    >
+                      {{ defaultMessage }}
+                    </h1>
+                  </div>
+                  <div
+                    class="absolute container bottom-16 w-full max-h-full overflow-y-auto pb-16"
+                    ref="container"
                     v-if="chat[0]"
                   >
-                    <li
-                      class="w-max mr-4 ml-4 pt-1 mt-1 filter drop-shadow-md"
-                      v-bind:class="{
-                        'justify-self-end': message.senderID === currUser.uid,
-                      }"
-                      v-for="(message, index) in chat"
-                      :key="index"
+                    <ul
+                      class="grid grid-cols-1 max-w-full pb-3 z-0 mt-16"
+                      v-if="chat[0]"
                     >
-                      <!-- Messages sent by user -->
-                      <div
-                        class="flex items-center"
-                        v-if="message.senderID === currUser.uid"
+                      <li
+                        class="w-max mr-4 ml-4 pt-1 mt-1 filter drop-shadow-md"
+                        v-bind:class="{
+                          'justify-self-end': message.senderID === currUser.uid,
+                        }"
+                        v-for="(message, index) in chat"
+                        :key="index"
                       >
+                        <!-- Messages sent by user -->
                         <div
-                          class="message py-1 rounded-xl ml-52 text-gray-50"
-                          style="background-color: #0B87AE"
+                          class="flex items-center"
+                          v-if="message.senderID === currUser.uid"
                         >
-                          <div class="flex mb-1 relative">
+                          <div
+                            class="message py-1 rounded-xl ml-52 text-gray-50"
+                            style="background-color: #0B87AE"
+                          >
+                            <div class="flex mb-1 relative">
+                              <p
+                                class="pl-3 mr-5 pr-1 inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
+                              >
+                                {{ message.message }}
+                              </p>
+                              <button
+                                class="delete absolute w-full ml-auto transition-all duration-300 ease-in-out mt-px -mr-5 right-0"
+                                @click="unsend(message.id)"
+                              ></button>
+                            </div>
                             <p
-                              class="pl-3 mr-5 pr-1 inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
+                              class="time px-3 text-right font-light text-gray-200"
+                            >
+                              {{ message.time }}
+                            </p>
+                          </div>
+                        </div>
+
+                        <!-- Messages sent by others -->
+                        <div
+                          class="flex items-center text-gray-50"
+                          v-if="message.senderID !== currUser.uid"
+                        >
+                          <figure class="image w-9 mr-2">
+                            <img
+                              :src="message.senderPhoto"
+                              onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
+                              alt="pfp"
+                              class="is-rounded "
+                            />
+                          </figure>
+                          <div
+                            class="px-3 py-1 rounded-xl mr-40 text-gray-50"
+                            style="background-color: #0B87AE"
+                          >
+                            <p
+                              class="inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
                             >
                               {{ message.message }}
                             </p>
-                            <button
-                              class="delete absolute w-full ml-auto transition-all duration-300 ease-in-out mt-px -mr-5 right-0"
-                              @click="unsend(message.id)"
-                            ></button>
+                            <p class="time text-right font-light text-gray-200">
+                              {{ message.time }}
+                            </p>
                           </div>
-                          <p
-                            class="time px-3 text-right font-light text-gray-200"
-                          >
-                            {{ message.time }}
-                          </p>
                         </div>
-                      </div>
-
-                      <!-- Messages sent by others -->
-                      <div
-                        class="flex items-center text-gray-50"
-                        v-if="message.senderID !== currUser.uid"
-                      >
-                        <figure class="image w-9 mr-2">
-                          <img
-                            :src="message.senderPhoto"
-                            onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
-                            alt="pfp"
-                            class="is-rounded "
-                          />
-                        </figure>
-                        <div
-                          class="px-3 py-1 rounded-xl mr-40 text-gray-50"
-                          style="background-color: #0B87AE"
-                        >
-                          <p
-                            class="inline-block align-middle max-w-xs lg:max-w-sm xl:max-w-md"
-                          >
-                            {{ message.message }}
-                          </p>
-                          <p class="time text-right font-light text-gray-200">
-                            {{ message.time }}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div
-                  class="flex absolute bottom-0 w-full z-10"
-                  style="background-color: #A4A4A4"
-                  v-if="this.receiverID"
-                >
-                  <input
-                    class="input my-3 opacity-90 rounded-xl mx-2 filter drop-shadow-lg"
-                    type="text"
-                    placeholder="Message"
-                    maxlength="800"
-                    v-model="message"
-                    @keyup.enter="send"
-                  />
-                  <button
-                    class="button is-info my-3 mr-2 rounded-3xl filter drop-shadow-md"
-                    v-if="message"
-                    @click="send"
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    class="flex absolute bottom-16 w-full z-10"
+                    style="background-color: #A4A4A4"
+                    v-if="this.receiverID"
                   >
-                    <i class="fas fa-paper-plane mr-1"></i>
-                  </button>
+                    <input
+                      class="input my-3 opacity-90 rounded-xl mx-2 filter drop-shadow-lg"
+                      type="text"
+                      placeholder="Message"
+                      maxlength="800"
+                      v-model="message"
+                      @keyup.enter="send"
+                    />
+                    <button
+                      class="button is-info my-3 mr-2 rounded-3xl filter drop-shadow-md"
+                      v-if="message"
+                      @click="send"
+                    >
+                      <i class="fas fa-paper-plane mr-1"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -613,11 +618,13 @@ export default {
     scrollToBottom() {
       const container = document.querySelector(".container");
       container.scrollTop = container.scrollHeight;
-      setInterval(() => {
-        if (container.scrollTop <= 200 && this.chat.length !== this.chatSize) {
-          window.addEventListener("scroll", this.handleScroll());
-        }
-      }, 10);
+      if (container.scrollTop !== 0)
+        this.scrollInterval = setInterval(() => {
+          if (this.chat.length < this.chatSize) {
+            window.addEventListener("scroll", this.handleScroll());
+          } else clearInterval(this.scrollInterval);
+        }, 5);
+      else this.count = 0;
     },
     visitProfile(id) {
       this.$router.push({
@@ -665,15 +672,13 @@ export default {
     },
     handleScroll() {
       const container = document.querySelector(".container");
-      setTimeout(() => {
-        console.log(container.scrollTop);
-        console.log(container.scrollHeight);
-        this.count += 20;
-        this.chat = this.allMessages.slice(-20 - this.count);
-        container.scrollTop += 25 * this.count;
-        console.log(container.scrollTop);
-        console.log(container.scrollHeight);
-      }, 5);
+      if (container.scrollTop <= 200) {
+        setTimeout(() => {
+          this.count += 20;
+          this.chat = this.allMessages.slice(-20 - this.count);
+          container.scrollTop += 500;
+        });
+      }
     },
   },
 };
