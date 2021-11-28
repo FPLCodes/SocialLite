@@ -345,6 +345,7 @@
                     class="input my-3 opacity-90 rounded-xl mx-2 filter drop-shadow-lg"
                     type="text"
                     placeholder="Message"
+                    maxlength="800"
                     v-model="message"
                     @keyup.enter="send"
                   />

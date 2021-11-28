@@ -28,6 +28,7 @@
                 <input
                   class="input text-gray-50 border-none"
                   type="text"
+                  maxlength="20"
                   v-model="username"
                   v-bind:class="{ 'border-red-300': usernameError }"
                   style="background-color: #2d3a46"
