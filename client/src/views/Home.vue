@@ -145,7 +145,7 @@
                   </div>
                 </div>
                 <div
-                  class="absolute bottom-2 w-full text-center -ml-2 text-gray-50 text-xl z-10 overlay-bg"
+                  class="absolute bottom-16 w-full text-center -ml-2 text-gray-50 text-xl z-10 overlay-bg"
                 >
                   <div
                     class="menu-item transition-all"
