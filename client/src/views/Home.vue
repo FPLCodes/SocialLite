@@ -264,6 +264,9 @@
                     >
                       {{ defaultMessage }}
                     </h1>
+                    <h1 class="text-gray-50 text-xl mt-2 filter drop-shadow-md">
+                      {{ defaultMessage2 }}
+                    </h1>
                   </div>
                   <div
                     class="absolute container bottom-16 w-full max-h-full overflow-y-auto pb-16"
@@ -398,6 +401,7 @@ export default {
       requestSent: false,
       requestMessage: "Error sending request",
       defaultMessage: "",
+      defaultMessage2: "",
     };
   },
   async mounted() {
@@ -428,8 +432,8 @@ export default {
 
         setTimeout(() => {
           this.loaded = true;
-          this.addLetters("Welcome back " + this.username, 10);
-        }, 1000);
+          this.addLetters("Welcome back " + this.username + " 👋", 1, 500);
+        }, 500);
       } else {
         console.log("No user signed in");
       }
@@ -636,39 +640,21 @@ export default {
         path: `/profile/${id}`, // Redirect to user profile
       });
     },
-    addLetters(sentence, delay) {
-      sentence = sentence.split("");
+    addLetters(sentence, n, delay) {
       let i = 0;
-
       setTimeout(() => {
+        sentence = sentence.split(""); // Turn string into array of characters
         let addLetter = setInterval(() => {
-          this.defaultMessage += sentence[i]; // Add a letter to message from original sentence
+          if (n === 1) this.defaultMessage += sentence[i]; // Add a letter to message from original sentence
+          if (n === 2) this.defaultMessage2 += sentence[i];
           i++;
-          // If message is welcome back user, then finish animation & begin removing letters
-          if (this.defaultMessage === "Welcome back " + this.username) {
+          if (!sentence[i]) {
             clearInterval(addLetter);
-            setTimeout(() => {
-              this.removeLetters();
-            }, 1000);
-          } else if (
-            // If message is not welcome, then finish adding letters and stop
-            this.defaultMessage === "Click on a user to start messaging"
-          )
-            clearInterval(addLetter);
+            if (n === 1)
+              this.addLetters("Click on a user to start messaging", 2, 400);
+          }
         }, 50);
       }, delay);
-    },
-    removeLetters() {
-      let sentence = this.defaultMessage.split("");
-      let addLetter = setInterval(() => {
-        sentence.pop(); // Remove last letter
-        this.defaultMessage = sentence.join("");
-        // Stop removing letters once the message is empty
-        if (this.defaultMessage === "") {
-          clearInterval(addLetter);
-          this.addLetters("Click on a user to start messaging", 350);
-        }
-      }, 25);
     },
     handleScroll() {
       const container = document.querySelector(".container");
