@@ -432,7 +432,7 @@ export default {
 
         setTimeout(() => {
           this.loaded = true;
-          this.addLetters("Welcome back " + this.username + " 👋", 1, 500);
+          this.addLetters("Welcome " + this.username + " 👋", 1, 500);
         }, 500);
       } else {
         console.log("No user signed in");
