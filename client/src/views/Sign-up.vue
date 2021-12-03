@@ -29,6 +29,7 @@
                   class="input text-gray-50 border-none"
                   type="text"
                   maxlength="20"
+                  pattern="\S+"
                   v-model="username"
                   v-bind:class="{ 'border-red-300': usernameError }"
                   style="background-color: #2d3a46"
@@ -50,6 +51,7 @@
                   class="input text-gray-50 border-none"
                   type="password"
                   minlength="6"
+                  pattern="\S+"
                   v-model="password"
                   v-bind:class="{ 'border-red-300': !correctPass }"
                   style="background-color: #2d3a46"
@@ -274,6 +276,7 @@ export default {
       if (this.password !== this.confirmPass) this.correctPass = false;
       else this.correctPass = true;
 
+      // Make sure password is at least 6 characters long
       if (this.password.length <= 5) this.shortPass = true;
       else this.shortPass = false;
 
