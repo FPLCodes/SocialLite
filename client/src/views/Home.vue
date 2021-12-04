@@ -5,10 +5,12 @@
         <div class=" flex field w-full">
           <div class="w-full h-full">
             <div class="flex control w-full" style="background: #1d2125;">
+              <!-------------------------------- Left bar ---------------------------------->
               <div
                 class="relative px-2 border-r-2"
                 style="border-color: rgb(82, 82, 82)"
               >
+                <!----------------- Title ------------------>
                 <div class="flex justify-center pt-5 cursor-default">
                   <h1
                     class="text-gray-50 font-bold text-5xl"
@@ -23,9 +25,11 @@
                     Lite
                   </h1>
                 </div>
+                <!----------------- Title ------------------>
                 <div class="w-full">
                   <header class="card-header w-full px-2 pt-10">
                     <div class="w-full rounded-md">
+                      <!----------------- Friends / Requests ------------------>
                       <ul
                         class="flex justify-center h-8 items-center text-gray-50"
                         style="background-color: #415D6C;"
@@ -53,9 +57,11 @@
                           </a>
                         </li>
                       </ul>
+                      <!----------------- Friends / Requests ------------------>
                     </div>
                   </header>
 
+                  <!----------------- Search bar ------------------>
                   <div class="field has-addons flex px-2 pt-3">
                     <div
                       class="control has-icons-left w-full opacity-90 rounded-md"
@@ -71,7 +77,9 @@
                       </span>
                     </div>
                   </div>
+                  <!----------------- Search bar ------------------>
 
+                  <!----------------- Friends list ------------------>
                   <div
                     class="pt-1 px-2 max-h-100"
                     v-if="showList"
@@ -105,6 +113,9 @@
                       </li>
                     </transition-group>
                   </div>
+                  <!----------------- Friends list ------------------>
+
+                  <!----------------- Friend Requests ------------------>
                   <div
                     class="-mt-px px-2 max-h-100 overflow-y-auto"
                     v-if="!showList"
@@ -143,7 +154,10 @@
                       </div>
                     </li>
                   </div>
+                  <!----------------- Friend Requests ------------------>
                 </div>
+
+                <!----------------- Bottom left ------------------>
                 <div
                   class="absolute bottom-16 w-full text-center -ml-2 text-gray-50 text-xl z-10 overlay-bg"
                 >
@@ -204,7 +218,9 @@
                     ></div>
                   </div>
                 </div>
+                <!----------------- Bottom left ------------------>
               </div>
+              <!-------------------------------- Left bar ---------------------------------->
 
               <!-------------------------------- Chat box ---------------------------------->
               <div class="w-full">
@@ -268,6 +284,8 @@
                       {{ defaultMessage2 }}
                     </h1>
                   </div>
+
+                  <!------------- All messages ------------->
                   <div
                     class="absolute container bottom-16 w-full max-h-full overflow-y-auto pb-16"
                     ref="container"
@@ -285,7 +303,7 @@
                         v-for="(message, index) in chat"
                         :key="index"
                       >
-                        <!-- Messages sent by user -->
+                        <!--------- Messages sent by user --------->
                         <div
                           class="flex items-center"
                           v-if="message.senderID === currUser.uid"
@@ -312,8 +330,9 @@
                             </p>
                           </div>
                         </div>
+                        <!--------- Messages sent by user --------->
 
-                        <!-- Messages sent by others -->
+                        <!--------- Messages sent by others --------->
                         <div
                           class="flex items-center text-gray-50"
                           v-if="message.senderID !== currUser.uid"
@@ -340,9 +359,13 @@
                             </p>
                           </div>
                         </div>
+                        <!--------- Messages sent by others --------->
                       </li>
                     </ul>
                   </div>
+                  <!------------- All messages ------------->
+
+                  <!------------- Message input ------------->
                   <div
                     class="flex absolute bottom-16 w-full z-10"
                     style="background-color: #A4A4A4"
@@ -364,8 +387,10 @@
                       <i class="fas fa-paper-plane mr-1"></i>
                     </button>
                   </div>
+                  <!------------- Message input ------------->
                 </div>
               </div>
+              <!-------------------------------- Chat box ---------------------------------->
             </div>
           </div>
         </div>
