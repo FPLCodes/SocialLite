@@ -18,3 +18,21 @@ A social media messaging app where you can connect with others anywhere in the w
 - Strong security
   - All messages & user authentications are handled by Firebase.
   - Users profile data is stored in MongoDB.
+
+## Dependencies
+- Express
+- Mongoose
+- Firebase
+- body-parser
+- cors
+- dotenv
+- concurrently
+- nodemon
+- vue
+- vue-router
+- axios
+- tailwindcss
+- postcss
+- autoprefixer
+- moment
+- timeago.js
