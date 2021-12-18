@@ -36,3 +36,9 @@ A social media messaging app where you can connect with others anywhere in the w
 - autoprefixer
 - moment
 - timeago.js
+
+## What the app looks like
+
+![alt text](https://github.com/FPLCodes/SocialLite/blob/main/Screenshots/SocialLite-Homepage.png)
+ 
+![alt text](https://github.com/FPLCodes/SocialLite/blob/main/Screenshots/SocialLite-Chat.png)
