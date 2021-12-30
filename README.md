@@ -1,5 +1,6 @@
 # SocialLite
 A social media messaging app where you can connect with others anywhere in the world and send them messages real time.
+Disclaimer: This project is still under development.
 
 ## How to use
 1. Visit https://social-lite-app.herokuapp.com/
