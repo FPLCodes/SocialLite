@@ -1,5 +1,5 @@
 <template>
-  <div class="mainbg font-sans">
+  <div class="h-screen mainbg font-sans">
     <loading
       :active="isLoading"
       :color="'#62D7F0'"
@@ -10,9 +10,9 @@
       :background-color="'black'"
       :lock-scroll="true"
     />
-    <div class="w-full h-screen items-center absolute mainbg">
+    <div class="h-full flex items-center justify-center flex-col gap-10">
       <div
-        class="card mx-auto p-10 mt-52 w-10/12 md:w-8/12 lg:w-6/12 xl:w-5/12 2xl:w-4/12"
+        class="m-0 card p-10 w-10/12 md:w-8/12 lg:w-6/12 xl:w-5/12 2xl:w-4/12"
         style="background-color: #2b2b2b"
       >
         <div class="flex mx-auto justify-center filter drop-shadow-md">
@@ -117,7 +117,7 @@
           </div>
         </div>
       </div>
-      <div class="w-full mt-36">
+      <div class="w-full">
         <h1 class="text-center text-gray-200">Made by Sahab Ul Ferdous</h1>
         <div class="flex justify-center items-center gap-2 mt-2">
           <a
