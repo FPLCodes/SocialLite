@@ -5,7 +5,7 @@ A social media messaging app where you can connect with others anywhere in the w
 ## How to use
 1. Visit https://social-lite-app.herokuapp.com/ (Please use a desktop/laptop and google chrome)
 2. Sign up with a google account and create your profile
-3. Add friends and start messaging them (my username is FPLogistic, feel free to add me!)
+3. Add friends and start messaging them after they accept the request (my username is FPLogistic, feel free to add me!)
 
 ## Features
 - Creating a profile
