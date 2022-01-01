@@ -10,7 +10,7 @@
       :background-color="'black'"
       :lock-scroll="true"
     />
-    <div class="h-full flex items-center justify-center flex-col gap-10">
+    <div class="h-full flex items-center justify-center flex-col gap-12">
       <div
         class="m-0 card p-10 w-10/12 md:w-8/12 lg:w-6/12 xl:w-5/12 2xl:w-4/12"
         style="background-color: #2b2b2b"
@@ -105,9 +105,9 @@
                 :failed-message="failedMessage"
               />
 
-              <div class="text-gray-100 w-full mt-6 -mb-7">
+              <div class="mt-6 -mb-7">
                 <p
-                  class="text-center cursor-pointer"
+                  class="text-center cursor-pointer text-gray-100"
                   @click.prevent="googleSignIn()"
                 >
                   Don't have an account? Click here to sign up

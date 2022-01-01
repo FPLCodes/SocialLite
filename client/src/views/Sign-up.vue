@@ -2,15 +2,15 @@
   <div id="app" class="bg-gray-50 font-sans">
     <div class="container w-full h-screen flex items-center">
       <div
-        class="mx-auto max-w-xl mb-20 w-10/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12"
+        class="flex flex-col gap-12 mx-auto max-w-xl mb-20 w-10/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12"
       >
         <div class="card p-5 mt-36" style="background-color: #2b2b2b">
-          <div
-            class="flex text-gray-50 items-center cursor-pointer"
-            @click="signOut"
-          >
-            <i class="fas fa-long-arrow-alt-left mr-1"></i>
-            <p>Go back</p>
+          <div class="flex text-gray-50 items-center">
+            <i
+              class="fas fa-long-arrow-alt-left mr-1 cursor-pointer"
+              @click="signOut"
+            ></i>
+            <p class="cursor-pointer" @click="signOut">Go back</p>
           </div>
           <div class="text-center filter drop-shadow-md">
             <h1
@@ -143,16 +143,16 @@
             <!-- Gender input radio -->
             <div class="mb-3">
               <h1 class="font-semibold">Gender:</h1>
-              <div class="control">
-                <label class="radio">
+              <div class="control flex">
+                <label class="radio hover:text-gray-400">
                   <input type="radio" value="Male" v-model="gender" />
                   Male
                 </label>
-                <label class="radio">
+                <label class="radio hover:text-gray-400">
                   <input type="radio" value="Female" v-model="gender" />
                   Female
                 </label>
-                <label class="radio">
+                <label class="radio hover:text-gray-400">
                   <input type="radio" value="Others" v-model="gender" />
                   Others
                 </label>
@@ -180,7 +180,7 @@
             </div>
           </div>
         </div>
-        <div class="w-full mt-16">
+        <div class="w-full">
           <h1 class="text-center text-gray-200">Made by Sahab Ul Ferdous</h1>
           <div class="flex justify-center items-center gap-2 mt-2">
             <a
