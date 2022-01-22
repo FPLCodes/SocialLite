@@ -81,7 +81,7 @@
 
                   <!----------------- Friends list ------------------>
                   <div
-                    class="pt-1 px-2 max-h-100"
+                    class="px-2 pt-1 max-h-100"
                     v-if="showList"
                     v-bind:class="[{ 'overflow-y-auto': loaded }]"
                   >
@@ -89,10 +89,13 @@
                       <li
                         v-for="(user, index) in filteredSearch"
                         :key="index"
-                        class="p-1 py-px cursor-pointer text-gray-50 transition-all rounded-lg"
-                        @click="loadChat(user.uid)"
+                        class="cursor-pointer text-gray-50 transition-all -mt-2"
+                        @click="loadChat(user.uid, index)"
                       >
-                        <div class="flist-item">
+                        <div
+                          class="flist-item rounded-md p-1 pt-3 pb-0"
+                          :class="{ 'bg-gray-700': index === currIndex }"
+                        >
                           <div class="flex items-center">
                             <figure class="image is-32x32">
                               <img
@@ -107,7 +110,7 @@
                             </p>
                           </div>
                           <div
-                            class="w-0 h-0.5 bg-gray-300 mt-2 transition-all flist-effect duration-300"
+                            class="w-0 h-0.5 bg-gray-300 mt-1 mb-1 transition-all flist-effect duration-300"
                           ></div>
                         </div>
                       </li>
@@ -309,7 +312,7 @@
                           v-if="message.senderID === currUser.uid"
                         >
                           <div
-                            class="message py-1 rounded-xl ml-52 text-gray-50"
+                            class="message py-1 mr-10 rounded-xl text-gray-50"
                             style="background-color: #0B87AE"
                           >
                             <div class="flex mb-1 relative">
@@ -337,7 +340,7 @@
                           class="flex items-center text-gray-50"
                           v-if="message.senderID !== currUser.uid"
                         >
-                          <figure class="image w-9 mr-2">
+                          <figure class="image w-9 ml-5">
                             <img
                               :src="message.senderPhoto"
                               onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
@@ -346,7 +349,7 @@
                             />
                           </figure>
                           <div
-                            class="px-3 py-1 rounded-xl mr-40 text-gray-50"
+                            class="px-3 py-1 ml-3 rounded-xl text-gray-50"
                             style="background-color: #0B87AE"
                           >
                             <p
@@ -564,9 +567,11 @@ export default {
       remove(ref(this.db, `Users/${this.userID}/requests/${id}`));
       this.loadFriendReq();
     },
-    loadChat(receiverID) {
+    loadChat(receiverID, i) {
       this.chat = [];
       this.receiverID = receiverID;
+      this.currIndex = i;
+      this.search = "";
       const chatRef = ref(this.db, `Chats/${this.userID}/${this.receiverID}/`);
 
       onValue(chatRef, (snapshot) => {
