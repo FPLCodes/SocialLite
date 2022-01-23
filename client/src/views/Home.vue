@@ -81,7 +81,7 @@
 
                   <!----------------- Friends list ------------------>
                   <div
-                    class="px-2 pt-1 max-h-100"
+                    class="px-2 pt-3 max-h-100"
                     v-if="showList"
                     v-bind:class="[{ 'overflow-y-auto': loaded }]"
                   >
