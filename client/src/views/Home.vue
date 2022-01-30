@@ -1,6 +1,6 @@
 <template>
   <div class="homebg font-sans">
-    <div class="flex justify-items-stretch mx-auto xl:w-9/12">
+    <div class="flex justify-items-stretch mx-auto lg:w-10/12 xl:w-8/12">
       <div class="flex-auto">
         <div class=" flex field w-full">
           <div class="w-full h-full">
@@ -312,7 +312,7 @@
                           v-if="message.senderID === currUser.uid"
                         >
                           <div
-                            class="message py-1 mr-10 rounded-xl text-gray-50"
+                            class="message py-1 mr-3 xl:mr-10 rounded-xl text-gray-50"
                             style="background-color: #0B87AE"
                           >
                             <div class="flex mb-1 relative">
@@ -340,7 +340,7 @@
                           class="flex items-center text-gray-50"
                           v-if="message.senderID !== currUser.uid"
                         >
-                          <figure class="image w-9 ml-5">
+                          <figure class="image w-9 xl:ml-5">
                             <img
                               :src="message.senderPhoto"
                               onerror="this.src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Ffull%2F115-1150152_default-profile-picture-avatar-png-green.png&f=1&nofb=1'"
