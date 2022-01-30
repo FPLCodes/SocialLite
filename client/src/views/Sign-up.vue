@@ -195,6 +195,11 @@
             ></a>
           </div>
         </div>
+        <div class="bottom-3 absolute self-center">
+          <p class="text-gray-400 text-xs">
+            ©️ SocialLite 2021. All rights reserved.
+          </p>
+        </div>
       </div>
     </div>
   </div>
