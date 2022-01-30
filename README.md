@@ -1,4 +1,4 @@
-# SocialLite
+# ![alt text](https://github.com/FPLCodes/SocialLite/blob/main/client/public/icon.ico) SocialLite
 A social media messaging app where you can connect with others anywhere in the world and send them messages real time.
 **Disclaimer: This project is still under development.**
 
