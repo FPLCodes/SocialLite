@@ -6,16 +6,20 @@
       >
         <p class="p-1 ml-12 xl:ml-44">SL</p>
         <div class="flex gap-6 mr-12 xl:mr-44">
-          <p class="p-1">LOGIN</p>
-          <p class="p-1 px-4 rounded-md bg-gray-50 text-gray-900">SIGNUP</p>
+          <p class="p-1 cursor-pointer">LOGIN</p>
+          <p
+            class="p-1 px-4 rounded-sm bg-gray-50 text-blue-500 cursor-pointer"
+          >
+            SIGNUP
+          </p>
         </div>
       </div>
       <div class="xl:flex items-center justify-between mt-20 xl:-mt-10">
         <div class="px-10 xl:pl-32">
-          <h1 class="text-center xl:text-start font-bold text-4xl xl:text-5xl">
+          <h1 class="font-bold text-4xl text-center xl:text-left xl:text-5xl">
             Stay connected with SocialLite
           </h1>
-          <p class="text-center xl:text-start mt-6 mx-5">
+          <p class="text-center xl:text-left mt-6 mx-5">
             Start messaging today with a <strong>fast, </strong>
             <strong>free,</strong> and <strong>secure</strong> online messaging
             platform.
@@ -37,9 +41,9 @@
     </div>
     <div class="w-full mt-20">
       <h1 class="text-center text-3xl">Product features</h1>
-      <div class="text-center mt-5 md:flex">
+      <div class="text-center mt-5 justify-evenly gap-0 md:flex xl:mx-32">
         <div
-          class="p-5 bg-gray-50 text-gray-900 m-5 filter drop-shadow-lg rounded-md"
+          class="p-5 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md"
         >
           <i class="fas fa-sync fa-3x"></i>
           <h1 class="font-bold text-xl mt-4">Real-time messaging</h1>
@@ -48,7 +52,7 @@
           </p>
         </div>
         <div
-          class="p-10 bg-gray-50 text-gray-900 m-5 filter drop-shadow-lg rounded-md"
+          class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md"
         >
           <i class="fas fa-shield fa-3x"></i>
           <h1 class="font-bold text-xl mt-4">Strong security</h1>
@@ -57,7 +61,7 @@
           </p>
         </div>
         <div
-          class="p-10 bg-gray-50 text-gray-900 m-5 filter drop-shadow-lg rounded-md"
+          class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md"
         >
           <i class="fas fa-user fa-3x"></i>
           <h1 class="font-bold text-xl mt-4">User profiles</h1>
