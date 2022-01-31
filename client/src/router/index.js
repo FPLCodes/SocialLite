@@ -4,10 +4,16 @@ import SignIn from "../views/Sign-in.vue";
 import Home from "../views/Home.vue";
 import ProfileVisit from "../views/ProfileVisit.vue";
 import Profile from "../views/Profile.vue";
+import LandingPage from "../views/LandingPage.vue";
 
 const routes = [
   {
     path: "/",
+    name: "Landing",
+    component: LandingPage,
+  },
+  {
+    path: "/sign-in",
     name: "Sign-in",
     component: SignIn,
   },
