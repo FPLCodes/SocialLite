@@ -2,13 +2,18 @@
   <div class="overflow-y-scroll h-screen mainbg">
     <div class="BG layer1">
       <div
-        class="flex justify-between invisible -mt-6 md:visible md:mt-6 xl:mt-12"
+        class="flex justify-between invisible -mt-6 md:visible md:mt-6 xl:mt-10"
       >
-        <p class="p-1 ml-12 xl:ml-44">SL</p>
-        <div class="flex gap-6 mr-12 xl:mr-44">
+        <img
+          src="../assets/logo.png"
+          width="35"
+          height="35"
+          class="ml-12 xl:ml-40"
+        />
+        <div class="flex items-center gap-6 mr-12 xl:mr-44">
           <p class="p-1 cursor-pointer">LOGIN</p>
           <p
-            class="p-1 px-4 rounded-sm bg-gray-50 text-blue-500 cursor-pointer"
+            class="py-2 px-4 rounded-sm bg-gray-50 text-blue-500 cursor-pointer"
           >
             SIGNUP
           </p>
@@ -16,20 +21,19 @@
       </div>
       <div class="xl:flex items-center justify-between mt-20 xl:-mt-10">
         <div class="px-10 xl:pl-32">
-          <h1 class="font-bold text-4xl text-center xl:text-left xl:text-5xl">
+          <h1 class="font-bold text-4xl text-center xl:text-left xl:text-6xl">
             Stay connected with SocialLite
           </h1>
-          <p class="text-center xl:text-left mt-6 mx-5">
-            Start messaging today with a <strong>fast, </strong>
-            <strong>free,</strong> and <strong>secure</strong> online messaging
-            platform.
+          <p class="text-center text-lg xl:text-left mt-4 xl:mt-6">
+            Start messaging today with a <b>fast </b> and <b>secure</b> online
+            messaging platform.
           </p>
         </div>
-        <div class="w-full drop-shadow-lg filter pt-10 xl:mt-24">
+        <div class="w-full drop-shadow-2xl filter pt-10 xl:mt-24">
           <img
             src="../assets/homepage.png"
             class="w-11/12 md:w-9/12 xl:w-2/3 p-10
-          mx-auto transform -skew-y-3 -skew-x-12"
+          mx-auto transform -skew-y-2 -skew-x-12"
           />
         </div>
       </div>
@@ -71,6 +75,9 @@
         </div>
       </div>
     </div>
+    <p class="text-gray-400 text-xs text-center my-4">
+      Copyright ©️ SocialLite 2022 • All rights reserved
+    </p>
   </div>
 </template>
 
