@@ -1,18 +1,18 @@
 <template>
   <div class="overflow-y-scroll h-screen mainbg">
-    <div class="xl:w-10/12 xl:mx-auto">
+    <div class="xl:w-full 2xl:w-10/12 2xl:mx-auto">
       <div
         class="flex justify-between invisible -mt-6 md:visible md:mt-12 xl:mt-10 sticky top-0"
       >
-        <img src="../assets/logo.png" width="35" height="35" />
-        <div class="flex items-center gap-4">
+        <img src="../assets/logo.png" width="35" height="35" class="ml-5" />
+        <div class="flex items-center gap-4 mr-5">
           <p
-            class="py-2 px-4 rounded-sm bg-gray-700 text-gray-50 cursor-pointer"
+            class="py-2 px-4 rounded-sm bg-gray-700 hover:bg-gray-800 transition-all text-gray-50 cursor-pointer"
           >
             LOGIN
           </p>
           <p
-            class="py-2 px-5 rounded-sm bg-blue-500 text-gray-50 cursor-pointer"
+            class="py-2 px-5 rounded-sm bg-blue-500 hover:bg-blue-600 transition-all text-gray-50 cursor-pointer"
           >
             SIGNUP
           </p>
@@ -20,7 +20,9 @@
       </div>
       <div class="xl:flex items-center justify-items-end pt-20">
         <div class="px-5">
-          <h1 class="font-bold text-4xl text-center xl:text-left xl:text-7xl">
+          <h1
+            class="font-bold text-4xl text-center xl:text-left xl:text-6xl 2xl:text-7xl"
+          >
             Stay connected with SocialLite
           </h1>
           <p class="text-center text-2xl xl:text-left mt-6">
@@ -28,7 +30,7 @@
             messaging platform.
           </p>
           <p
-            class="w-max py-3 px-6 mt-6 text-3xl font-semibold rounded-sm bg-blue-500 text-gray-50 cursor-pointer"
+            class="w-max py-3 px-6 mt-6 text-3xl font-semibold rounded-md bg-blue-500 hover:bg-blue-700 transition-all text-gray-50 cursor-pointer"
           >
             Get Started
           </p>
