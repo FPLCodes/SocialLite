@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="xl:flex items-center justify-items-end pt-20">
-        <div class="px-5">
+        <div class="px-6">
           <h1
             class="font-bold text-4xl text-center xl:text-left xl:text-6xl 2xl:text-7xl"
           >
