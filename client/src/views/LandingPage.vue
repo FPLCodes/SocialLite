@@ -4,8 +4,8 @@
       <div
         class="flex justify-between invisible -mt-6 md:visible md:mt-12 xl:mt-10 sticky top-0"
       >
-        <img src="../assets/logo.png" width="35" height="35" class="ml-5" />
-        <div class="flex items-center gap-4 mr-5">
+        <img src="../assets/logo.png" width="35" class="ml-5" />
+        <div class="flex items-center gap-4 mr-6">
           <p
             class="py-2 px-4 rounded-sm bg-gray-700 hover:bg-gray-800 transition-all text-gray-50 cursor-pointer"
           >
@@ -18,8 +18,8 @@
           </p>
         </div>
       </div>
-      <div class="xl:flex items-center justify-items-end pt-20">
-        <div class="px-6">
+      <div class="xl:flex items-center justify-items-end pt-16">
+        <div class="pr-6 pl-5 leftSection">
           <h1
             class="font-bold text-4xl text-center xl:text-left xl:text-6xl 2xl:text-7xl"
           >
@@ -30,24 +30,30 @@
             messaging platform.
           </p>
           <p
-            class="w-max py-3 px-6 mt-6 text-3xl font-semibold rounded-md bg-blue-500 hover:bg-blue-700 transition-all text-gray-50 cursor-pointer"
+            class="w-max py-3 px-6 my-6 lg:mt-6 text-xl md:text-2xl md:font-semibold rounded-md 
+            bg-blue-500 hover:bg-blue-700 transition-all text-gray-50 cursor-pointer
+            sm:mx-auto xl:mx-0"
           >
             Get Started
           </p>
         </div>
-        <div class="px-5">
+        <div class="px-6 rightSection">
           <img
             src="../assets/homepage.png"
-            class="filter drop-shadow-xl mx-auto"
+            class="filter drop-shadow-2xl mx-auto"
           />
         </div>
       </div>
-      <div class="flex gap-5 justify-evenly pt-32">
-        <img src="../assets/mongodb.png" class="w-16 p-px" />
-        <img src="../assets/vuejs.png" class="w-16 p-px" />
-        <img src="../assets/firebase.png" class="w-16 p-px" />
+      <div class="pt-32 bottomSection slider w-full mx-auto">
+        <div class="slider-track">
+          <div class="flex gap-80 justify-evenly slide">
+            <img src="../assets/mongodb.png" class="w-16 p-px" />
+            <img src="../assets/vuejs.png" class="w-16 p-px" />
+            <img src="../assets/firebase.png" class="w-16 p-px" />
+          </div>
+        </div>
       </div>
-      <div class="w-full pt-32">
+      <div class="w-full pt-32 bottomSection">
         <h1 class="text-center text-4xl">Product features</h1>
         <div class="text-center mt-6 justify-evenly gap-0 md:flex xl:mx-32">
           <div
@@ -107,5 +113,85 @@ export default {};
 
 .layer1 {
   background-image: url("../assets/wave-haikei.svg");
+}
+
+.leftSection {
+  animation: transitionLeft 1s;
+}
+
+.rightSection {
+  animation: transitionRight 1s;
+}
+
+.bottomSection {
+  animation: transitionBottom 1s;
+}
+
+@keyframes transitionLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes transitionRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes transitionBottom {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slider {
+  overflow: hidden;
+  position: relative;
+}
+
+.slider::before,
+.slider::after {
+  content: "";
+  position: absolute;
+}
+
+.slider::before {
+  top: 0;
+  left: 0;
+}
+
+.slider::after {
+  top: 0;
+  right: 0;
+  transform: rotateZ(180deg);
+}
+
+.slider .slider-track {
+  animation: 5s infinite linear;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-250px * 3));
+  }
 }
 </style>
