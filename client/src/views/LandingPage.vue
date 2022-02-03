@@ -44,12 +44,23 @@
           />
         </div>
       </div>
-      <div class="pt-32 bottomSection slider w-full mx-auto">
-        <div class="slider-track">
-          <div class="flex gap-80 justify-evenly slide">
+      <div
+        class="slider relative pt-32 mt-28 bottomSection w-full overflow-hidden"
+      >
+        <div class="slider-track flex absolute left-0 animate">
+          <div class="slide flex gap-5 justify-around w-1/2">
             <img src="../assets/mongodb.png" class="w-16 p-px" />
             <img src="../assets/vuejs.png" class="w-16 p-px" />
             <img src="../assets/firebase.png" class="w-16 p-px" />
+            <img src="../assets/tailwind.svg" class="w-16 p-px" />
+            <img src="../assets/postcss.svg" class="w-16 p-px" />
+          </div>
+          <div class="slide flex gap-5 justify-around w-1/2">
+            <img src="../assets/mongodb.png" class="w-16 p-px" />
+            <img src="../assets/vuejs.png" class="w-16 p-px" />
+            <img src="../assets/firebase.png" class="w-16 p-px" />
+            <img src="../assets/tailwind.svg" class="w-16 p-px" />
+            <img src="../assets/postcss.svg" class="w-16 p-px" />
           </div>
         </div>
       </div>
@@ -160,38 +171,27 @@ export default {};
   }
 }
 
-.slider {
-  overflow: hidden;
-  position: relative;
-}
-
-.slider::before,
-.slider::after {
-  content: "";
-  position: absolute;
-}
-
-.slider::before {
-  top: 0;
-  left: 0;
-}
-
-.slider::after {
-  top: 0;
-  right: 0;
-  transform: rotateZ(180deg);
-}
-
-.slider .slider-track {
-  animation: 5s infinite linear;
+.slider-track {
+  width: 200%;
 }
 
 @keyframes scroll {
   0% {
-    transform: translateX(0);
+    left: 0;
   }
   100% {
-    transform: translateX(calc(-250px * 3));
+    left: -100%;
   }
+}
+
+.animate {
+  width: 200%;
+  animation: scroll 20s linear infinite;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.animate:hover {
+  animation-play-state: paused;
 }
 </style>
