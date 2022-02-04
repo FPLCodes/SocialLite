@@ -186,7 +186,7 @@ export default {};
 
 .animate {
   width: 200%;
-  animation: scroll 20s linear infinite;
+  animation: scroll 30s linear infinite;
   top: 50%;
   transform: translate(0, -50%);
 }
