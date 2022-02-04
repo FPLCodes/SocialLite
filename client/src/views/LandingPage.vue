@@ -45,7 +45,7 @@
         </div>
       </div>
       <div
-        class="slider relative pt-32 mt-28 bottomSection w-full overflow-hidden"
+        class="slider relative pt-32 mt-24 bottomSection w-full overflow-hidden"
       >
         <div class="slider-track flex absolute left-0 animate">
           <div class="slide flex gap-5 justify-around w-1/2">
@@ -53,22 +53,22 @@
             <img src="../assets/vuejs.png" class="w-16 p-px" />
             <img src="../assets/firebase.png" class="w-16 p-px" />
             <img src="../assets/tailwind.svg" class="w-16 p-px" />
-            <img src="../assets/postcss.svg" class="w-16 p-px" />
+            <img src="../assets/nodejs.svg" class="w-16 p-px" />
           </div>
           <div class="slide flex gap-5 justify-around w-1/2">
             <img src="../assets/mongodb.png" class="w-16 p-px" />
             <img src="../assets/vuejs.png" class="w-16 p-px" />
             <img src="../assets/firebase.png" class="w-16 p-px" />
             <img src="../assets/tailwind.svg" class="w-16 p-px" />
-            <img src="../assets/postcss.svg" class="w-16 p-px" />
+            <img src="../assets/nodejs.svg" class="w-16 p-px" />
           </div>
         </div>
       </div>
       <div class="w-full pt-32 bottomSection">
         <h1 class="text-center text-4xl">Product features</h1>
-        <div class="text-center mt-6 justify-evenly gap-0 md:flex xl:mx-32">
+        <div class="text-center mt-6 justify-around gap-0 md:flex xl:mx-32">
           <div
-            class="p-5 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md"
+            class="p-5 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm"
           >
             <i class="fas fa-sync fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">Real-time messaging</h1>
@@ -77,7 +77,7 @@
             </p>
           </div>
           <div
-            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md"
+            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm"
           >
             <i class="fas fa-shield fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">Strong security</h1>
@@ -86,7 +86,7 @@
             </p>
           </div>
           <div
-            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md"
+            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm"
           >
             <i class="fas fa-user fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">User profiles</h1>
