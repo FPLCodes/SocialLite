@@ -6,16 +6,18 @@
       >
         <img src="../assets/logo.png" width="35" class="ml-5" />
         <div class="flex items-center gap-4 mr-6">
-          <p
-            class="py-2 px-4 rounded-sm bg-gray-700 hover:bg-gray-800 transition-all text-gray-50 cursor-pointer"
+          <button
+            class="login py-2 px-4 rounded-sm bg-gray-700 hover:bg-gray-800 transition-all text-gray-50 cursor-pointer"
+            @click="login()"
           >
             LOGIN
-          </p>
-          <p
-            class="py-2 px-5 rounded-sm bg-blue-500 hover:bg-blue-600 transition-all text-gray-50 cursor-pointer"
+          </button>
+          <button
+            class="signup py-2 px-5 rounded-sm bg-blue-500 hover:bg-blue-600 transition-all text-gray-50 cursor-pointer"
+            @click="login()"
           >
             SIGNUP
-          </p>
+          </button>
         </div>
       </div>
       <div class="xl:flex items-center justify-items-end pt-16">
@@ -29,13 +31,14 @@
             Start messaging today with a <b>fast </b> and <b>secure</b> online
             messaging platform.
           </p>
-          <p
+          <button
             class="w-max py-3 px-6 my-6 lg:mt-6 text-xl md:text-2xl md:font-semibold rounded-md 
             bg-blue-500 hover:bg-blue-700 transition-all text-gray-50 cursor-pointer
             sm:mx-auto xl:mx-0"
+            @click="login()"
           >
             Get Started
-          </p>
+          </button>
         </div>
         <div class="px-6 rightSection">
           <img
@@ -104,7 +107,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Landing",
+  methods: {
+    login() {
+      this.$router.push({ path: "/sign-in" });
+    },
+  },
+};
 </script>
 
 <style>
@@ -138,6 +148,14 @@ export default {};
   animation: transitionBottom 1s;
 }
 
+.login {
+  animation: transitionLogin 1s;
+}
+
+.signup {
+  animation: transitionSignup 1.5s;
+}
+
 @keyframes transitionLeft {
   from {
     opacity: 0;
@@ -167,6 +185,34 @@ export default {};
   }
   to {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes transitionLogin {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes transitionSignup {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  100% {
     transform: translateY(0);
   }
 }
