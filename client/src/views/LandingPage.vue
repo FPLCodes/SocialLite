@@ -2,10 +2,10 @@
   <div class="overflow-y-scroll h-screen mainbg">
     <div class="xl:w-full 2xl:w-10/12 2xl:mx-auto">
       <div
-        class="flex justify-between invisible -mt-6 md:visible md:mt-12 xl:mt-10 sticky top-0"
+        class="flex justify-between invisible mx-5 -mt-6 md:visible md:mt-12 xl:mt-10"
       >
         <img src="../assets/logo.png" width="35" class="ml-5" />
-        <div class="flex items-center gap-4 mr-6">
+        <div class="flex items-center gap-4 mr-5 xl:mr-6">
           <button
             class="login py-2 px-4 rounded-sm bg-gray-700 hover:bg-gray-800 transition-all text-gray-50 cursor-pointer"
             @click="login()"
@@ -20,29 +20,32 @@
           </button>
         </div>
       </div>
-      <div class="xl:flex items-center justify-items-end pt-16">
-        <div class="pr-6 pl-5 leftSection">
+      <div class="xl:flex items-center justify-items-end pt-24 xl:pt-16">
+        <div class="px-6 xl:pr-6 xl:pl-5 leftSection">
           <h1
-            class="font-bold text-4xl text-center xl:text-left xl:text-6xl 2xl:text-7xl"
+            class="font-bold text-5xl text-center xl:text-left xl:text-6xl 2xl:text-7xl"
           >
             Stay connected with SocialLite
           </h1>
-          <p class="text-center text-2xl xl:text-left mt-6">
+          <p class="text-center text-xl xl:text-left mt-6">
             Start messaging today with a <b>fast </b> and <b>secure</b> online
             messaging platform.
           </p>
-          <button
-            class="w-max py-3 px-6 my-6 lg:mt-6 text-xl md:text-2xl md:font-semibold rounded-md 
+          <div class="w-ful flex justify-center xl:justify-start">
+            <button
+              class="w-max py-3 px-6 my-6 lg:mt-6 text-xl md:text-2xl md:font-semibold rounded-md 
             bg-blue-500 hover:bg-blue-700 transition-all text-gray-50 cursor-pointer
-            sm:mx-auto xl:mx-0"
-            @click="login()"
-          >
-            Get Started
-          </button>
+            xl:mx-0"
+              @click="login()"
+            >
+              Get Started
+            </button>
+          </div>
         </div>
         <div class="px-6 rightSection">
           <img
             src="../assets/homepage.png"
+            alt="Demo"
             class="filter drop-shadow-2xl mx-auto"
           />
         </div>
@@ -69,9 +72,11 @@
       </div>
       <div class="w-full pt-32 bottomSection">
         <h1 class="text-center text-4xl">Product features</h1>
-        <div class="text-center mt-6 justify-around gap-0 md:flex xl:mx-32">
+        <div
+          class="text-center mt-6 justify-around gap-6 lg:flex lg:mx-20 xl:mx-32"
+        >
           <div
-            class="p-5 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm"
+            class="p-5 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto"
           >
             <i class="fas fa-sync fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">Real-time messaging</h1>
@@ -80,7 +85,7 @@
             </p>
           </div>
           <div
-            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm"
+            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto"
           >
             <i class="fas fa-shield fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">Strong security</h1>
@@ -89,7 +94,7 @@
             </p>
           </div>
           <div
-            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm"
+            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto"
           >
             <i class="fas fa-user fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">User profiles</h1>
