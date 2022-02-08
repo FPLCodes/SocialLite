@@ -20,6 +20,7 @@
           </button>
         </div>
       </div>
+
       <div class="xl:flex items-center justify-items-end pt-24 xl:pt-16">
         <div class="px-6 xl:pr-6 xl:pl-5 leftSection">
           <h1
@@ -50,6 +51,7 @@
           />
         </div>
       </div>
+
       <div
         class="slider relative pt-32 mt-24 bottomSection w-full overflow-hidden"
       >
@@ -70,13 +72,13 @@
           </div>
         </div>
       </div>
+
       <div class="w-full pt-32 bottomSection">
-        <h1 class="text-center text-4xl">Product features</h1>
-        <div
-          class="text-center mt-20 justify-around gap-6 lg:flex lg:mx-20 xl:mx-32"
-        >
+        <h1 class="text-center text-4xl font-bold">Product features</h1>
+        <div class="text-center mt-20 justify-around gap-6 lg:flex">
           <div
-            class="p-5 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto transform transition-all hover:scale-95"
+            class="p-5 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto 
+            transform transition-all hover:scale-95"
           >
             <i class="fas fa-sync fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">Real-time messaging</h1>
@@ -85,7 +87,8 @@
             </p>
           </div>
           <div
-            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto transform transition-all hover:scale-95"
+            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto 
+            transform transition-all hover:scale-95"
           >
             <i class="fas fa-shield fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">Strong security</h1>
@@ -94,7 +97,8 @@
             </p>
           </div>
           <div
-            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto transform transition-all hover:scale-95"
+            class="p-10 bg-gray-800 text-gray-50 m-5 filter drop-shadow-lg rounded-md max-w-sm mx-auto 
+            transform transition-all hover:scale-95"
           >
             <i class="fas fa-user fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">User profiles</h1>
@@ -104,6 +108,7 @@
           </div>
         </div>
       </div>
+
       <p class="text-gray-400 text-xs text-center mt-6 mb-4">
         Copyright ©️ SocialLite 2022 • All rights reserved
       </p>
