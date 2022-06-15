@@ -22,7 +22,7 @@
       </div>
 
       <div class="xl:flex items-center justify-items-end pt-24 xl:pt-16">
-        <div class="px-6 xl:pr-6 xl:pl-5 leftSection">
+        <div class="px-6 xl:pr-6 xl:pl-5 leftSection text-gray-50">
           <h1
             class="font-bold text-5xl text-center xl:text-left xl:text-6xl 2xl:text-7xl"
           >
@@ -47,7 +47,7 @@
           <img
             src="../assets/homepage.png"
             alt="Demo"
-            class="filter drop-shadow-xl mx-auto transform transition-all hover:scale-95"
+            class="filter drop-shadow-xl mx-auto transform transition-all hover:scale-95 hover:-skew-x-3"
           />
         </div>
       </div>
@@ -73,7 +73,7 @@
         </div>
       </div>
 
-      <div class="w-full pt-32 bottomSection">
+      <div class="w-full pt-32 bottomSection text-gray-50">
         <h1 class="text-center text-4xl font-bold">Product features</h1>
         <div class="text-center mt-20 justify-around gap-6 lg:flex">
           <div
@@ -93,7 +93,7 @@
             <i class="fas fa-shield fa-3x"></i>
             <h1 class="font-bold text-xl mt-4">Strong security</h1>
             <p class="mt-4">
-              All messages & user authentications are handled by Firebase
+              Messages & user authentications are handled by Firebase
             </p>
           </div>
           <div
@@ -129,8 +129,12 @@ export default {
 
 <style>
 .mainbg {
-  background: #1e1e1e;
-  color: white;
+  background: rgb(36, 36, 36);
+  background: linear-gradient(
+    133deg,
+    rgba(36, 36, 36, 1) 0%,
+    rgba(0, 1, 10, 1) 100%
+  );
 }
 
 .BG {

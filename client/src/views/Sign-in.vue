@@ -107,7 +107,7 @@
 
               <div class="mt-6 -mb-7">
                 <p
-                  class="text-center cursor-pointer text-gray-100"
+                  class="text-center cursor-pointer text-gray-400 hover:text-gray-50"
                   @click.prevent="googleSignIn()"
                 >
                   Don't have an account? Click here to sign up
@@ -118,7 +118,7 @@
         </div>
       </div>
       <div class="w-full">
-        <h1 class="text-center text-gray-200">Made by Sahab Ul Ferdous</h1>
+        <h1 class="text-center text-gray-300">Made by Sahab Ul Ferdous</h1>
         <div class="flex justify-center items-center gap-2 mt-2">
           <a
             class="fab fa-github fa-2x cursor-pointer"
@@ -133,7 +133,7 @@
         </div>
       </div>
       <div class="bottom-3 absolute">
-        <p class="text-gray-400 text-xs">
+        <p class="text-gray-500 text-xs">
           Copyright ©️ SocialLite 2022 • All rights reserved
         </p>
       </div>
