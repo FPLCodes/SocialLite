@@ -9,7 +9,7 @@
     "socket": "npm run start --prefix socket",
     "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run socket\"",
     "start": "node server.js",
-    "build": "npm install --prefix client && npm run build --prefix client"
+    "build": "CI=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "FPLCodes",
