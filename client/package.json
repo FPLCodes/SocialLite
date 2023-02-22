@@ -16,6 +16,7 @@
     "mevn-test": "file:..",
     "moment": "^2.29.1",
     "postcss": "^7",
+    "social-lite": "file:..",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "timeago.js": "^4.0.2",
     "vue": "^3.0.0",
