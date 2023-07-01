@@ -28,6 +28,10 @@ A social media messaging app where you can connect with others anywhere in the w
 
 ## What the app looks like
 
+<p align="center">
+  <img src="https://github.com/FPLCodes/SocialLite/blob/main/Screenshots/SocialLite%20demo.gif"/>
+</p>
+
 ![alt text](https://github.com/FPLCodes/SocialLite/blob/main/Screenshots/SocialLite-Homepage.png)
  
 ![alt text](https://github.com/FPLCodes/SocialLite/blob/main/Screenshots/SocialLite-Chat.png)
