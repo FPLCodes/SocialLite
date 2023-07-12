@@ -26,7 +26,7 @@ A social media messaging app where you can connect with others anywhere in the w
   - All messages & user authentications are handled by Firebase.
   - Users profile data is stored in MongoDB.
 
-## What the app looks like
+## What the website looks like
 
 <p align="center">
   <img src="https://github.com/FPLCodes/SocialLite/blob/main/Screenshots/SocialLite%20demo.gif"/>
